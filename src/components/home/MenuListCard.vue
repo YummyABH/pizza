@@ -3,7 +3,7 @@
 <template>
   <a href="#" class="cursor-pointer">
     <div class="h-46 mb-3 rounded-3xl overflow-hidden">
-      <img src="/public/pattern_food.jpg" alt="" class="w-full h-full object-cover" />
+      <img src="/pattern_food.jpg" alt="" class="w-full h-full object-cover" />
     </div>
     <div class="flex flex-col justify-between min-h-36 max-sm:min-h-30">
       <div class="">
