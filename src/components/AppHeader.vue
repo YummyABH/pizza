@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import ContentContainer from '@/components/ContentContainer.vue'
 import IconBag from '@/components/icons/IconBag.vue'
-import IconMap from './icons/IconMap.vue'
 </script>
 
 <template>
+  <router-view />
   <div class="w-full py-6 bg-gray-800 text-white">
     <ContentContainer>
       <div class="flex justify-between">
@@ -24,7 +24,9 @@ import IconMap from './icons/IconMap.vue'
           <div
             class="w-12 max-sm:p-2 max-sm:w-10 border rounded-full p-3 duration-200 hover:bg-gray-600 cursor-pointer hover:border-gray-600"
           >
-            <IconBag />
+            <router-link to="order">
+              <IconBag />
+            </router-link>
           </div>
         </div>
       </div>

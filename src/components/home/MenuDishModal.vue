@@ -13,9 +13,11 @@ const styleIngredients = computed(() => {
 </script>
 
 <template>
-  <div class="fixed flex justify-center items-end top-0 left-0 w-full h-full bg-black/50 z-10">
+  <div
+    class="fixed flex justify-center max-md:items-end items-center top-0 left-0 w-full h-full bg-black/50 z-10"
+  >
     <div
-      class="fixed z-10 left-0 bottom-0 w-full p-3 flex gap-x-8 bg-white border-t border-t-gray-400"
+      class="fixed z-10 left-0 md:hidden bottom-0 w-full p-3 flex gap-x-8 bg-white border-t border-t-gray-400"
     >
       <div class="flex justify-between items-center w-full">
         <div
