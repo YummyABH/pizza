@@ -21,13 +21,14 @@ import IconBag from '@/components/icons/IconBag.vue'
           >
             <IconMap />
           </div> -->
-          <div
+          <router-link
+            to="order"
             class="w-12 max-sm:p-2 max-sm:w-10 border rounded-full p-3 duration-200 hover:bg-gray-600 cursor-pointer hover:border-gray-600"
           >
-            <router-link to="order">
+            <div>
               <IconBag />
-            </router-link>
-          </div>
+            </div>
+          </router-link>
         </div>
       </div>
     </ContentContainer>

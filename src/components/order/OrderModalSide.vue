@@ -6,13 +6,16 @@ import OrderContacts from './OrderContacts.vue'
 </script>
 
 <template>
-  <div class="fixed w-full h-full bg-black/50 z-10"></div>
-  <div class="fixed z-20 right-0 top-0 bg-white h-full p-6 min-w-125">
+  <router-link to="/" class="fixed w-full h-full bg-black/50 z-10"></router-link>
+  <div
+    class="fixed z-20 right-0 top-0 bg-white h-full p-6 overflow-scroll min-w-125 max-sm:min-w-auto max-sm:w-full"
+  >
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-medium">Заказ</h2>
-      <div
+      <router-link
+        to="/"
         class="relative w-5 h-5 after:absolute after:w-full after:h-0.5 after:top-1/2 after:left-1/2 after:bg-black after:transform after:-translate-1/2 after:rotate-45 before:absolute before:w-full before:h-0.5 before:left-1/2 before:top-1/2 before:bg-black before:transform before:-translate-1/2 before:-rotate-45"
-      ></div>
+      ></router-link>
     </div>
     <div class="flex justify-between mb-4">
       <div class="text-xl font-medium">3 блюда</div>
