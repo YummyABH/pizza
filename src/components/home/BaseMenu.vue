@@ -10,10 +10,10 @@ import MenuNavigationSide from './MenuNavigationSide.vue'
   <!-- <MenuDishModal /> -->
   <router-view />
   <div class="w-full pt-20 pb-25">
-    <div class="max-w-[1900px] mx-auto px-5 flex">
+    <div class="max-w-[1900px] max-sm:px-0 mx-auto px-5 flex">
       <MenuNavigationSide class="max-md:hidden" />
       <div
-        class="bg-white rounded-r-4xl max-md:rounded-4xl py-8 px-8 max-md:px-6 max-md:py-6 w-full"
+        class="bg-white rounded-r-4xl max-sm:px-3 max-md:rounded-4xl py-8 px-8 max-md:px-6 max-md:py-6 w-full"
       >
         <h1 class="mb-4 text-3xl font-bold">Меню</h1>
         <SearchInput />
