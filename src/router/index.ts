@@ -12,7 +12,7 @@ const router = createRouter({
       component: HomePage,
       children: [
         {
-          path: ':dish/:category/:id/:slug',
+          path: ':dish/:category/:id',
           name: 'menuDishModal',
           component: MenuDishModal,
         },

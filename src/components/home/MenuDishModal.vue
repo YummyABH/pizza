@@ -17,7 +17,7 @@ const styleIngredients = computed(() => {
     class="fixed flex justify-center max-md:items-end items-center top-0 left-0 w-full h-full bg-black/50 z-10"
   >
     <div
-      class="fixed z-10 left-0 md:hidden bottom-0 w-full p-3 flex gap-x-8 bg-white border-t border-t-gray-400"
+      class="fixed z-10 left-0 sm:hidden bottom-0 w-full p-3 flex gap-x-8 bg-white border-t border-t-gray-400"
     >
       <div class="flex justify-between items-center w-full">
         <div
@@ -37,13 +37,13 @@ const styleIngredients = computed(() => {
       </div>
     </div>
     <div
-      class="relative max-h-9/10 pb-20 max-sm:max-w-full max-sm:pb-4 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
+      class="relative max-h-9/10 pb-20 max-sm:max-w-full max-sm:pb-18 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
     >
-      <div class="w-12 h-12 rounded-full bg-white absolute right-3 top-3">
+      <router-link to="/" class="w-12 h-12 rounded-full bg-white absolute right-3 top-3">
         <div
           class="relative cursor-pointer w-full h-full after:absolute after:top-1/2 after:left-1/2 after:w-4 after:h-0.5 after:transform after:-translate-1/2 after:bg-black after:rotate-45 before:absolute before:top-1/2 before:left-1/2 before:w-4 before:h-0.5 before:transform before:-translate-1/2 before:bg-black before:-rotate-45"
         ></div>
-      </div>
+      </router-link>
       <div
         class="absolute max-sm:hidden left-0 bottom-0 w-full p-4 flex gap-x-16 bg-white border-t border-t-gray-400"
       >

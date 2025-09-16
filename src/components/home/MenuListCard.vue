@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <a href="#" class="cursor-pointer">
+  <router-link to="/name/category/3/" class="cursor-pointer">
     <div class="h-46 mb-3 rounded-3xl overflow-hidden">
       <img src="/pattern_food.jpg" alt="" class="w-full h-full object-cover" />
     </div>
@@ -36,5 +36,5 @@
         <span>2000 ₽</span>
       </div>
     </div>
-  </a>
+  </router-link>
 </template>
