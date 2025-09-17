@@ -5,7 +5,7 @@ import IconBag from '@/components/icons/IconBag.vue'
 
 <template>
   <router-view />
-  <div class="w-full py-6 bg-gray-800 text-white">
+  <div class="w-full z-10 fixed top-0 left-0 py-6 bg-gray-800 text-white">
     <ContentContainer>
       <div class="flex justify-between">
         <div class="font-bold text-3xl">ЛОГОТИП</div>

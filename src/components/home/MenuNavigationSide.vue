@@ -12,7 +12,7 @@ const styleMenuCategories = computed(() => (id: string) => {
 <template>
   <section class="min-h-full bg-white rounded-l-4xl">
     <ul
-      class="sticky top-0 pr-8 py-8 pl-12 max-lg:pl-4 max-lg:pr-4 flex flex-col gap-1 text-lg font-semibold"
+      class="sticky top-16 pr-8 py-8 pl-12 max-lg:pl-4 max-lg:pr-4 flex flex-col gap-1 text-lg font-semibold"
     >
       <li
         :class="styleMenuCategories('#3')"

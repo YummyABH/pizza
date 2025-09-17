@@ -1,12 +1,15 @@
 <script setup lang="ts"></script>
 
 <template>
-  <router-link to="/name/category/3/" class="cursor-pointer">
-    <div class="h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden">
+  <div class="">
+    <router-link
+      to="/name/category/3/"
+      class="block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
+    >
       <img src="/pattern_food.jpg" alt="" class="w-full h-full object-cover" />
-    </div>
+    </router-link>
     <div class="flex flex-col justify-between min-h-36 max-sm:min-h-26">
-      <div class="">
+      <router-link to="/name/category/3/" class="">
         <h3 class="text-lg mb-1 font-medium max-sm:text-base">Название блюда</h3>
         <div
           class="flex gap-x-3 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
@@ -15,10 +18,10 @@
           <span class="font-black">·</span>
           <span>55 - 60 мин</span>
         </div>
-      </div>
+      </router-link>
 
       <div
-        class="w-full items-center hover:bg-gray-600 duration-200 justify-center flex gap-4 py-2 px-4 font-semibold rounded-3xl text-white bg-gray-700"
+        class="cursor-pointer w-full items-center hover:bg-gray-600 duration-200 justify-center flex gap-4 py-2 px-4 font-semibold rounded-3xl text-white bg-gray-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -38,5 +41,5 @@
         <span>2000 ₽</span>
       </div>
     </div>
-  </router-link>
+  </div>
 </template>

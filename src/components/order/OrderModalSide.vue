@@ -3,12 +3,15 @@ import ButtonSwitch from '../ButtonSwitch.vue'
 import IconBasket from '../icons/IconBasket.vue'
 import IconCutlery from '../icons/IconCutlery.vue'
 import OrderContacts from './OrderContacts.vue'
+
+const body = document.querySelector('body')
+console.log(body)
 </script>
 
 <template>
-  <router-link to="/" class="fixed w-full h-full bg-black/50 z-10"></router-link>
+  <router-link to="/" class="fixed w-full h-full bg-black/50 z-10 top-0 left-0"></router-link>
   <div
-    class="fixed z-20 right-0 top-0 bg-white h-full p-6 overflow-scroll min-w-125 max-sm:min-w-auto max-sm:w-full"
+    class="fixed scrollbar-hidden z-20 right-0 top-0 bg-white h-full p-6 overflow-scroll min-w-125 max-sm:min-w-auto max-sm:w-full"
   >
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-medium">Заказ</h2>
@@ -69,3 +72,17 @@ import OrderContacts from './OrderContacts.vue'
     <OrderContacts />
   </div>
 </template>
+
+<style scoped>
+.scrollbar-hidden {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari и другие на WebKit */
+}
+</style>

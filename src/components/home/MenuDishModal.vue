@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const backgroundPage = ref(null)
+const body = document.body
+const router = useRouter()
 const statusDescription = ref(false)
 const styleDescription = computed(() => {
   return statusDescription.value ? '' : 'truncate'
@@ -10,10 +14,25 @@ const statusIngredients = ref(false)
 const styleIngredients = computed(() => {
   return statusIngredients.value ? '' : '[&>li:nth-child(n+5)]:hidden'
 })
+
+function goHome(event: Event) {
+  if (event.target === backgroundPage.value) {
+    console.log(event.target === backgroundPage.value)
+    router.push('/')
+  }
+}
+
+onMounted(() => {
+  body.addEventListener('click', goHome)
+})
+onBeforeUnmount(() => {
+  body.removeEventListener('click', goHome)
+})
 </script>
 
 <template>
   <div
+    ref="backgroundPage"
     class="fixed flex justify-center max-md:items-end items-center top-0 left-0 w-full h-full bg-black/50 z-10"
   >
     <div
