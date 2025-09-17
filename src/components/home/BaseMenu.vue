@@ -9,8 +9,7 @@ import MenuNavigationSide from './MenuNavigationSide.vue'
 <template>
   <!-- <MenuDishModal /> -->
   <router-view />
-  <div class="h-25 w-full"></div>
-  <div class="w-full pb-25">
+  <div class="w-full pt-25 pb-25">
     <div class="max-w-[1900px] max-sm:px-0 mx-auto px-5 flex">
       <MenuNavigationSide class="max-md:hidden sticky" />
       <div
