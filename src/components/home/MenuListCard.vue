@@ -1,22 +1,28 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps({
+  dishList: Object,
+})
+</script>
 
 <template>
   <div class="">
     <router-link
-      to="/name/category/3/"
+      :to="`/name/category/${dishList.categoryid}/`"
       class="block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
     >
-      <img src="/pattern_food.jpg" alt="" class="w-full h-full object-cover" />
+      <img
+        src="https://restik-street-style.onrender.com/uploads/office.jpg"
+        alt=""
+        class="w-full h-full object-cover"
+      />
     </router-link>
     <div class="flex flex-col justify-between min-h-36 max-sm:min-h-26">
-      <router-link to="/name/category/3/" class="">
-        <h3 class="text-lg mb-1 font-medium max-sm:text-base">Название блюда</h3>
+      <router-link :to="`/name/category/${dishList.categoryid}/`" class="">
+        <h3 class="text-lg mb-1 font-medium max-sm:text-base">{{ dishList.name }}</h3>
         <div
           class="flex gap-x-3 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
         >
-          <span>200 г.</span>
-          <span class="font-black">·</span>
-          <span>55 - 60 мин</span>
+          <span>{{ dishList.dish_weight }} г.</span>
         </div>
       </router-link>
 
@@ -38,7 +44,7 @@
           />
         </svg>
 
-        <span>2000 ₽</span>
+        <span>{{ dishList.price }} ₽</span>
       </div>
     </div>
   </div>

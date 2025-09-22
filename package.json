@@ -18,6 +18,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",
     "maska": "^3.2.0",
+    "ofetch": "^1.4.1",
     "pinia": "^3.0.3",
     "tailwindcss": "^4.1.13",
     "vue": "^3.5.18",
