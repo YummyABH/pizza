@@ -1,14 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import SearchInput from '../ui/SearchInput.vue'
-// import MenuDishModal from './MenuDishModal.vue'
 import MenuList from './MenuList.vue'
 import MenuNavigation from './MenuNavigation.vue'
 import MenuNavigationSide from './MenuNavigationSide.vue'
 </script>
 
 <template>
-  <!-- <MenuDishModal /> -->
-  <router-view />
   <div class="w-full pt-25 pb-25">
     <div class="max-w-[1900px] max-sm:px-0 mx-auto px-5 flex">
       <MenuNavigationSide class="max-md:hidden sticky" />

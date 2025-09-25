@@ -54,6 +54,16 @@ const classDelivery = computed(() => {
           :pattern="REGEX_ADRESS_COMMENT"
         />
       </div>
+      <div v-show="!statusDelivery" class="flex flex-col gap-y-5">
+        <label class="flex gap-x-4 text-lg font-medium items-center">
+          <input
+            type="radio"
+            name="adress"
+            class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
+          />
+          Адрес самовывоза
+        </label>
+      </div>
     </div>
   </div>
 </template>

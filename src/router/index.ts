@@ -13,12 +13,6 @@ const router = createRouter({
       meta: { lockScroll: false },
       children: [
         {
-          path: ':dish/:category/:id',
-          name: 'menuDishModal',
-          component: MenuDishModal,
-          meta: { lockScroll: true },
-        },
-        {
           path: '/order',
           name: 'OrderModalSide',
           component: OrderModalSide,
