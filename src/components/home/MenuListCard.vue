@@ -10,7 +10,7 @@ defineProps({
       class="cursor-pointer block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
     >
       <img
-        src="https://restik-street-style.onrender.com/uploads/office.jpg"
+        :src="`https://restik-street-style.onrender.com/uploads/${dishList.image}`"
         class="w-full h-full object-cover"
       />
     </div>

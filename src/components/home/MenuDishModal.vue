@@ -94,7 +94,10 @@ onBeforeUnmount(() => {
         </div>
       </div>
       <div class="min-w-full min-h-full h-full w-full overflow-hidden">
-        <img class="w-full aspect-1/1 object-cover" src="/pattern_food.jpg" alt="" />
+        <img
+          class="w-full aspect-1/1 object-cover"
+          :src="`https://restik-street-style.onrender.com/uploads/${dishModal.image}`"
+        />
       </div>
       <div
         class="overflow-y-scroll scrollbar-hidden py-6 px-5 rounded-2xl flex flex-col gap-2 -mt-3 bg-white"
