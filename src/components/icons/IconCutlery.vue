@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="p-2 bg-gray-200 rounded-lg">
+  <div class="h-12 w-12 flex justify-center items-center bg-gray-200 rounded-lg">
     <svg xmlns="http://www.w3.org/2000/svg" width="23" height="25" fill="none">
       <path
         fill="url(#cutlery23_svg__a)"

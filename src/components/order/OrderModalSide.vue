@@ -3,9 +3,9 @@ import ButtonSwitch from '../ButtonSwitch.vue'
 import IconBasket from '../icons/IconBasket.vue'
 import IconCutlery from '../icons/IconCutlery.vue'
 import OrderContacts from './OrderContacts.vue'
+import { useOrderStore } from '@/stores/orderStore'
 
-const body = document.querySelector('body')
-console.log(body)
+const storeOrder = useOrderStore()
 </script>
 
 <template>
@@ -21,25 +21,30 @@ console.log(body)
       ></router-link>
     </div>
     <div class="flex justify-between mb-4">
-      <div class="text-xl font-medium">3 блюда</div>
-      <IconBasket />
+      <div class="text-xl font-medium"><span>Блюд: </span>{{ storeOrder.order.dishes.length }}</div>
+      <IconBasket @click="storeOrder.clearDishesInOrder" />
     </div>
     <div class="flex flex-col gap-y-6">
-      <div class="flex gap-x-3">
+      <div v-for="dish in storeOrder.order.dishes" :key="dish.categoryid" class="flex gap-x-3">
         <div class="w-14 h-14">
-          <img class="w-full h-full object-cover aspect-1/1" src="/pattern_food.jpg" alt="" />
+          <img
+            class="w-full h-full object-cover aspect-1/1"
+            :src="`https://restik-street-style.onrender.com/uploads/${dish.image}`"
+          />
         </div>
         <div class="flex text-sm flex-col w-full">
-          <div class="">Перец болгарский на мангале</div>
-          <div class="text-[#808080]">100 г</div>
+          <div class="">{{ dish.name }}</div>
+          <div class="text-[#808080]">{{ dish.dish_weight }} г</div>
           <div class="flex mt-2 justify-between">
-            <div class="font-medium">1 180 ₽</div>
+            <div class="font-medium">{{ dish.price }} ₽</div>
             <div class="flex gap-x-2 items-center">
               <div
+                @click="storeOrder.dishReduce(dish.id)"
                 class="relative w-6 h-6 p-1 rounded-full cursor-pointer after:w-3 after:h-0.5 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
               ></div>
-              <div class="font-medium">1 шт</div>
+              <div class="font-medium">{{ dish.quantity }} шт</div>
               <div
+                @click="storeOrder.dishAdd(dish.id)"
                 class="relative w-6 h-6 p-1 rounded-full cursor-pointer before:h-3 before:w-0.5 before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-3 after:h-0.5 after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
               ></div>
             </div>
@@ -50,14 +55,16 @@ console.log(body)
     <div class="flex items-center justify-between mt-4">
       <div class="flex gap-6">
         <IconCutlery />
-        <div class="">
+        <div class="flex flex-col justify-center">
           <span>Приборы</span>
-          <div class="flex gap-x-2 items-center">
+          <div v-show="storeOrder.order.cutlery_status" class="flex gap-x-2 items-center">
             <div
+              @click="storeOrder.cutleryReduce"
               class="relative w-6 h-6 p-1 rounded-full cursor-pointer after:w-3 after:h-0.5 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
             ></div>
-            <div class="font-medium">1 шт</div>
+            <div class="font-medium">{{ storeOrder.order.number_cutlery }} шт</div>
             <div
+              @click="storeOrder.cutleryAdd"
               class="relative w-6 h-6 p-1 rounded-full cursor-pointer before:h-3 before:w-0.5 before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-3 after:h-0.5 after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
             ></div>
           </div>
@@ -67,7 +74,7 @@ console.log(body)
     </div>
     <div class="text-lg pb-4 font-medium flex justify-between mt-6">
       <span>Итого:</span>
-      <span>1 200 ₽</span>
+      <span>{{ storeOrder.order.price }} ₽</span>
     </div>
     <OrderContacts />
   </div>

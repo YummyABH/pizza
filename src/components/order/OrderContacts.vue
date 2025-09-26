@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import FormInput from '@/components/ui/FormInput.vue'
+import OrderMethodOptaining from './OrderMethodOptaining.vue'
 import { vMaska } from 'maska/vue'
 import { ref } from 'vue'
-import OrderMethodOptaining from './OrderMethodOptaining.vue'
+import { useOrderStore } from '@/stores/orderStore'
 
-const phoneNumber = ref('')
-const name = ref('')
-const orderComment = ref('')
+const store = useOrderStore()
+
 const REGEX_NAME = ref(/^[а-яА-ЯёЁ ]{0,32}$/)
 const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
 </script>
@@ -21,23 +21,26 @@ const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
           v-maska="'+ 7 (###) ###-##-##'"
           label="Телефон"
           type="tel"
-          v-model="phoneNumber"
+          v-model="store.order.phone"
           required
         />
         <FormInput
           id="name"
+          :pattern="REGEX_NAME"
           label="Имя"
           type="text"
-          v-model="name"
+          v-model="store.order.name"
           required
-          :pattern="REGEX_NAME"
         />
       </div>
     </div>
     <OrderMethodOptaining />
     <div class="">
       <h2 class="text-xl mb-4 font-medium">Оплата</h2>
-      <label class="flex gap-x-4 text-lg font-medium items-center">
+      <label
+        @click="store.order.payment_card = true"
+        class="flex gap-x-4 text-lg font-medium items-center"
+      >
         <input
           type="radio"
           name="pay"
@@ -45,7 +48,10 @@ const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
         />
         Картой
       </label>
-      <label class="flex gap-x-4 text-lg font-medium items-center">
+      <label
+        @click="store.order.payment_card = false"
+        class="flex gap-x-4 text-lg font-medium items-center"
+      >
         <input
           type="radio"
           name="pay"
@@ -60,7 +66,7 @@ const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
         id="order-comment"
         label="Комментарий к заказу"
         type="orderComment"
-        v-model="orderComment"
+        v-model="store.order.order_comment"
         :pattern="REGEX_ADRESS_COMMENT"
       />
     </div>
