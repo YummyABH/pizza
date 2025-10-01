@@ -83,5 +83,36 @@ export const useOrderStore = defineStore('order', () => {
     order.dishes = []
   }
 
-  return { order, cutleryAdd, cutleryReduce, clearDishesInOrder, dishAdd, dishReduce }
+  function addDishItem(newDish: object, size?: string) {
+    const addDish = { ...newDish }
+    // const hasDish = order.dishes.find(dish => dish.id === addDish.id && ((dish.size[size] && size) || (! size)))
+
+    let status = false
+    console.log('addDish: ', addDish)
+
+    for (const dish of order.dishes) {
+      console.log('1) ', dish.id === addDish.id)
+      console.log('dish.size: ', dish)
+      console.log('2) ', dish[size] && size)
+      console.log('3) ', !size)
+      console.log('4) ', (dish.size[size] && size) || !size)
+      console.log('5) ', dish.id === addDish.id && ((dish.size[size] && size) || !size))
+
+      if (dish.id === addDish.id && ((dish.size[size] && size) || !size)) {
+        status = true
+        return
+      }
+    }
+    // console.log(status);
+    if (status) return
+
+    if (addDish?.size) {
+      //   addDish.size = {
+      //     size:
+      //   }
+    }
+    order.dishes = [...order.dishes, addDish]
+  }
+
+  return { order, cutleryAdd, cutleryReduce, clearDishesInOrder, dishAdd, dishReduce, addDishItem }
 })

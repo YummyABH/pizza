@@ -7,7 +7,13 @@ import { ref } from 'vue'
 const store = useDishesStore()
 
 const statusModalDish = ref(false)
-const dishModal = ref([])
+const dishModal = ref({})
+
+function updateDishModal(newDish) {
+  if (!newDish) return
+  
+  dishModal.value = {...newDish}
+}
 </script>
 
 <template>
@@ -28,8 +34,9 @@ const dishModal = ref([])
       class="w-full grid grid-cols-4 gap-10 max-xl:grid-cols-3 max-sm:gap-4 max-sm:gap-y-8 max-lg:grid-cols-2"
     >
       <MenuListCard
-        @click="((statusModalDish = true), (dishModal = dish))"
         v-for="dish in dishList.dishes"
+        @click="updateDishModal(dish)"
+        v-model:statusModalDish="statusModalDish"
         :key="dish"
         :dishList="dish"
       />
