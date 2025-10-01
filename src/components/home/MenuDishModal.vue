@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useDishesStore } from '@/stores/dishesStore'
 
-const store = useDishesStore()
-const props = defineProps({
-  dishModal: Object,
-})
+
+const dishModal = defineModel('dishModal')
+
 
 const backgroundPage = ref(null)
 const body = document.body
-const router = useRouter()
 const statusDescription = ref(false)
 const statusModalDish = defineModel('statusModalDish')
 
@@ -22,6 +18,13 @@ const statusIngredients = ref(false)
 const styleIngredients = computed(() => {
   return statusIngredients.value ? '' : '[&>li:nth-child(n+5)]:hidden'
 })
+
+function dishAdd() {  
+  return dishModal.value.quantity >= 99 ? (dishModal.value.quantity = 99) : dishModal.value.quantity++
+}
+function dishReduce() {
+  return dishModal.value.quantity <= 1 ? (dishModal.value.quantity = 1) : dishModal.value.quantity--
+}
 
 function goHome(event: Event) {
   if (event.target === backgroundPage.value) {
@@ -47,12 +50,14 @@ onBeforeUnmount(() => {
     >
       <div class="flex justify-between items-center w-full">
         <div
+          @click="dishReduce()"
           class="relative w-8 h-8 p-1 rounded-full cursor-pointer after:w-3 after:h-px bg-red-300 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
         ></div>
         <div class="flex flex-col text-center">
-          <span class="font-medium">1 шт</span><span> {{ dishModal.price }} ₽</span>
+          <span class="font-medium">{{ dishModal.quantity }} шт</span><span> {{ dishModal.price }} ₽</span>
         </div>
         <div
+          @click="dishAdd()"
           class="relative w-8 h-8 p-1 rounded-full bg-[#64f77c] cursor-pointer before:h-3 before:w-px before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-3 after:h-px after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
         ></div>
       </div>
@@ -78,12 +83,14 @@ onBeforeUnmount(() => {
       >
         <div class="flex justify-between items-center w-full">
           <div
+            @click="dishReduce()"
             class="relative w-9 h-9 p-1 rounded-full cursor-pointer after:w-4 after:h-px bg-red-300 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
           ></div>
           <div class="flex flex-col">
-            <span class="font-medium">1 шт</span><span>{{ dishModal.price }} ₽</span>
+            <span class="font-medium">{{ dishModal.quantity }} шт</span><span>{{ dishModal.price }} ₽</span>
           </div>
           <div
+          @click="dishAdd(dishModal.id)"
             class="relative w-9 h-9 p-1 rounded-full bg-[#64f77c] cursor-pointer before:h-4 before:w-px before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-4 after:h-px after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
           ></div>
         </div>

@@ -4,7 +4,7 @@ import { reactive, watch } from 'vue'
 export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
   const initialOrder = savedOrder ? JSON.parse(savedOrder) : null
-
+  
   const order = reactive(
     initialOrder || {
       phone: '',
@@ -54,5 +54,29 @@ export const useOrderStore = defineStore('order', () => {
     order.dishes = []
   }
 
-  return { order, cutleryAdd, cutleryReduce, clearDishesInOrder, dishAdd, dishReduce }
+  function addDishItem(newDish: object, size?: string) {
+    
+    const addDish = {...newDish}
+    // const hasDish = order.dishes.find(dish => dish.id === addDish.id && ((dish.size[size] && size) || (! size)))
+
+    let status = false
+    for (const dish of order.dishes) {
+      if (dish.id === addDish.id && ((dish.size[size] && size) || !size)) {
+        status = true
+        return 
+      }
+    }
+    // console.log(status);
+    if (status) return
+
+
+    if (addDish?.size) {
+      addDish.size = size
+    }
+    order.dishes = [ ...order.dishes, addDish]
+
+    
+  }
+
+  return { order, cutleryAdd, cutleryReduce, clearDishesInOrder, dishAdd, dishReduce, addDishItem }
 })
