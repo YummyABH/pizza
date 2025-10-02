@@ -32,6 +32,7 @@ const defaultCharacteristics = ref(props.dishList.default_characteristics)
           <div class="flex gap-x-2 cursor-pointer" v-if="dishList.characteristics.length > 1">
             <div
               v-for="(item, index) in dishList.characteristics"
+              @click="defaultCharacteristics = index"
               :key="index"
               :class="index === defaultCharacteristics ? 'bg-green-500 text-white' : ''"
               class="px-2 py-0.5 rounded-xl"
@@ -61,7 +62,7 @@ const defaultCharacteristics = ref(props.dishList.default_characteristics)
           />
         </svg>
 
-        <span>{{ dishList.price }} ₽</span>
+        <span>{{ dishList.characteristics[defaultCharacteristics].price }} ₽</span>
       </div>
     </div>
   </div>
