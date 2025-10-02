@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore'
+import { ref } from 'vue'
 
 const store = useOrderStore()
 const statusModalDish = defineModel('statusModalDish')
@@ -7,8 +8,7 @@ const props = defineProps({
   dishList: Object,
 })
 
-const size = {}
-console.log('button dishList: ', props.dishList)
+const defaultCharacteristics = ref(props.dishList.default_characteristics)
 </script>
 
 <template>
@@ -28,14 +28,15 @@ console.log('button dishList: ', props.dishList)
         <div
           class="flex gap-x-3 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
         >
-          <span>{{ dishList.dish_weight }} г.</span>
-          <div class="flex cursor-pointer" v-if="!dishList.size['default']">
+          <span>{{ dishList.characteristics[defaultCharacteristics].quantity }} {{ dishList.characteristics[defaultCharacteristics].measure }}.</span>
+          <div class="flex gap-x-2 cursor-pointer" v-if="dishList.characteristics.length > 1">
             <div
-              v-for="(price, key) of dishList.size"
-              :key="key"
-              class="px-2 py-0.5 rounded-xl bg-green-500"
+              v-for="(item, index) in dishList.characteristics"
+              :key="index"
+              :class="index === defaultCharacteristics ? 'bg-green-500 text-white' : ''"
+              class="px-2 py-0.5 rounded-xl"
             >
-              {{ key }} см
+              {{ item.size }}
             </div>
           </div>
         </div>
