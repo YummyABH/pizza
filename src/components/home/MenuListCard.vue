@@ -44,7 +44,7 @@ const defaultCharacteristics = ref(props.dishList.default_characteristics)
       </div>
 
       <div
-        @click="store.addDishItem(dishList, '30')"
+        @click="store.addDishItem(dishList, defaultCharacteristics)"
         class="cursor-pointer w-full items-center hover:bg-gray-600 duration-200 justify-center flex gap-4 py-2 px-4 font-semibold rounded-3xl text-white bg-gray-700"
       >
         <svg

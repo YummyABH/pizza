@@ -9,6 +9,7 @@ const backgroundPage = ref(null)
 const body = document.body
 const statusDescription = ref(false)
 const statusModalDish = defineModel('statusModalDish')
+const indexCharacteristics = computed(() => dishModal.value.default_characteristics)
 
 const styleDescription = computed(() => {
   return statusDescription.value ? '' : 'truncate'
@@ -87,7 +88,7 @@ onBeforeUnmount(() => {
             class="relative w-9 h-9 p-1 rounded-full cursor-pointer after:w-4 after:h-px bg-red-300 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
           ></div>
           <div class="flex flex-col">
-            <span class="font-medium">{{ dishModal.quantity }} шт</span><span>{{ dishModal.price }} ₽</span>
+            <span class="font-medium">{{ dishModal.quantity }} шт</span><span v-if="dishModal.characteristics">{{ dishModal.characteristics[indexCharacteristics].price }} ₽</span>
           </div>
           <div
           @click="dishAdd(dishModal.id)"
