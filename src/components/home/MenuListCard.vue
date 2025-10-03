@@ -30,7 +30,7 @@ const indexCharacteristics = computed(() => props.dishList.default_characteristi
       <div class="">
         <h3 class="text-lg mb-1 font-medium max-sm:text-base">{{ dishList.name }}</h3>
         <div
-          class="flex gap-x-3 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
+          class="flex gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
         >
           <span
             >{{ dishList.characteristics[indexCharacteristics].quantity }}
@@ -42,7 +42,7 @@ const indexCharacteristics = computed(() => props.dishList.default_characteristi
               @click="storeDish.updateDefaultCharacteristics(index, indexCategory, indexDish)"
               :key="index"
               :class="index === indexCharacteristics ? 'bg-green-500 text-white' : ''"
-              class="px-2 py-0.5 rounded-xl"
+              class="px-2 py-0.5 rounded-xl max-sm:px-1.5 max-sm:text-[12px]"
             >
               {{ item.size }}
             </div>

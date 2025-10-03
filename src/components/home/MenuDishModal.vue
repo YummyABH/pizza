@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
         <div class="flex flex-col text-center">
           <span v-if="dish?.quantity" class="font-medium">{{ dish.quantity }} шт</span
           ><span v-if="dish?.characteristics">
-            {{ dish.characteristics[indexCharacteristics].price }}
+            {{ sumPrice }}
             ₽</span
           >
         </div>

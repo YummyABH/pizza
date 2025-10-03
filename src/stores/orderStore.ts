@@ -27,6 +27,8 @@ export const useOrderStore = defineStore('order', () => {
   watch(
     order,
     (newOrder) => {
+      console.log(order.dishes)
+
       localStorage.setItem('order', JSON.stringify(newOrder))
     },
     { deep: true },
@@ -54,6 +56,12 @@ export const useOrderStore = defineStore('order', () => {
     return dish.quantity <= 1 ? (dish.quantity = 1) : dish.quantity--
   }
 
+  function deleteDish(removeDish: object) {
+    order.dishes = order.dishes.filter(
+      (dish) => JSON.stringify(dish) !== JSON.stringify(removeDish),
+    )
+  }
+
   function clearDishesInOrder() {
     order.dishes = []
   }
@@ -75,5 +83,14 @@ export const useOrderStore = defineStore('order', () => {
     order.dishes = [...order.dishes, addDish]
   }
 
-  return { order, cutleryAdd, cutleryReduce, clearDishesInOrder, dishAdd, dishReduce, addDishItem }
+  return {
+    order,
+    cutleryAdd,
+    cutleryReduce,
+    clearDishesInOrder,
+    dishAdd,
+    dishReduce,
+    addDishItem,
+    deleteDish,
+  }
 })
