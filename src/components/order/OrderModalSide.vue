@@ -47,7 +47,7 @@ const sumPrice = computed(() =>
           <div class="flex justify-between">
             <div class="">{{ dish.name }}</div>
             <div
-              class="hidden group-hover:duration-200 cursor-pointer opacity-0 group-hover:opacity-100 group-hover:inline-block w-5 h-5 bg-red-500 rounded-full relative after:w-3 after:h-0.25 after:bg-white after:left-1/2 after:top-1/2 after:transform after:-translate-1/2 after:-rotate-45 after:absolute before:w-3 before:h-0.25 before:rotate-45 before:bg-white before:left-1/2 before:top-1/2 before:transform before:-translate-1/2 before:absolute"
+              class="hidden max-md:inline-block max-md:opacity-100 group-hover:duration-200 cursor-pointer opacity-0 group-hover:opacity-100 group-hover:inline-block w-5 h-5 bg-red-500 rounded-full relative after:w-3 after:h-0.25 after:bg-white after:left-1/2 after:top-1/2 after:transform after:-translate-1/2 after:-rotate-45 after:absolute before:w-3 before:h-0.25 before:rotate-45 before:bg-white before:left-1/2 before:top-1/2 before:transform before:-translate-1/2 before:absolute"
               @click="storeOrder.deleteDish(dish)"
             ></div>
           </div>
