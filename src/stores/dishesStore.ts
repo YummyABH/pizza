@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { readonly, ref } from 'vue'
+import { readonly, ref, watch } from 'vue'
 
 export const useDishesStore = defineStore('dishes', () => {
   const dishes = ref([])
@@ -10,5 +10,15 @@ export const useDishesStore = defineStore('dishes', () => {
     dishes.value = [...newValue]
   }
 
-  return { updateDishes, dishes: readonly(dishes) }
+  function updateDefaultCharacteristics(
+    newDefaultCharacteristics: number,
+    indexCategory: number,
+    indexDish: number,
+  ) {
+    if (!dishes.value[indexCategory].dishes[indexDish]) return
+    dishes.value[indexCategory].dishes[indexDish].default_characteristics =
+      newDefaultCharacteristics
+  }
+
+  return { updateDishes, updateDefaultCharacteristics, dishes: readonly(dishes) }
 })

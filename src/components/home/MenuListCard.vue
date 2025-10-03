@@ -1,20 +1,32 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore'
-import { ref } from 'vue'
+import { useDishesStore } from '@/stores/dishesStore'
+import { ref, watch } from 'vue'
 
 const store = useOrderStore()
+const storeDish = useDishesStore()
 const statusModalDish = defineModel('statusModalDish')
 const props = defineProps({
   dishList: Object,
+  indexCategory: Number,
+  indexDish: Number,
 })
 
 const defaultCharacteristics = ref(props.dishList.default_characteristics)
+
+watch(defaultCharacteristics, (newValue) => {
+  console.log('newValue: ', newValue)
+  console.log('indexCategory: ', props.indexCategory)
+  console.log('indexDish: ', props.indexDish)
+
+  storeDish.updateDefaultCharacteristics(newValue, props.indexCategory, props.indexDish)
+})
 </script>
 
 <template>
   <div class="">
     <div
-      @click="((statusModalDish = true), (dishModal = dish))"
+      @click="statusModalDish = true"
       class="cursor-pointer block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
     >
       <img
@@ -28,7 +40,10 @@ const defaultCharacteristics = ref(props.dishList.default_characteristics)
         <div
           class="flex gap-x-3 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
         >
-          <span>{{ dishList.characteristics[defaultCharacteristics].quantity }} {{ dishList.characteristics[defaultCharacteristics].measure }}.</span>
+          <span
+            >{{ dishList.characteristics[defaultCharacteristics].quantity }}
+            {{ dishList.characteristics[defaultCharacteristics].measure }}.</span
+          >
           <div class="flex gap-x-2 cursor-pointer" v-if="dishList.characteristics.length > 1">
             <div
               v-for="(item, index) in dishList.characteristics"

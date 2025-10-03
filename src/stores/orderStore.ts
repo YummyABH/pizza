@@ -14,8 +14,7 @@ export const useOrderStore = defineStore('order', () => {
         address: '',
         comment: '',
       },
-      dishes: [
-      ],
+      dishes: [],
       cutlery_status: false,
       number_cutlery: 1,
       payment_card: null,
@@ -57,26 +56,17 @@ export const useOrderStore = defineStore('order', () => {
 
   function addDishItem(newDish: object, indexCharacteristics?: string) {
     const addDish = { ...newDish }
-    // const hasDish = order.dishes.find(dish => dish.id === addDish.id && ((dish.size[size] && size) || (! size)))
-
     let status = false
 
     for (const dish of order.dishes) {
-      // console.log('dish.default_characteristics === addDish.default_characteristics: ', dish.default_characteristics === addDish.default_characteristics);
-      console.log('dish.default_characteristics: ', dish.default_characteristics);
-      console.log('addDish.default_characteristics: ', addDish.default_characteristics);
-      
-      
-
       if (dish.id === addDish.id && dish.default_characteristics === indexCharacteristics) {
         status = true
         return
       }
     }
-    // console.log(status);
+
     if (status) return
-    console.log(addDish);
-    
+
     addDish.default_characteristics = indexCharacteristics
     order.dishes = [...order.dishes, addDish]
   }

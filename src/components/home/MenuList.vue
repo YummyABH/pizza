@@ -11,8 +11,8 @@ const dishModal = ref({})
 
 function updateDishModal(newDish) {
   if (!newDish) return
-  
-  dishModal.value = {...newDish}
+
+  dishModal.value = { ...newDish }
 }
 </script>
 
@@ -25,7 +25,7 @@ function updateDishModal(newDish) {
 
   <div
     class="max-sm:pt-6 pt-8"
-    v-for="dishList in store.dishes"
+    v-for="(dishList, indexCategory) in store.dishes"
     :key="dishList.categoryId"
     :id="`${dishList.categoryId}`"
   >
@@ -34,11 +34,13 @@ function updateDishModal(newDish) {
       class="w-full grid grid-cols-4 gap-10 max-xl:grid-cols-3 max-sm:gap-4 max-sm:gap-y-8 max-lg:grid-cols-2"
     >
       <MenuListCard
-        v-for="dish in dishList.dishes"
+        v-for="(dish, indexDish) in dishList.dishes"
         @click="updateDishModal(dish)"
         v-model:statusModalDish="statusModalDish"
         :key="dish"
         :dishList="dish"
+        :indexCategory="indexCategory"
+        :indexDish="indexDish"
       />
     </div>
   </div>

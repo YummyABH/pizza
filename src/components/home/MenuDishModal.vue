@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
-
 const dishModal = defineModel('dishModal')
-
 
 const backgroundPage = ref(null)
 const body = document.body
@@ -20,8 +18,10 @@ const styleIngredients = computed(() => {
   return statusIngredients.value ? '' : '[&>li:nth-child(n+5)]:hidden'
 })
 
-function dishAdd() {  
-  return dishModal.value.quantity >= 99 ? (dishModal.value.quantity = 99) : dishModal.value.quantity++
+function dishAdd() {
+  return dishModal.value.quantity >= 99
+    ? (dishModal.value.quantity = 99)
+    : dishModal.value.quantity++
 }
 function dishReduce() {
   return dishModal.value.quantity <= 1 ? (dishModal.value.quantity = 1) : dishModal.value.quantity--
@@ -55,7 +55,10 @@ onBeforeUnmount(() => {
           class="relative w-8 h-8 p-1 rounded-full cursor-pointer after:w-3 after:h-px bg-red-300 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
         ></div>
         <div class="flex flex-col text-center">
-          <span class="font-medium">{{ dishModal.quantity }} шт</span><span> {{ dishModal.price }} ₽</span>
+          <span class="font-medium">{{ dishModal.quantity }} шт</span
+          ><span v-if="dishModal.characteristics">
+            {{ dishModal.characteristics[indexCharacteristics].price }} ₽</span
+          >
         </div>
         <div
           @click="dishAdd()"
@@ -88,10 +91,13 @@ onBeforeUnmount(() => {
             class="relative w-9 h-9 p-1 rounded-full cursor-pointer after:w-4 after:h-px bg-red-300 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
           ></div>
           <div class="flex flex-col">
-            <span class="font-medium">{{ dishModal.quantity }} шт</span><span v-if="dishModal.characteristics">{{ dishModal.characteristics[indexCharacteristics].price }} ₽</span>
+            <span class="font-medium">{{ dishModal.quantity }} шт</span
+            ><span v-if="dishModal.characteristics"
+              >{{ dishModal.characteristics[indexCharacteristics].price }} ₽</span
+            >
           </div>
           <div
-          @click="dishAdd(dishModal.id)"
+            @click="dishAdd(dishModal.id)"
             class="relative w-9 h-9 p-1 rounded-full bg-[#64f77c] cursor-pointer before:h-4 before:w-px before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-4 after:h-px after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
           ></div>
         </div>
@@ -110,9 +116,13 @@ onBeforeUnmount(() => {
       <div
         class="overflow-y-scroll scrollbar-hidden py-6 px-5 rounded-2xl flex flex-col gap-2 -mt-3 bg-white"
       >
-        <div class="text-2xl font-medium">{{ dishModal.price }} ₽</div>
+        <div class="text-2xl font-medium" v-if="dishModal.characteristics">
+          {{ dishModal.characteristics[indexCharacteristics].price }} ₽
+        </div>
         <div class="text-lg font-semibold">{{ dishModal.name }}</div>
-        <div class="text-xl font-medium text-[#8C959B]">{{ dishModal.dish_weight }} г</div>
+        <div v-if="dishModal.characteristics" class="text-xl font-medium text-[#8C959B]">
+          {{ dishModal.characteristics[indexCharacteristics].quantity }} г
+        </div>
         <div class="">
           <span
             v-if="dishModal.description"
