@@ -55,13 +55,14 @@ const classDelivery = computed(() => {
         />
       </div>
       <div v-show="!store.order.delivery.status" class="flex flex-col gap-y-5">
-        <label class="flex gap-x-4 text-lg font-medium items-center">
-          <input
+        <label class="flex gap-x-4 text-lg items-center">
+          <!-- <input
             type="radio"
             name="adress"
             class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
-          />
-          Адрес самовывоза
+          /> -->
+          <span class="font-medium">Адрес:</span>
+          <span>Сухуми, Абаза амҩа, 33</span>
         </label>
       </div>
     </div>

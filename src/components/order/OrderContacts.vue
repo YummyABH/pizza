@@ -35,7 +35,7 @@ const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
       </div>
     </div>
     <OrderMethodOptaining />
-    <div class="">
+    <!-- <div class="">
       <h2 class="text-xl mb-4 font-medium">Оплата</h2>
       <label
         @click="store.order.payment_card = true"
@@ -59,7 +59,7 @@ const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
         />
         Наличными
       </label>
-    </div>
+    </div> -->
     <div class="">
       <h2 class="text-xl mb-4 font-medium">Примечание к заказу</h2>
       <FormInput
@@ -72,6 +72,7 @@ const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
     </div>
   </div>
   <div
+    @click="store.postOrder"
     class="mt-8 text-white text-center w-full rounded-3xl duration-300 cursor-pointer bg-gray-700 pt-2 pb-2.5 hover:bg-gray-600 text-3xl font-medium"
   >
     Заказать

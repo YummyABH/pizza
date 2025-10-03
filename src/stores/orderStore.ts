@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { orderAPI } from '@/api/apiOrder'
 import { reactive, watch } from 'vue'
 
 export const useOrderStore = defineStore('order', () => {
@@ -7,20 +8,18 @@ export const useOrderStore = defineStore('order', () => {
 
   const order = reactive(
     initialOrder || {
-      phone: '',
       name: '',
+      phone: '',
       delivery: {
         status: true,
         address: '',
         comment: '',
       },
       dishes: [],
+      status: true,
       cutlery_status: false,
       number_cutlery: 1,
-      payment_card: null,
       order_comment: '',
-      status: true,
-      price: 0,
     },
   )
 
@@ -83,6 +82,22 @@ export const useOrderStore = defineStore('order', () => {
     order.dishes = [...order.dishes, addDish]
   }
 
+  function normalizeDishOrder(dish: object) {
+    return {
+      id: dish.id,
+      quantity: dish.quantity,
+      size: dish.characteristics[dish.default_characteristics].size,
+    }
+  }
+
+  async function postOrder() {
+    const data = { ...order }
+    data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
+
+    const result = await orderAPI.postOrder(data)
+    console.log(result)
+  }
+
   return {
     order,
     cutleryAdd,
@@ -92,5 +107,6 @@ export const useOrderStore = defineStore('order', () => {
     dishReduce,
     addDishItem,
     deleteDish,
+    postOrder,
   }
 })
