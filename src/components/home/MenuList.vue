@@ -7,20 +7,16 @@ import { ref } from 'vue'
 const store = useDishesStore()
 
 const statusModalDish = ref(false)
-const dishModal = ref({})
-
-function updateDishModal(newDish) {
-  if (!newDish) return
-
-  dishModal.value = { ...newDish }
-}
+const indexDishModal = ref(0)
+const indexCategoryModal = ref(0)
 </script>
 
 <template>
   <MenuDishModal
     v-show="statusModalDish"
-    v-model:dishModal="dishModal"
     v-model:statusModalDish="statusModalDish"
+    :indexDishModal="indexDishModal"
+    :indexCategoryModal="indexCategoryModal"
   />
 
   <div
@@ -35,12 +31,12 @@ function updateDishModal(newDish) {
     >
       <MenuListCard
         v-for="(dish, indexDish) in dishList.dishes"
-        @click="updateDishModal(dish)"
+        @click="((indexDishModal = indexDish), (indexCategoryModal = indexCategory))"
         v-model:statusModalDish="statusModalDish"
         :key="dish"
         :dishList="dish"
-        :indexCategory="indexCategory"
         :indexDish="indexDish"
+        :indexCategory="indexCategory"
       />
     </div>
   </div>

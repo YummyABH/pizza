@@ -40,13 +40,17 @@ export const useOrderStore = defineStore('order', () => {
     return order.number_cutlery <= 1 ? (order.number_cutlery = 1) : order.number_cutlery--
   }
 
-  function dishAdd(id: number) {
-    const dish = order.dishes.find((dish) => dish.id === id)
+  function dishAdd(id: number, default_characteristics: number) {
+    const dish = order.dishes.find(
+      (dish) => dish.id === id && dish.default_characteristics === default_characteristics,
+    )
     return dish.quantity >= 99 ? (dish.quantity = 99) : dish.quantity++
   }
 
-  function dishReduce(id: number) {
-    const dish = order.dishes.find((dish) => dish.id === id)
+  function dishReduce(id: number, default_characteristics: number) {
+    const dish = order.dishes.find(
+      (dish) => dish.id === id && dish.default_characteristics === default_characteristics,
+    )
     return dish.quantity <= 1 ? (dish.quantity = 1) : dish.quantity--
   }
 

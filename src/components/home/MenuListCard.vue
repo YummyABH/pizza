@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore'
 import { useDishesStore } from '@/stores/dishesStore'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const store = useOrderStore()
 const storeDish = useDishesStore()
@@ -12,15 +12,7 @@ const props = defineProps({
   indexDish: Number,
 })
 
-const defaultCharacteristics = ref(props.dishList.default_characteristics)
-
-watch(defaultCharacteristics, (newValue) => {
-  console.log('newValue: ', newValue)
-  console.log('indexCategory: ', props.indexCategory)
-  console.log('indexDish: ', props.indexDish)
-
-  storeDish.updateDefaultCharacteristics(newValue, props.indexCategory, props.indexDish)
-})
+const indexCharacteristics = computed(() => props.dishList.default_characteristics)
 </script>
 
 <template>
@@ -41,15 +33,15 @@ watch(defaultCharacteristics, (newValue) => {
           class="flex gap-x-3 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
         >
           <span
-            >{{ dishList.characteristics[defaultCharacteristics].quantity }}
-            {{ dishList.characteristics[defaultCharacteristics].measure }}.</span
+            >{{ dishList.characteristics[indexCharacteristics].quantity }}
+            {{ dishList.characteristics[indexCharacteristics].measure }}.</span
           >
           <div class="flex gap-x-2 cursor-pointer" v-if="dishList.characteristics.length > 1">
             <div
               v-for="(item, index) in dishList.characteristics"
-              @click="defaultCharacteristics = index"
+              @click="storeDish.updateDefaultCharacteristics(index, indexCategory, indexDish)"
               :key="index"
-              :class="index === defaultCharacteristics ? 'bg-green-500 text-white' : ''"
+              :class="index === indexCharacteristics ? 'bg-green-500 text-white' : ''"
               class="px-2 py-0.5 rounded-xl"
             >
               {{ item.size }}
@@ -59,7 +51,7 @@ watch(defaultCharacteristics, (newValue) => {
       </div>
 
       <div
-        @click="store.addDishItem(dishList, defaultCharacteristics)"
+        @click="store.addDishItem(dishList, indexCharacteristics)"
         class="cursor-pointer w-full items-center hover:bg-gray-600 duration-200 justify-center flex gap-4 py-2 px-4 font-semibold rounded-3xl text-white bg-gray-700"
       >
         <svg
@@ -77,7 +69,7 @@ watch(defaultCharacteristics, (newValue) => {
           />
         </svg>
 
-        <span>{{ dishList.characteristics[defaultCharacteristics].price }} ₽</span>
+        <span>{{ dishList.characteristics[indexCharacteristics]?.price }} ₽</span>
       </div>
     </div>
   </div>

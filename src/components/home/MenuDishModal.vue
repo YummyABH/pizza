@@ -1,31 +1,36 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useDishesStore } from '@/stores/dishesStore'
+import { useOrderStore } from '@/stores/orderStore'
 
-const dishModal = defineModel('dishModal')
+const storeDishes = useDishesStore()
+const storeOrder = useOrderStore()
+const props = defineProps({
+  indexDishModal: Number,
+  indexCategoryModal: Number,
+})
 
 const backgroundPage = ref(null)
 const body = document.body
+const statusIngredients = ref(false)
 const statusDescription = ref(false)
 const statusModalDish = defineModel('statusModalDish')
-const indexCharacteristics = computed(() => dishModal.value.default_characteristics)
+const dish = computed(
+  () => storeDishes.dishes[props.indexCategoryModal]?.dishes[props.indexDishModal],
+)
+const indexCharacteristics = computed(() => dish.value.default_characteristics)
+
+const sumPrice = computed(
+  () => dish.value.characteristics[indexCharacteristics.value].price * dish.value.quantity,
+)
 
 const styleDescription = computed(() => {
   return statusDescription.value ? '' : 'truncate'
 })
 
-const statusIngredients = ref(false)
 const styleIngredients = computed(() => {
   return statusIngredients.value ? '' : '[&>li:nth-child(n+5)]:hidden'
 })
-
-function dishAdd() {
-  return dishModal.value.quantity >= 99
-    ? (dishModal.value.quantity = 99)
-    : dishModal.value.quantity++
-}
-function dishReduce() {
-  return dishModal.value.quantity <= 1 ? (dishModal.value.quantity = 1) : dishModal.value.quantity--
-}
 
 function goHome(event: Event) {
   if (event.target === backgroundPage.value) {
@@ -51,17 +56,18 @@ onBeforeUnmount(() => {
     >
       <div class="flex justify-between items-center w-full">
         <div
-          @click="dishReduce()"
+          @click="storeDishes.dishReduce(indexCategoryModal, indexDishModal)"
           class="relative w-8 h-8 p-1 rounded-full cursor-pointer after:w-3 after:h-px bg-red-300 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
         ></div>
         <div class="flex flex-col text-center">
-          <span class="font-medium">{{ dishModal.quantity }} шт</span
-          ><span v-if="dishModal.characteristics">
-            {{ dishModal.characteristics[indexCharacteristics].price }} ₽</span
+          <span v-if="dish?.quantity" class="font-medium">{{ dish.quantity }} шт</span
+          ><span v-if="dish?.characteristics">
+            {{ dish.characteristics[indexCharacteristics].price }}
+            ₽</span
           >
         </div>
         <div
-          @click="dishAdd()"
+          @click="storeDishes.dishAdd(indexCategoryModal, indexDishModal)"
           class="relative w-8 h-8 p-1 rounded-full bg-[#64f77c] cursor-pointer before:h-3 before:w-px before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-3 after:h-px after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
         ></div>
       </div>
@@ -87,21 +93,20 @@ onBeforeUnmount(() => {
       >
         <div class="flex justify-between items-center w-full">
           <div
-            @click="dishReduce()"
+            @click="storeDishes.dishReduce(indexCategoryModal, indexDishModal)"
             class="relative w-9 h-9 p-1 rounded-full cursor-pointer after:w-4 after:h-px bg-red-300 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
           ></div>
           <div class="flex flex-col">
-            <span class="font-medium">{{ dishModal.quantity }} шт</span
-            ><span v-if="dishModal.characteristics"
-              >{{ dishModal.characteristics[indexCharacteristics].price }} ₽</span
-            >
+            <span v-if="dish?.quantity" class="font-medium">{{ dish.quantity }} шт</span
+            ><span v-if="dish?.characteristics[indexCharacteristics].price">{{ sumPrice }} ₽</span>
           </div>
           <div
-            @click="dishAdd(dishModal.id)"
+            @click="storeDishes.dishAdd(indexCategoryModal, indexDishModal)"
             class="relative w-9 h-9 p-1 rounded-full bg-[#64f77c] cursor-pointer before:h-4 before:w-px before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-4 after:h-px after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
           ></div>
         </div>
         <div
+          @click="storeOrder.addDishItem(dish, indexCharacteristics)"
           class="bg-[#64f77c] cursor-pointer py-2.5 px-5 rounded-3xl text-xl w-full text-center font-medium"
         >
           Добавить
@@ -110,62 +115,79 @@ onBeforeUnmount(() => {
       <div class="min-w-full min-h-full h-full w-full overflow-hidden">
         <img
           class="w-full aspect-1/1 object-cover"
-          :src="`https://restik-street-style.onrender.com/uploads/${dishModal.image}`"
+          :src="`https://restik-street-style.onrender.com/uploads/${dish?.image}`"
         />
       </div>
       <div
         class="overflow-y-scroll scrollbar-hidden py-6 px-5 rounded-2xl flex flex-col gap-2 -mt-3 bg-white"
       >
-        <div class="text-2xl font-medium" v-if="dishModal.characteristics">
-          {{ dishModal.characteristics[indexCharacteristics].price }} ₽
+        <div class="text-2xl font-medium" v-if="dish?.characteristics">
+          {{ dish.characteristics[indexCharacteristics].price }} ₽
         </div>
-        <div class="text-lg font-semibold">{{ dishModal.name }}</div>
-        <div v-if="dishModal.characteristics" class="text-xl font-medium text-[#8C959B]">
-          {{ dishModal.characteristics[indexCharacteristics].quantity }} г
+        <div class="text-lg font-semibold">{{ dish?.name }}</div>
+        <div class="flex gap-x-4">
+          <div v-if="dish?.characteristics" class="text-xl font-medium text-[#8C959B]">
+            {{ dish.characteristics[indexCharacteristics].quantity }}
+            {{ dish.characteristics[indexCharacteristics].measure }}
+          </div>
+          <div class="flex gap-x-2 cursor-pointer" v-if="dish?.characteristics.length > 1">
+            <div
+              v-for="(item, index) in dish.characteristics"
+              @click="
+                storeDishes.updateDefaultCharacteristics(index, indexCategoryModal, indexDishModal)
+              "
+              :key="index"
+              :class="index === indexCharacteristics ? 'bg-green-500 text-white' : ''"
+              class="px-2 py-0.5 rounded-xl"
+            >
+              {{ item.size }}
+            </div>
+          </div>
         </div>
         <div class="">
           <span
-            v-if="dishModal.description"
+            v-if="dish?.description"
             class="text-base inline-block max-w-full"
             :class="styleDescription"
           >
             <span class="text-base font-semibold">Описание:</span>
-            {{ dishModal.description }}
+            {{ dish.description }}
           </span>
           <span
-            v-show="!statusDescription && dishModal.description"
+            v-show="!statusDescription && dish?.description"
             @click="statusDescription = true"
             class="block text-base underline cursor-pointer font-semibold"
             >Развернуть</span
           >
           <span
-            v-show="statusDescription && dishModal.description"
+            v-show="statusDescription && dish?.description"
             @click="statusDescription = false"
             class="text-base underline font-semibold cursor-pointer"
             >Свернуть</span
           >
         </div>
         <ul
+          v-show="dish?.composition.length"
           :class="styleIngredients"
           class="max-w-full flex gap-x-3 gap-y-1.5 items-baseline flex-wrap"
         >
           <li class="text-base font-semibold">Ингредиенты:</li>
           <li
             class="min-w-max px-2 rounded-2xl border"
-            v-for="ingredient in dishModal.composition"
+            v-for="ingredient in dish?.composition"
             :key="ingredient"
           >
             {{ ingredient }}
           </li>
         </ul>
         <span
-          v-show="!statusIngredients"
+          v-show="!statusIngredients && dish?.composition.length"
           @click="statusIngredients = true"
           class="text-base underline cursor-pointer font-semibold"
           >Развернуть</span
         >
         <span
-          v-show="statusIngredients"
+          v-show="statusIngredients && dish?.composition.length"
           @click="statusIngredients = false"
           class="text-base underline font-semibold cursor-pointer"
           >Свернуть</span

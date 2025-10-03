@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import ButtonSwitch from '../ButtonSwitch.vue'
 import IconBasket from '../icons/IconBasket.vue'
 import IconCutlery from '../icons/IconCutlery.vue'
@@ -6,6 +7,12 @@ import OrderContacts from './OrderContacts.vue'
 import { useOrderStore } from '@/stores/orderStore'
 
 const storeOrder = useOrderStore()
+
+const sumPrice = computed(() =>
+  storeOrder.order.dishes.reduce((sum, dish) => {
+    return sum + (+dish.characteristics[dish.default_characteristics].price * dish.quantity || 0)
+  }, 0),
+)
 </script>
 
 <template>
@@ -34,17 +41,22 @@ const storeOrder = useOrderStore()
         </div>
         <div class="flex text-sm flex-col w-full">
           <div class="">{{ dish.name }}</div>
-          <div class="text-[#808080]">{{ dish.dish_weight }} г</div>
+          <div v-if="dish.characteristics" class="text-[#808080]">
+            {{ dish.characteristics[dish.default_characteristics].quantity }}
+            {{ dish.characteristics[dish.default_characteristics].measure }}
+          </div>
           <div class="flex mt-2 justify-between">
-            <div class="font-medium">{{ dish.price }} ₽</div>
+            <div v-if="dish.characteristics" class="font-medium">
+              {{ dish.characteristics[dish.default_characteristics].price * dish.quantity }} ₽
+            </div>
             <div class="flex gap-x-2 items-center">
               <div
-                @click="storeOrder.dishReduce(dish.id)"
+                @click="storeOrder.dishReduce(dish.id, dish.default_characteristics)"
                 class="relative w-6 h-6 p-1 rounded-full cursor-pointer after:w-3 after:h-0.5 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
               ></div>
               <div class="font-medium">{{ dish.quantity }} шт</div>
               <div
-                @click="storeOrder.dishAdd(dish.id)"
+                @click="storeOrder.dishAdd(dish.id, dish.default_characteristics)"
                 class="relative w-6 h-6 p-1 rounded-full cursor-pointer before:h-3 before:w-0.5 before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-3 after:h-0.5 after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
               ></div>
             </div>
@@ -74,7 +86,7 @@ const storeOrder = useOrderStore()
     </div>
     <div class="text-lg pb-4 font-medium flex justify-between mt-6">
       <span>Итого:</span>
-      <span>{{ storeOrder.order.price }} ₽</span>
+      <span>{{ sumPrice }} ₽</span>
     </div>
     <OrderContacts />
   </div>
