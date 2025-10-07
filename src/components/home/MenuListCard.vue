@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore'
 import { useDishesStore } from '@/stores/dishesStore'
-import { computed, ref, watch } from 'vue'
+import { computed} from 'vue'
 
 const store = useOrderStore()
 const storeDish = useDishesStore()

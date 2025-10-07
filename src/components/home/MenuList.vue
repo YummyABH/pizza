@@ -2,13 +2,27 @@
 import MenuListCard from './MenuListCard.vue'
 import MenuDishModal from './MenuDishModal.vue'
 import { useDishesStore } from '@/stores/dishesStore'
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const store = useDishesStore()
 
+const listCategory = defineModel('listCategory')
 const statusModalDish = ref(false)
 const indexDishModal = ref(0)
 const indexCategoryModal = ref(0)
+const emit = defineEmits(['mount'])
+
+
+onMounted(() => {
+  // console.log('listCategory: ', listCategory.value);
+  
+  emit('mount')
+})
+
+// watch(listCategory, () => {
+//   console.log('listCategory: ', listCategory.value);
+  
+// })
 </script>
 
 <template>
@@ -20,7 +34,8 @@ const indexCategoryModal = ref(0)
   />
 
   <div
-    class="max-sm:pt-6 pt-8"
+  ref="listCategory"
+    class=" max-sm:pt-6 pt-8"
     v-for="(dishList, indexCategory) in store.dishes"
     :key="dishList.categoryId"
     :id="`${dishList.categoryId}`"

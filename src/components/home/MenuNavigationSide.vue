@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDishesStore } from '@/stores/dishesStore'
 
 const store = useDishesStore()
 const route = useRoute()
+const props = defineProps({
+  activeCategory: Number
+})
 
 const styleMenuCategories = computed(() => (id: string) => {
-  return route.hash === id ? 'text-white bg-black' : 'bg-white text-black'
+  return props.activeCategory === id ? 'text-white bg-black' : 'bg-white text-black'
 })
+
+
 </script>
 
 <template>
@@ -19,7 +24,7 @@ const styleMenuCategories = computed(() => (id: string) => {
       <li
         v-for="category in store.dishes"
         :key="category.categoryId"
-        :class="styleMenuCategories(`#${category.categoryId}`)"
+        :class="styleMenuCategories(category.categoryId)"
         class="cursor-pointer px-3 py-2 min-w-full rounded-3xl w-max"
       >
         <a :href="`#${category.categoryId}`">
