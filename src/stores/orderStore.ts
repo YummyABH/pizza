@@ -26,7 +26,7 @@ export const useOrderStore = defineStore('order', () => {
   watch(
     order,
     (newOrder) => {
-      console.log(order.dishes)
+      console.log(order)
 
       localStorage.setItem('order', JSON.stringify(newOrder))
     },
@@ -91,11 +91,15 @@ export const useOrderStore = defineStore('order', () => {
   }
 
   async function postOrder() {
-    const data = { ...order }
-    data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
+    try {
+      const data = { ...order }
+      data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
 
-    const result = await orderAPI.postOrder(data)
-    console.log(result)
+      const result = await orderAPI.postOrder(data)
+      return result
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {

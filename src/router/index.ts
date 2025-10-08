@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/assets/pages/HomePage.vue'
-import MenuDishModal from '@/components/home/MenuDishModal.vue'
 import OrderModalSide from '@/components/order/OrderModalSide.vue'
 
 const router = createRouter({

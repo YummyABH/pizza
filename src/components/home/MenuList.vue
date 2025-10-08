@@ -10,25 +10,12 @@ const listCategory = defineModel('listCategory')
 const statusModalDish = ref(false)
 const indexDishModal = ref(0)
 const indexCategoryModal = ref(0)
-const emit = defineEmits(['mount'])
 
 const setCategoryRefs = (el) => {
   if (el) {
-    console.log('el: ', el)
     listCategory.value.push(el)
   }
 }
-
-onMounted(() => {
-  // console.log('listCategory: ', listCategory.value);
-
-  emit('mount')
-})
-
-// watch(listCategory, () => {
-//   console.log('listCategory: ', listCategory.value);
-
-// })
 </script>
 
 <template>

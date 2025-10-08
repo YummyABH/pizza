@@ -11,11 +11,10 @@ const listCategory = ref([])
 let observer = null
 
 const scrollToCategory = (id) => {
-  const section = listCategory.value.find((el) => +el.id === id)
+  const section = listCategory.value.find((el) => +el.id === +id)
   if (section) {
-    const offset = 200
+    const offset = 100
     const top = section.getBoundingClientRect().top + window.scrollY - offset
-    activeCategory.value = id
     window.scrollTo({
       top,
       behavior: 'smooth',
@@ -23,26 +22,29 @@ const scrollToCategory = (id) => {
   }
 }
 
-watch(listCategory.value, () => {
-  if (listCategory.value) {
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-          .forEach((entry) => {
-            activeCategory.value = +entry.target.id
-          })
-      },
-      {
-        threshold: 1, // Можно изменить под нужную чувствительность
-      },
-    )
+const watchObserver = (is_ready) => {
+  if (!is_ready) return
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        .forEach((entry) => {
+          activeCategory.value = +entry.target.id
+        })
+    },
+    {
+      threshold: 1,
+    },
+  )
 
-    listCategory.value.forEach((el) => {
-      if (el) observer.observe(el)
-    })
-  }
+  listCategory.value.forEach((el) => {
+    if (el) observer.observe(el)
+  })
+}
+
+watch(listCategory.value, () => {
+  watchObserver(listCategory.value)
 })
 
 onBeforeUnmount(() => {
@@ -51,7 +53,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="w-full pt-25 pb-25">
+  <div @scroll="watchObserver(listCategory)" class="w-full pt-25 pb-25">
     <div class="max-w-[1900px] max-sm:px-0 mx-auto px-5 flex">
       <MenuNavigationSide
         @scroll="scrollToCategory"

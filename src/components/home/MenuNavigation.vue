@@ -8,8 +8,6 @@ const props = defineProps({
 })
 
 const styleMenuCategories = computed(() => (id: string) => {
-  console.log(id, props.activeCategory)
-
   return props.activeCategory === id ? 'text-white bg-black' : 'bg-white text-black'
 })
 </script>
