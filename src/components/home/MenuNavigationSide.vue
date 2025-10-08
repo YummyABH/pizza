@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 import { useDishesStore } from '@/stores/dishesStore'
 
 const store = useDishesStore()
-const route = useRoute()
 const props = defineProps({
   activeCategory: Number,
 })

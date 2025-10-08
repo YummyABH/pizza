@@ -13,10 +13,9 @@ let observer = null
 const scrollToCategory = (id) => {
   const section = listCategory.value.find((el) => +el.id === id)
   if (section) {
-    const offset = 200 // 👈 нужный отступ сверху, в пикселях
-
+    const offset = 200
     const top = section.getBoundingClientRect().top + window.scrollY - offset
-
+    activeCategory.value = id
     window.scrollTo({
       top,
       behavior: 'smooth',
@@ -64,7 +63,7 @@ onBeforeUnmount(() => {
       >
         <h1 class="mb-4 text-3xl font-bold">Меню</h1>
         <SearchInput />
-        <MenuNavigation />
+        <MenuNavigation @scroll="scrollToCategory" :activeCategory="activeCategory" />
         <MenuList v-model:listCategory="listCategory" />
       </div>
     </div>

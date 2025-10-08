@@ -1,29 +1,31 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useDishesStore } from '@/stores/dishesStore'
 
-const route = useRoute()
 const store = useDishesStore()
+const props = defineProps({
+  activeCategory: Number,
+})
 
 const styleMenuCategories = computed(() => (id: string) => {
-  console.log('tik')
+  console.log(id, props.activeCategory)
 
-  return route.hash === id ? 'text-white bg-black' : 'bg-white text-black'
+  return props.activeCategory === id ? 'text-white bg-black' : 'bg-white text-black'
 })
 </script>
 
 <template>
   <ul class="flex gap-3 overflow-x-scroll max-w-full pb-1 mt-4 md:hidden">
     <li
+      @click="$emit('scroll', category.categoryId)"
       v-for="category in store.dishes"
       :key="category.categoryId"
-      :class="styleMenuCategories(`#${category.categoryId}`)"
+      :class="styleMenuCategories(category.categoryId)"
       class="px-2 py-1 rounded-2xl min-w-max"
     >
-      <a :href="`#${category.categoryId}`">
+      <div>
         {{ category.category_name }}
-      </a>
+      </div>
     </li>
   </ul>
 </template>
