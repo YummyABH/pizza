@@ -5,13 +5,14 @@ import { useOrderStore } from '@/stores/orderStore.ts'
 import { vMaska } from 'maska/vue'
 import { computed } from 'vue'
 
+const modelValue = defineModel()
 const props = defineProps({
   placeholder: {
     type: String,
     default: '',
   },
   label: String,
-  selecte: String,
+  select: String,
   mask: {
     type: [Object, String],
     default: '',
@@ -42,8 +43,8 @@ const orderStore = useOrderStore()
 const orderInputStore = useOrderInputStore()
 
 const formClass = computed(() => ({
-  'top-3': !orderStore.order[props.selecte],
-  '-top-[10px] bg-black-381 px-1': orderStore.order[props.selecte],
+  'top-3': !modelValue.value,
+  '-top-[10px] bg-black-381 px-1': modelValue.value,
 }))
 </script>
 
@@ -55,7 +56,7 @@ const formClass = computed(() => ({
       :min="minDate"
       :max="maxDate"
       v-maska="mask"
-      v-model="orderStore.order[props.selecte]"
+      v-model="modelValue"
       class="peer autofill:bg-transparent block z-10 w-full px-1 py-3 border-b-[1px] border-black-299 rounded-none appearance-none bg-transparent focus:outline-hidden focus:ring-0"
       :class="{ 'border-red-500': orderInputStore.formErrors[props.selecte] }"
       :type="typeInput"

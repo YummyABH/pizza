@@ -10,6 +10,7 @@ import BaseInput from '@/components/ui/BaseInput.vue'
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
 
+const addressMask = orderInputStore.addressMask
 const nameMask = orderInputStore.nameMask
 const REGEX_NAME = ref(/^[а-яА-ЯёЁ ]{0,32}$/)
 const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
@@ -35,7 +36,8 @@ async function dataRequestCalculation() {
           <BaseInput
             id="name"
             title="Можно вводить только русские буквы, пробелы и дефисы"
-            selecte="name"
+            select="name"
+            v-model="store.order.name"
             label="Имя"
             :mask="nameMask"
           />
@@ -43,6 +45,7 @@ async function dataRequestCalculation() {
             id="phone"
             title="Можно вводить только цифры"
             selecte="phone"
+            v-model="store.order.phone"
             label="Номер телефон"
             :mask="'+ 7 (###) ###-##-##'"
           />
@@ -50,38 +53,39 @@ async function dataRequestCalculation() {
       </div>
       <OrderMethodOptaining />
       <!-- <div class="">
-      <h2 class="text-xl mb-4 font-medium">Оплата</h2>
-      <label
+        <h2 class="text-xl mb-4 font-medium">Оплата</h2>
+        <label
         @click="store.order.payment_card = true"
         class="flex gap-x-4 text-lg font-medium items-center"
-      >
+        >
         <input
-          type="radio"
-          name="pay"
-          class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
+        type="radio"
+        name="pay"
+        class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
         />
         Картой
       </label>
       <label
-        @click="store.order.payment_card = false"
-        class="flex gap-x-4 text-lg font-medium items-center"
+      @click="store.order.payment_card = false"
+      class="flex gap-x-4 text-lg font-medium items-center"
       >
-        <input
-          type="radio"
-          name="pay"
-          class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
-        />
-        Наличными
-      </label>
-    </div> -->
+      <input
+      type="radio"
+      name="pay"
+      class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
+      />
+      Наличными
+    </label>
+  </div> -->
       <div class="">
         <h2 class="text-xl mb-4 font-medium">Примечание к заказу</h2>
-        <FormInput
+        <BaseInput
           id="order-comment"
-          label="Комментарий к заказу"
-          type="orderComment"
+          title=""
+          selecte="order_comment"
           v-model="store.order.order_comment"
-          :pattern="REGEX_ADRESS_COMMENT"
+          label="Комментарий к заказу"
+          :mask="addressMask"
         />
       </div>
     </div>

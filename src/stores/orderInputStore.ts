@@ -11,16 +11,17 @@ export const useOrderInputStore = defineStore('orderInput', () => {
     name: ref(null),
     phone: ref(null),
     address: ref(null),
+    comment: ref(null),
   }
 
-  const displayFields = {
-    address: computed(() => {
-      return orderStore
-    }),
-  }
   //#endregion
 
   //#region masks
+  const displayFields = {
+    address: computed(() => orderStore.order.delivery.status),
+    comment: computed(() => orderStore.order.delivery.status),
+  }
+
   const nameMask = {
     mask: '*'.repeat(32),
     tokens: {
@@ -43,22 +44,21 @@ export const useOrderInputStore = defineStore('orderInput', () => {
       value.replace(/\D/g, '').length === 11 ? null : 'Введите корректный номер телефона',
     address: (value) =>
       value.trim().length > 3 ? null : `Введите адрес, значение с ошибкой: ${value}, вот`,
+    comment: (value) => (value.trim().length >= 0 ? null : ''),
+    order_comment: (value) => (value.trim().length >= 0 ? null : ''),
   }
 
   function validateForm() {
     let isValid = true
 
     for (const field in validationRules) {
-      if (field in displayFields && !displayFields[field]) continue
-      console.log('orderStore.order.delivery[field]: ', orderStore.order.delivery[field])
+      if (field in displayFields && !displayFields[field].value) continue
 
       const error =
         field === 'address' || field === 'comment'
           ? validationRules[field](orderStore.order.delivery[field])
           : validationRules[field](orderStore.order[field])
       formErrors[field].value = error
-      console.log('field: ', field)
-      console.log('error: ', error)
 
       if (error) isValid = false
     }

@@ -44,16 +44,17 @@ const classDelivery = computed(() => {
           id="address"
           title="Введите адрес"
           selecte="address"
+          v-model="store.order.delivery.address"
           label="Адрес доставки"
           :mask="addressMask"
         />
-        <FormInput
+        <BaseInput
           id="delivery-comment"
-          label="Комментарий к адресу"
-          type="addressComment"
+          title="Введите адрес"
+          selecte="comment"
           v-model="store.order.delivery.comment"
-          required
-          :pattern="REGEX_ADRESS_COMMENT"
+          label="Комментарий к адресу"
+          :mask="addressMask"
         />
       </div>
       <div v-show="!store.order.delivery.status" class="flex flex-col gap-y-5">
@@ -64,7 +65,7 @@ const classDelivery = computed(() => {
             class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
           /> -->
           <span class="font-medium">Адрес:</span>
-          <span>Сухуми, Абаза амҩа, 33</span>
+          <span>Сухум, Абаза амҩа, 33</span>
         </label>
       </div>
     </div>
