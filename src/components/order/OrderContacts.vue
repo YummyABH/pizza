@@ -8,14 +8,14 @@ import { useOrderInputStore } from '@/stores/orderInputStore'
 import BaseInput from '@/components/ui/BaseInput.vue'
 
 const store = useOrderStore()
-const orderInputSore = useOrderInputStore()
+const orderInputStore = useOrderInputStore()
 
-const nameMask = orderInputSore.nameMask
+const nameMask = orderInputStore.nameMask
 const REGEX_NAME = ref(/^[а-яА-ЯёЁ ]{0,32}$/)
 const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
 
 async function dataRequestCalculation() {
-  const isValid = orderInputSore.validateForm()
+  const isValid = orderInputStore.validateForm()
   if (isValid) {
     // Отправка запроса на бэкенд
     console.log('Форма валидна, отправляем:')
@@ -39,22 +39,13 @@ async function dataRequestCalculation() {
             label="Имя"
             :mask="nameMask"
           />
-          <FormInput
+          <BaseInput
             id="phone"
-            v-maska="'+ 7 (###) ###-##-##'"
-            label="Телефон"
-            type="tel"
-            v-model="store.order.phone"
-            required
+            title="Можно вводить только цифры"
+            selecte="phone"
+            label="Номер телефон"
+            :mask="'+ 7 (###) ###-##-##'"
           />
-          <!-- <FormInput
-            id="name"
-            :pattern="REGEX_NAME"
-            label="Имя"
-            type="text"
-            v-model="store.order.name"
-            required
-          /> -->
         </div>
       </div>
       <OrderMethodOptaining />

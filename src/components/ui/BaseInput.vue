@@ -40,8 +40,6 @@ const props = defineProps({
 
 const orderStore = useOrderStore()
 const orderInputStore = useOrderInputStore()
-const formErrors = storeToRefs(orderInputStore.formErrors)
-const error = formErrors[props.selecte]
 
 const formClass = computed(() => ({
   'top-3': !orderStore.order[props.selecte],
@@ -59,7 +57,7 @@ const formClass = computed(() => ({
       v-maska="mask"
       v-model="orderStore.order[props.selecte]"
       class="peer autofill:bg-transparent block z-10 w-full px-1 py-3 border-b-[1px] border-black-299 rounded-none appearance-none bg-transparent focus:outline-hidden focus:ring-0"
-      :class="{ 'border-red-500': error }"
+      :class="{ 'border-red-500': orderInputStore.formErrors[props.selecte] }"
       :type="typeInput"
       :title="title"
       @input="orderInputStore.clearError(selecte)"

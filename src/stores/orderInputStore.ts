@@ -1,4 +1,4 @@
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useOrderStore } from '@/stores/orderStore.ts'
 
@@ -9,11 +9,13 @@ export const useOrderInputStore = defineStore('orderInput', () => {
   // Ошибки для полей
   const formErrors = {
     name: ref(null),
+    phone: ref(null),
+    address: ref(null),
   }
 
   const displayFields = {
-    period: computed(() => {
-      return !shortPeriod.value
+    address: computed(() => {
+      return orderStore
     }),
   }
   //#endregion
@@ -25,11 +27,22 @@ export const useOrderInputStore = defineStore('orderInput', () => {
       '*': { pattern: /[А-Яа-яЁё\s-]/ }, // Разрешаем кириллицу, пробел и дефис
     },
   }
+
+  const addressMask = {
+    mask: '*'.repeat(100),
+    tokens: {
+      '*': { pattern: /^[а-яА-Яa-zA-Z0-9\s.,\/\\\-№#]+$/ }, // Разрешаем кириллицу, пробел и дефис
+    },
+  }
   //#endregion
 
   //#region validation
   const validationRules = {
     name: (value) => (value.trim().length > 1 ? null : 'Заполните поле'),
+    phone: (value) =>
+      value.replace(/\D/g, '').length === 11 ? null : 'Введите корректный номер телефона',
+    address: (value) =>
+      value.trim().length > 3 ? null : `Введите адрес, значение с ошибкой: ${value}, вот`,
   }
 
   function validateForm() {
@@ -37,10 +50,16 @@ export const useOrderInputStore = defineStore('orderInput', () => {
 
     for (const field in validationRules) {
       if (field in displayFields && !displayFields[field]) continue
-      console.log(orderStore.order[field])
+      console.log('orderStore.order.delivery[field]: ', orderStore.order.delivery[field])
 
-      const error = validationRules[field](orderStore.order[field])
+      const error =
+        field === 'address' || field === 'comment'
+          ? validationRules[field](orderStore.order.delivery[field])
+          : validationRules[field](orderStore.order[field])
       formErrors[field].value = error
+      console.log('field: ', field)
+      console.log('error: ', error)
+
       if (error) isValid = false
     }
 
@@ -52,5 +71,5 @@ export const useOrderInputStore = defineStore('orderInput', () => {
   }
   //#endregion
 
-  return { formErrors, nameMask, clearError, validateForm }
+  return { formErrors, nameMask, addressMask, clearError, validateForm }
 })

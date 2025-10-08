@@ -2,11 +2,14 @@
 import FormInput from '../ui/FormInput.vue'
 import { computed, ref } from 'vue'
 import { useOrderStore } from '@/stores/orderStore'
+import BaseInput from '../ui/BaseInput.vue'
+import { useOrderInputStore } from '@/stores/orderInputStore'
 
 const store = useOrderStore()
-
+const orderInputStore = useOrderInputStore()
 const REGEX_ADRESS = ref(/^[a-zA-Zа-яА-ЯёЁ0-9\s\.,\-\/№]+$/)
 const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
+const addressMask = orderInputStore.addressMask
 
 const classDelivery = computed(() => {
   return {
@@ -37,18 +40,17 @@ const classDelivery = computed(() => {
         </div>
       </div>
       <div v-show="store.order.delivery.status" class="flex flex-col gap-y-5">
-        <FormInput
-          id="adress"
-          label="Адрес"
-          type="text"
-          v-model="store.order.delivery.address"
-          required
-          :pattern="REGEX_ADRESS"
+        <BaseInput
+          id="address"
+          title="Введите адрес"
+          selecte="address"
+          label="Адрес доставки"
+          :mask="addressMask"
         />
         <FormInput
           id="delivery-comment"
           label="Комментарий к адресу"
-          type="adressComment"
+          type="addressComment"
           v-model="store.order.delivery.comment"
           required
           :pattern="REGEX_ADRESS_COMMENT"
