@@ -12,16 +12,22 @@ const indexDishModal = ref(0)
 const indexCategoryModal = ref(0)
 const emit = defineEmits(['mount'])
 
+const setCategoryRefs = (el) => {
+  if (el) {
+    console.log('el: ', el)
+    listCategory.value.push(el)
+  }
+}
 
 onMounted(() => {
   // console.log('listCategory: ', listCategory.value);
-  
+
   emit('mount')
 })
 
 // watch(listCategory, () => {
 //   console.log('listCategory: ', listCategory.value);
-  
+
 // })
 </script>
 
@@ -34,8 +40,8 @@ onMounted(() => {
   />
 
   <div
-  ref="listCategory"
-    class=" max-sm:pt-6 pt-8"
+    :ref="setCategoryRefs"
+    class="max-sm:pt-6 pt-8"
     v-for="(dishList, indexCategory) in store.dishes"
     :key="dishList.categoryId"
     :id="`${dishList.categoryId}`"
