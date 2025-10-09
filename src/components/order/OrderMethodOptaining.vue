@@ -18,6 +18,18 @@ const classDelivery = computed(() => {
     pickup: store.order.delivery.status ? 'before:w-0' : 'before:w-32',
   }
 })
+
+const requestOptions = {
+  method: 'GET',
+};
+
+function requestGeo() {
+  
+  fetch("https://suggest-maps.yandex.ru/v1/suggest?text=%D0%B1%D1%83%D1%80%D0%B4%D0%B6&apikey=08dac8be-4652-4524-acf3-cdbf7c3c02e3", requestOptions)
+    .then(response => response.json())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+}
 </script>
 
 <template>
@@ -48,8 +60,10 @@ const classDelivery = computed(() => {
           v-model="store.order.delivery.address"
           label="Адрес доставки"
           :mask="addressMask"
+          @input="requestGeo()"
         />
-        <BaseMap/>
+        <!-- <BaseMap/> -->
+        
         <BaseInput
           id="delivery-comment"
           title="Введите адрес"
