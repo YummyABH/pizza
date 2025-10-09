@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 import { useOrderStore } from '@/stores/orderStore'
 import BaseInput from '../ui/BaseInput.vue'
 import { useOrderInputStore } from '@/stores/orderInputStore'
+import BaseMap from './BaseMap.vue'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
@@ -48,6 +49,7 @@ const classDelivery = computed(() => {
           label="Адрес доставки"
           :mask="addressMask"
         />
+        <BaseMap/>
         <BaseInput
           id="delivery-comment"
           title="Введите адрес"

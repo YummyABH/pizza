@@ -16,6 +16,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@maptiler/sdk": "^3.8.0",
     "@tailwindcss/vite": "^4.1.13",
     "maska": "^3.2.0",
     "ofetch": "^1.4.1",
