@@ -5,6 +5,7 @@ import IconBasket from '../icons/IconBasket.vue'
 import IconCutlery from '../icons/IconCutlery.vue'
 import OrderContacts from './OrderContacts.vue'
 import { useOrderStore } from '@/stores/orderStore'
+import BaseMap from '../order/BaseMap.vue'
 
 const storeOrder = useOrderStore()
 
@@ -84,7 +85,7 @@ const sumPrice = computed(() =>
               @click="storeOrder.cutleryReduce"
               class="relative w-6 h-6 p-1 rounded-full cursor-pointer after:w-3 after:h-0.5 after:bg-black after:absolute after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"
             ></div>
-            <div class="font-medium">{{ storeOrder.order.number_cutlery }} шт</div>
+            <div class="font-medium">{{ storeOrder.order.cutlery_quantity }} шт</div>
             <div
               @click="storeOrder.cutleryAdd"
               class="relative w-6 h-6 p-1 rounded-full cursor-pointer before:h-3 before:w-0.5 before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-1/2 before:bg-black after:bg-black after:absolute after:w-3 after:h-0.5 after:left-1/2 after:transform after:-translate-1/2 after:top-1/2"

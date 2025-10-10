@@ -16,9 +16,8 @@ export const useOrderStore = defineStore('order', () => {
         comment: '',
       },
       dishes: [],
-      status: true,
       cutlery_status: false,
-      number_cutlery: 1,
+      cutlery_quantity: 1,
       order_comment: '',
     },
   )
@@ -34,11 +33,11 @@ export const useOrderStore = defineStore('order', () => {
   )
 
   function cutleryAdd() {
-    return order.number_cutlery >= 50 ? (order.number_cutlery = 50) : order.number_cutlery++
+    return order.cutlery_quantity >= 50 ? (order.cutlery_quantity = 50) : order.cutlery_quantity++
   }
 
   function cutleryReduce() {
-    return order.number_cutlery <= 1 ? (order.number_cutlery = 1) : order.number_cutlery--
+    return order.cutlery_quantity <= 1 ? (order.cutlery_quantity = 1) : order.cutlery_quantity--
   }
 
   function dishAdd(id: number, default_characteristics: number) {

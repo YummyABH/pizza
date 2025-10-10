@@ -12,6 +12,7 @@ export const useOrderInputStore = defineStore('orderInput', () => {
     phone: ref(null),
     address: ref(null),
     comment: ref(null),
+    order_comment: ref(null),
   }
 
   //#endregion
@@ -58,7 +59,10 @@ export const useOrderInputStore = defineStore('orderInput', () => {
         field === 'address' || field === 'comment'
           ? validationRules[field](orderStore.order.delivery[field])
           : validationRules[field](orderStore.order[field])
-      formErrors[field] = error
+
+      console.log(error)
+
+      formErrors[field].value = error
 
       if (error) isValid = false
     }
