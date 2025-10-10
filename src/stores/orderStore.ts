@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import { orderAPI } from '@/api/apiOrder'
-import { reactive, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
   const initialOrder = savedOrder ? JSON.parse(savedOrder) : null
+
+  const dataAddress = ref([])
 
   const order = reactive(
     initialOrder || {
@@ -92,10 +94,7 @@ export const useOrderStore = defineStore('order', () => {
   async function postOrder() {
     try {
       const data = { ...order }
-      console.log('Тело запроса ', data)
-
       data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
-
       const result = await orderAPI.postOrder(data)
       return result
     } catch (error) {
@@ -103,8 +102,33 @@ export const useOrderStore = defineStore('order', () => {
     }
   }
 
+  function createDebouncedGeoRequest() {
+    let timer = null
+
+    return () => {
+      clearTimeout(timer)
+
+      timer = setTimeout(async () => {
+        try {
+          const result = await orderAPI.getAddress(order.delivery.address)
+          const addresses = result.results.filter(
+            (country) => country.address.component[0].name === 'Абхазия',
+          )
+          dataAddress.value = addresses.map((item) => {
+            return item.address.formatted_address
+          })
+        } catch (error) {
+          console.log('error', error)
+        }
+      }, 500)
+    }
+  }
+
+  const debouncedRequestGeo = createDebouncedGeoRequest()
+
   return {
     order,
+    dataAddress,
     cutleryAdd,
     cutleryReduce,
     clearDishesInOrder,
@@ -113,5 +137,6 @@ export const useOrderStore = defineStore('order', () => {
     addDishItem,
     deleteDish,
     postOrder,
+    debouncedRequestGeo,
   }
 })

@@ -4,13 +4,13 @@ import { useOrderStore } from '@/stores/orderStore'
 import { useOrderInputStore } from '@/stores/orderInputStore'
 import BaseInput from '../ui/BaseInput.vue'
 import SelectMenu from '@/components/ui/SelectMenu.vue'
+import { orderAPI } from '@/api/apiOrder'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
 const REGEX_ADRESS = ref(/^[a-zA-Zа-яА-ЯёЁ0-9\s\.,\-\/№]+$/)
 const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
 const addressMask = orderInputStore.addressMask
-const dataAddress = ref([])
 
 const classDelivery = computed(() => {
   return {
@@ -18,27 +18,6 @@ const classDelivery = computed(() => {
     pickup: store.order.delivery.status ? 'before:w-0' : 'before:w-32',
   }
 })
-
-const requestOptions = {
-  method: 'GET',
-}
-
-function requestGeo() {
-  fetch(
-    `https://suggest-maps.yandex.ru/v1/suggest?text=${store.order.delivery.address}&print_address=1&lang=ru&apikey=08dac8be-4652-4524-acf3-cdbf7c3c02e3`,
-    requestOptions,
-  )
-    .then((response) => response.json())
-    .then((result) => {
-      const addresses = result.results.filter(
-        (country) => country.address.component[0].name === 'Абхазия',
-      )
-      dataAddress.value = addresses.map((item) => {
-        return item.address.formatted_address
-      })
-    })
-    .catch((error) => console.log('error', error))
-}
 </script>
 
 <template>
@@ -63,8 +42,8 @@ function requestGeo() {
       </div>
       <div v-show="store.order.delivery.status" class="flex flex-col gap-y-5">
         <SelectMenu
-          @input="requestGeo()"
-          :options="dataAddress"
+          @input="store.debouncedRequestGeo"
+          :options="store.dataAddress"
           selecte="address"
           v-model="store.order.delivery.address"
           label="Адрес доставки"

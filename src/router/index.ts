@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/assets/pages/HomePage.vue'
 import OrderModalSide from '@/components/order/OrderModalSide.vue'
+import OrderHistory from '@/assets/pages/OrderHistory.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,12 @@ const router = createRouter({
           meta: { lockScroll: true },
         },
       ],
+    },
+    {
+      path: '/order-history',
+      name: 'OrderHistory',
+      component: OrderHistory,
+      meta: { lockScroll: false },
     },
   ],
 })

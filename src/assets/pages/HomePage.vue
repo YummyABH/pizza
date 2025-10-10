@@ -10,11 +10,9 @@ const baseMenu = ref(null)
 onMounted(async () => {
   const dishesList = await categoriesAPI.getDishes()
   store.updateDishes(dishesList)
-  // baseMenu.value?.initObserver()
 })
-
 </script>
 
 <template>
-  <BaseMenu ref="baseMenu"/>
+  <BaseMenu ref="baseMenu" />
 </template>

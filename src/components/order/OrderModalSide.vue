@@ -5,7 +5,6 @@ import IconBasket from '../icons/IconBasket.vue'
 import IconCutlery from '../icons/IconCutlery.vue'
 import OrderContacts from './OrderContacts.vue'
 import { useOrderStore } from '@/stores/orderStore'
-import BaseMap from '../order/BaseMap.vue'
 
 const storeOrder = useOrderStore()
 
