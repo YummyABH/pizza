@@ -46,6 +46,12 @@ const formClass = computed(() => ({
   'top-3': !modelValue.value,
   '-top-[10px] bg-black-381 px-1': modelValue.value,
 }))
+
+const borderClass = computed(() => {
+  console.log(orderInputStore.formErrors['phone'])
+
+  return orderInputStore.formErrors['phone'] ? 'border-red-500' : ''
+})
 </script>
 
 <template>
@@ -58,10 +64,10 @@ const formClass = computed(() => ({
       v-maska="mask"
       v-model="modelValue"
       class="peer autofill:bg-transparent block z-10 w-full px-1 py-3 border-b-[1px] border-black-299 rounded-none appearance-none bg-transparent focus:outline-hidden focus:ring-0"
-      :class="{ 'border-red-500': orderInputStore.formErrors[props.selecte] }"
+      :class="borderClass"
       :type="typeInput"
       :title="title"
-      @input="orderInputStore.clearError(selecte)"
+      @input="orderInputStore.clearError(select)"
     />
     <label
       :class="formClass"

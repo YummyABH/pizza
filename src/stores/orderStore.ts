@@ -93,6 +93,8 @@ export const useOrderStore = defineStore('order', () => {
   async function postOrder() {
     try {
       const data = { ...order }
+      console.log('Тело запроса ', data)
+
       data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
 
       const result = await orderAPI.postOrder(data)

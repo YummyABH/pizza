@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
 import { useOrderStore } from '@/stores/orderStore.ts'
 
 export const useOrderInputStore = defineStore('orderInput', () => {
@@ -58,7 +58,7 @@ export const useOrderInputStore = defineStore('orderInput', () => {
         field === 'address' || field === 'comment'
           ? validationRules[field](orderStore.order.delivery[field])
           : validationRules[field](orderStore.order[field])
-      formErrors[field].value = error
+      formErrors[field] = error
 
       if (error) isValid = false
     }
