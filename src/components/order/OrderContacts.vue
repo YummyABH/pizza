@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import FormInput from '@/components/ui/FormInput.vue'
 import OrderMethodOptaining from './OrderMethodOptaining.vue'
-import { vMaska } from 'maska/vue'
-import { ref } from 'vue'
 import { useOrderStore } from '@/stores/orderStore'
 import { useOrderInputStore } from '@/stores/orderInputStore'
 import BaseInput from '@/components/ui/BaseInput.vue'
@@ -12,8 +9,6 @@ const orderInputStore = useOrderInputStore()
 
 const addressMask = orderInputStore.addressMask
 const nameMask = orderInputStore.nameMask
-const REGEX_NAME = ref(/^[а-яА-ЯёЁ ]{0,32}$/)
-const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
 
 async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()

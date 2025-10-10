@@ -48,8 +48,6 @@ const formClass = computed(() => ({
 }))
 
 const borderClass = computed(() => {
-  console.log(orderInputStore.formErrors['phone'])
-
   return orderInputStore.formErrors['phone'] ? 'border-red-500' : ''
 })
 </script>
