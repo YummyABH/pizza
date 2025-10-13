@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/assets/pages/HomePage.vue'
 import OrderModalSide from '@/components/order/OrderModalSide.vue'
 import OrderHistory from '@/assets/pages/OrderHistory.vue'
+import AdminLoginPage from '@/components/admin/AdminLoginPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,12 @@ const router = createRouter({
       name: 'OrderHistory',
       component: OrderHistory,
       meta: { lockScroll: false },
+    },
+    {
+      path: '/admin-login',
+      name: 'AdminLoginPage',
+      component: AdminLoginPage,
+      meta: { lockScroll: true, noHeader: true },
     },
   ],
 })

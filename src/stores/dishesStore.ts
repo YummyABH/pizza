@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { readonly, ref, watch } from 'vue'
+import { readonly, ref } from 'vue'
 
 export const useDishesStore = defineStore('dishes', () => {
   const dishes = ref([])
