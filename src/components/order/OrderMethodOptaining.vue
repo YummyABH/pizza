@@ -4,12 +4,9 @@ import { useOrderStore } from '@/stores/orderStore'
 import { useOrderInputStore } from '@/stores/orderInputStore'
 import BaseInput from '../ui/BaseInput.vue'
 import SelectMenu from '@/components/ui/SelectMenu.vue'
-import { orderAPI } from '@/api/apiOrder'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
-const REGEX_ADRESS = ref(/^[a-zA-Zа-яА-ЯёЁ0-9\s\.,\-\/№]+$/)
-const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
 const addressMask = orderInputStore.addressMask
 
 const classDelivery = computed(() => {
@@ -44,17 +41,15 @@ const classDelivery = computed(() => {
         <SelectMenu
           @input="store.debouncedRequestGeo"
           :options="store.dataAddress"
-          selecte="address"
+          select="address"
           v-model="store.order.delivery.address"
           label="Адрес доставки"
         />
 
-        <!-- <BaseMap/> -->
-
         <BaseInput
           id="delivery-comment"
           title="Введите адрес"
-          selecte="comment"
+          select="comment"
           v-model="store.order.delivery.comment"
           label="Комментарий к адресу"
           :mask="addressMask"
@@ -62,11 +57,6 @@ const classDelivery = computed(() => {
       </div>
       <div v-show="!store.order.delivery.status" class="flex flex-col gap-y-5">
         <label class="flex gap-x-4 text-lg items-center">
-          <!-- <input
-            type="radio"
-            name="adress"
-            class="inline-block h-3.5 w-3.5 text-white border-gray-800 appearance-none border rounded-full checked:bg-green-600 checked:border-green-400 focus:outline-none focus:ring-2"
-          /> -->
           <span class="font-medium">Адрес:</span>
           <span>Сухум, Абаза амҩа, 33</span>
         </label>

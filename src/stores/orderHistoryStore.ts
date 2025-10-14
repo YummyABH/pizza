@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useOrderHistoryStore = defineStore('orderInput', () => {
+export const useOrderHistoryStore = defineStore('orderHistory', () => {
   const historyOrder = ref([])
 
   function updateHistoryOrder(newValue) {

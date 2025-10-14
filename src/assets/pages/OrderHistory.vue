@@ -8,8 +8,15 @@ import { onMounted } from 'vue'
 const store = useOrderHistoryStore()
 
 onMounted(async () => {
-  const historyOrder = await orderAPI.getHistoryOrder()
-  store.updateHistoryOrder(historyOrder)
+  try {
+    const historyOrder = await orderAPI.getHistoryOrder()
+    
+    if (store.updateHistoryOrder) {
+      store.updateHistoryOrder(historyOrder)
+    }
+  } catch (error) {
+    console.log('error: ', error);
+  }
 })
 </script>
 

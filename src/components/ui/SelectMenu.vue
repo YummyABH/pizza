@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { Combobox, ComboboxInput, ComboboxOptions, ComboboxOption } from '@headlessui/vue'
 import { useOrderStore } from '@/stores/orderStore.ts'
@@ -12,7 +12,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  selecte: String,
+  select: String,
   dependsOn: {
     type: Array,
     default: () => [], // Пустой массив по умолчанию
@@ -35,7 +35,7 @@ const modelValue = defineModel()
 const calculationStore = useOrderStore()
 const orderInputStore = useOrderInputStore()
 const formErrors = storeToRefs(orderInputStore.formErrors)
-const error = formErrors[props.selecte]
+const error = formErrors[props.select]
 const displayedItemsCount = ref(100)
 const isOpen = ref(false)
 let isScrolling = false
@@ -92,6 +92,10 @@ function onBlur() {
   }
   isOpen.value = false
 }
+const borderClass = computed(() => {
+  if (!orderInputStore?.formErrors) return '' 
+  return orderInputStore.formErrors[props.select] ? 'border-red-500' : ''
+})
 </script>
 
 <template>
@@ -104,9 +108,10 @@ function onBlur() {
         @focus="isOpen = true"
         @blur="onBlur"
         :required
-        @input="orderInputStore.clearError(selecte)"
+        @input="orderInputStore.clearError(select)"
         @change="modelValue = $event.target.value"
         @keydown.down="handleKeyDown"
+        :class="borderClass"
         class="peer autofill:bg-transparent block z-10 w-full px-1 py-3 border-b-[1px] border-black-299 rounded-none appearance-none bg-transparent focus:outline-hidden focus:ring-0"
       />
 

@@ -39,7 +39,7 @@ async function dataRequestCalculation() {
           <BaseInput
             id="phone"
             title="Можно вводить только цифры"
-            selecte="phone"
+            select="phone"
             v-model="store.order.phone"
             label="Номер телефон"
             :mask="'+ 7 (###) ###-##-##'"
@@ -77,7 +77,7 @@ async function dataRequestCalculation() {
         <BaseInput
           id="order-comment"
           title=""
-          selecte="order_comment"
+          select="order_comment"
           v-model="store.order.order_comment"
           label="Комментарий к заказу"
           :mask="addressMask"

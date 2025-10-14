@@ -95,6 +95,7 @@ export const useOrderStore = defineStore('order', () => {
     try {
       const data = { ...order }
       data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
+      data.secret_key = localStorage.getItem('secretKey')
       const result = await orderAPI.postOrder(data)
       return result
     } catch (error) {
@@ -111,7 +112,7 @@ export const useOrderStore = defineStore('order', () => {
       timer = setTimeout(async () => {
         try {
           const result = await orderAPI.getAddress(order.delivery.address)
-          const addresses = result.results.filter(
+          const addresses = result.results?.filter(
             (country) => country.address.component[0].name === 'Абхазия',
           )
           dataAddress.value = addresses.map((item) => {

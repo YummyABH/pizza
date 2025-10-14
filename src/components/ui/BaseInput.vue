@@ -4,6 +4,7 @@ import { useOrderInputStore } from '@/stores/orderInputStore.ts'
 import { useOrderStore } from '@/stores/orderStore.ts'
 import { vMaska } from 'maska/vue'
 import { computed } from 'vue'
+import { nextTick } from 'vue'
 
 const modelValue = defineModel()
 const props = defineProps({
@@ -39,16 +40,17 @@ const props = defineProps({
   },
 })
 
-const orderStore = useOrderStore()
 const orderInputStore = useOrderInputStore()
-
 const formClass = computed(() => ({
   'top-3': !modelValue.value,
   '-top-[10px] bg-black-381 px-1': modelValue.value,
 }))
 
+
 const borderClass = computed(() => {
-  return orderInputStore.formErrors['phone'] ? 'border-red-500' : ''
+  console.log('orderInputStore.formErrors ', orderInputStore);
+  if (!orderInputStore?.formErrors) return '' 
+  return orderInputStore?.formErrors[props.select] ? 'border-red-500' : ''
 })
 </script>
 
