@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { reactive, watch } from 'vue'
+import { reactive } from 'vue'
 
 export const useAdminAuthStore = defineStore('adminAuth', () => {
   const authData = reactive({
