@@ -1,8 +1,8 @@
-import { APIInstance, refreshInstance } from '@/api/admin/configAuth.ts'
+import { APIInstance } from '@/api/admin/config.ts'
 import { ofetch } from 'ofetch'
 
 const authAPI = () => {
-  const login = async (credentials) => {
+  const login = async (credentials: object) => {
     return await APIInstance('/auth/login', {
       method: 'POST',
       body: credentials,
@@ -16,12 +16,12 @@ const authAPI = () => {
     })
   }
 
-  const refresh = async (refreshToken) => {
-    return await refreshInstance('/auth/refresh', {
-      method: 'POST',
-      body: { refreshToken: refreshToken },
-    })
-  }
+  // const refresh = async (refreshToken) => {
+  //   return await refreshInstance('/auth/refresh', {
+  //     method: 'POST',
+  //     body: { refreshToken: refreshToken },
+  //   })
+  // }
 
   const check = async (accessToken) => {
     return await ofetch('https://apsny-billboard-production.up.railway.app/api/auth/token-check', {
@@ -32,7 +32,7 @@ const authAPI = () => {
     })
   }
 
-  return { logout, login, getIP, refresh, check }
+  return { logout, login, check }
 }
 
 export { authAPI }

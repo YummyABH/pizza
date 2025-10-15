@@ -27,8 +27,6 @@ export const useOrderStore = defineStore('order', () => {
   watch(
     order,
     (newOrder) => {
-      console.log(order)
-
       localStorage.setItem('order', JSON.stringify(newOrder))
     },
     { deep: true },
@@ -68,16 +66,16 @@ export const useOrderStore = defineStore('order', () => {
 
   function addDishItem(newDish: object, indexCharacteristics?: string) {
     const addDish = { ...newDish }
-    let status = false
+    let hasDish = false
 
     for (const dish of order.dishes) {
       if (dish.id === addDish.id && dish.default_characteristics === indexCharacteristics) {
-        status = true
+        hasDish = true
         return
       }
     }
 
-    if (status) return
+    if (hasDish) return
 
     addDish.default_characteristics = indexCharacteristics
     order.dishes = [...order.dishes, addDish]

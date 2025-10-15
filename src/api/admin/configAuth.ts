@@ -1,7 +1,7 @@
 import { $fetch } from 'ofetch'
 import { authAPI } from '@/api/admin/auth.ts'
 
-const { refresh, logout, check } = authAPI()
+const {  logout, check } = authAPI()
 
 export const APIInstance = $fetch.create({
   baseURL: 'https://apsny-billboard-production.up.railway.app/api',
