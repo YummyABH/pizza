@@ -21,7 +21,7 @@ const authStore = useAdminAuthStore()
       id="login"
       label="Логин"
       type="text"
-      v-model="authStore.authData.login"
+      v-model="authStore.authData.username"
       required
       pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
     />
@@ -34,6 +34,7 @@ const authStore = useAdminAuthStore()
       :minlength="8"
     />
     <button
+      @click.prevent="authStore.loginAdmin"
       type="submit"
       class="cursor-pointer duration-200 w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 active:bg-blue-700"
     >

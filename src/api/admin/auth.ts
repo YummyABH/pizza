@@ -16,13 +16,6 @@ const authAPI = () => {
     })
   }
 
-  const refresh = async (refreshToken) => {
-    return await refreshInstance('/auth/refresh', {
-      method: 'POST',
-      body: { refreshToken: refreshToken },
-    })
-  }
-
   const check = async (accessToken) => {
     return await ofetch('https://apsny-billboard-production.up.railway.app/api/auth/token-check', {
       method: 'POST',
@@ -32,7 +25,7 @@ const authAPI = () => {
     })
   }
 
-  return { logout, login, getIP, refresh, check }
+  return { logout, login, check }
 }
 
 export { authAPI }
