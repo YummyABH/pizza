@@ -14,7 +14,6 @@ async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
   if (isValid) {
     // Отправка запроса на бэкенд
-    console.log('Форма валидна, отправляем:')
     await store.postOrder()
   } else {
     console.log('Форма содержит ошибки')
