@@ -1,10 +1,12 @@
+import { APIInstancePersonal } from './configPersonal'
 import { APIInstance } from './config'
 import { APIYandexInstance } from './yandexConfig'
+import { APIInstanceAdmin } from '@/api/admin/config'
 
 export const orderAPI = {
   async postOrder(data: object) {
     const url = '/api/orders/create'
-    return await APIInstance(url, {
+    return await APIInstancePersonal(url, {
       method: 'POST',
       body: data,
     })
@@ -16,8 +18,14 @@ export const orderAPI = {
     })
   },
   async getHistoryOrder() {
+    const url = '/api/orders/user-orders'
+    return await APIInstancePersonal(url, {
+      method: 'GET',
+    })
+  },
+  async getAllOrder() {
     const url = '/api/orders/read-all'
-    return await APIInstance(url, {
+    return await APIInstanceAdmin(url, {
       method: 'GET',
     })
   },

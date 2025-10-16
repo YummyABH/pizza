@@ -9,10 +9,10 @@ defineProps({
     <div
       class="cursor-pointer block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
     >
-      <!-- <img
+      <img
         :src="`https://restik-street-style.onrender.com/uploads/${dish.image}`"
         class="max-sm:aspect-3/2 w-full h-full object-cover"
-      /> -->
+      />
     </div>
     <div class="flex flex-col justify-between min-h-36 max-sm:min-h-26">
       <div class="">

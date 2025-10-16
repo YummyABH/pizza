@@ -58,7 +58,9 @@ watch(route, () => {
 </script>
 
 <template>
-  <div class="fixed left-0 text-white top-0 h-screen overflow-y-scroll min-w-70 bg-[#111827]">
+  <div
+    class="fixed left-0 text-white top-0 h-screen overflow-y-scroll scroll-hidden min-w-70 w- bg-[#111827]"
+  >
     <div class="text-2xl font-medium px-7 py-3">ЛОГОТИП</div>
     <div class="px-4 pb-4">
       <div class="font-medium text-[#9ca3af] pl-3 pb-4">МЕНЕДЖМЕНТ</div>
@@ -108,3 +110,14 @@ watch(route, () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.scroll-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+</style>
