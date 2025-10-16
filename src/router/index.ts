@@ -57,16 +57,16 @@ const router = createRouter({
       meta: { layout: 'admin', lockScroll: false, noSidebar: false },
       children: [
         {
-          path: '/dishes',
+          path: 'dishes',
           name: 'BaseMenuDishes',
           component: BaseMenuDishes,
-          meta: { layout: 'user', lockScroll: false, noSidebar: false },
+          meta: { layout: 'admin', lockScroll: false, noSidebar: false },
         },
         {
-          path: '/category-dishes',
+          path: 'category-dishes',
           name: 'BaseMenuCategiryDishes',
           component: BaseMenuCategiryDishes,
-          meta: { layout: 'user', lockScroll: false, noSidebar: false },
+          meta: { layout: 'admin', lockScroll: false, noSidebar: false },
         },
       ],
     },
