@@ -59,7 +59,7 @@ watch(route, () => {
 
 <template>
   <div class="fixed left-0 text-white top-0 h-screen overflow-y-scroll min-w-70 bg-[#111827]">
-    <div class="text-2xl font-medium px-4 py-3">ЛОГОТИП</div>
+    <div class="text-2xl font-medium px-7 py-3">ЛОГОТИП</div>
     <div class="px-4 pb-4">
       <div class="font-medium text-[#9ca3af] pl-3 pb-4">МЕНЕДЖМЕНТ</div>
       <div v-for="item in tab" :key="item.id">
