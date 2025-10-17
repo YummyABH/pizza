@@ -59,7 +59,7 @@ watch(route, () => {
 
 <template>
   <div
-    class="fixed left-0 text-white top-0 h-screen overflow-y-scroll scroll-hidden min-w-70 w- bg-[#111827]"
+    class="fixed left-0 text-white top-0 h-screen overflow-y-scroll scroll-hidden min-w-70 max-2xl:min-w-50 bg-[#111827]"
   >
     <div class="text-2xl font-medium px-7 py-3">ЛОГОТИП</div>
     <div class="px-4 pb-4">

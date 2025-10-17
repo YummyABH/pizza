@@ -5,7 +5,7 @@ export const APIInstanceAdmin = $fetch.create({
   headers: {
     'Content-Type': 'application/json',
     authorization:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MywidXNlcm5hbWUiOiJrZW5ueSIsInJvbGUiOjEsImlhdCI6MTc2MDYyNDczNSwiZXhwIjoxNzYwNjI1NjM1fQ.4nKLP2_M2mMyEJbsuGEYLjfX5gtAtgmLZAleYbfMKh0',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MywidXNlcm5hbWUiOiJrZW5ueSIsInJvbGUiOjEsImlhdCI6MTc2MDYzOTcwOCwiZXhwIjoxNzYwNjQxNTA4fQ.Ba7MFDBw2LKM7ucyKK_gPlL9RPjNPXUXkyeTapjl0Sg',
   },
   async onResponse({ response }) {
     return response

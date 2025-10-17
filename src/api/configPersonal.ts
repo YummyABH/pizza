@@ -5,10 +5,9 @@ export const APIInstancePersonal = $fetch.create({
   headers: {
     'Content-Type': 'application/json',
     secret_key:
-      'eyJhZG1pbl9pZCI6MywidXNlcm5hbWUiOiJrZW5ueSIsInJvbGUiOjEsImlhdCI6MTc2MDYxNzUwOCwiZXhwIjoxNzYwNjE4NDA4fQ.C2j72W455lnif-C_P5q1NJnIvqcCQeMf1OD7o2__bus',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6MywidXNlcm5hbWUiOiJrZW5ueSIsInJvbGUiOjEsImlhdCI6MTc2MDYzNzQyOCwiZXhwIjoxNzYwNjM4MzI4fQ.93oCx49i3HEz1lxK9NXsntPyjsXzs0r_hlAX5M9H-zw',
   },
-  async onResponse({ response }) {
-    return response
+  async onResponse() {
   },
   async onResponseError({ response }) {
     return Promise.reject(response)
