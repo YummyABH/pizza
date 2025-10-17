@@ -4,7 +4,10 @@ import IconMenu from '../icons/IconMenu.vue'
 import IconOrderHistoryMini from '../icons/IconOrderHistoryMini.vue'
 import IconUsers from '../icons/IconUsers.vue'
 import { useRoute } from 'vue-router'
+import IconArrow from '../icons/IconArrow.vue'
+import { useAdminStore } from '@/stores/adminStore'
 
+const storeAdmin = useAdminStore()
 const route = useRoute()
 const openSublistId = ref(null)
 const activeSublist = ref(null)
@@ -59,7 +62,15 @@ watch(route, () => {
 
 <template>
   <div
-    class="fixed left-0 text-white top-0 h-screen overflow-y-scroll scroll-hidden min-w-70 max-2xl:min-w-50 bg-[#111827]"
+    @click="storeAdmin.taggleSidebar"
+    :class="storeAdmin.openSidebar ? 'left-70 ' : 'left-0 '"
+    class="fixed flex duration-0 items-center justify-center cursor-pointer w-14 h-14 rounded-r-xl bg-[#111827]"
+  >
+    <div :class="storeAdmin.openSidebar ? ' rotate-0' : ' rotate-180'"><IconArrow /></div>
+  </div>
+  <div
+    :class="storeAdmin.openSidebar ? 'left-0' : '-left-full'"
+    class="fixed duration-0 text-white top-0 h-screen overflow-y-scroll scroll-hidden min-w-70 max-2xl:min-w-50 bg-[#111827]"
   >
     <div class="text-2xl font-medium px-7 py-3">ЛОГОТИП</div>
     <div class="px-4 pb-4">

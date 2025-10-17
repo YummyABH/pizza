@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { orderAPI } from '@/api/apiOrder'
 import IconEye from '@/components/icons/IconEye.vue'
+import { useAdminStore } from '@/stores/adminStore'
 import { useOrderAllStore } from '@/stores/orderAllStore'
 import { onMounted, ref } from 'vue'
 
 const store = useOrderAllStore()
+const storeAdmin = useAdminStore()
 const activeDish = ref(null)
 
 onMounted(async () => {
@@ -21,11 +23,14 @@ function normalizeTime(time: string) {
 </script>
 
 <template>
-  <div class="w-screen pl-70 max-2xl:pl-50 flex justify-self-end text-white">
+  <div
+    :class="storeAdmin.openSidebar ? 'pl-70 max-2xl:pl-50' : 'pl-0'"
+    class="w-screen flex justify-self-end text-white"
+  >
     <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0">
       <h1 class="mb-8 text-2xl font-medium">Заказы</h1>
       <!-- <div class="grid grid-cols-4 gap-7"></div> -->
-      <div class="bg-[#111827] rounded-xl p-5 w-full overflow-x-scroll">
+      <div class="bg-[#111827] rounded-xl p-5 max-w-full overflow-x-scroll">
         <div class="min-w-300 grid grid-cols-7 w-full justify-between gap-x-3">
           <div class="grid grid-cols-subgrid col-span-7 border-b border-t">
             <div class="flex px-5 py-3 justify-self-center w-max">Номер заказа</div>
@@ -52,33 +57,39 @@ function normalizeTime(time: string) {
             </div>
             <div class="flex px-5 py-3 justify-self-center w-max">
               <div
-              :class="order.status ? 'bg-green-500 text-white' : 'bg-yellow-500'"
-              class="px-2 py-0.5 rounded-xl max-sm:px-1.5 max-sm:text-[12px]"
+                :class="order.status ? 'bg-green-500 text-white' : 'bg-yellow-500'"
+                class="px-2 py-0.5 rounded-xl max-sm:px-1.5 max-sm:text-[12px]"
               >
-              {{ order.status ? 'Доставлен' : 'В процессе' }}
+                {{ order.status ? 'Доставлен' : 'В процессе' }}
+              </div>
             </div>
-          </div>
-          <div class="flex px-5 py-3 justify-self-center w-max">{{ order.total_price }}</div>
+            <div class="flex px-5 py-3 justify-self-center w-max">{{ order.total_price }}</div>
             <div class="flex px-5 py-3 justify-self-center w-max"><IconEye /></div>
             <div
               @click.stop
               class="col-span-7 justify-between px-5 py-7 grid grid-cols-3 gap-4 bg-[#6760c4]"
               v-show="activeDish === order.id"
             >
-            <div class="col-span-3 gap-x-3 grid grid-cols-8 rounded-xl bg-[#1b233a] px-5 py-3">
-              <div class=" text-lg col-span-2 flex gap-4 py-1">
-                <h3 class="text-blue-200">Приборы:</h3><span>{{ order.cutlery_status ? order.cutlery_quantity + ' шт.' : 'Не нужны' }}</span>
+              <div class="col-span-3 gap-x-3 grid grid-cols-8 rounded-xl bg-[#1b233a] px-5 py-3">
+                <div class="text-lg col-span-2 flex gap-4 py-1">
+                  <h3 class="text-blue-200">Приборы:</h3>
+                  <span>{{
+                    order.cutlery_status ? order.cutlery_quantity + ' шт.' : 'Не нужны'
+                  }}</span>
+                </div>
+                <div class="text-lg col-span-3 flex gap-4 py-1">
+                  <h3 class="text-blue-200">Номер телефона:</h3>
+                  <span>{{ order.phone }}</span>
+                </div>
+                <div class="col-span-full text-lg flex gap-4 pb-1 border-y">
+                  <h3 class="text-blue-200">Комментарий к адресу:</h3>
+                  <span>{{ order.delivery.comment }}</span>
+                </div>
+                <div class="col-span-full text-lg flex gap-4 pt-1 pb-1">
+                  <h3 class="text-blue-200">Комментарий к заказу:</h3>
+                  <span>{{ order.order_comment }}</span>
+                </div>
               </div>
-              <div class="text-lg col-span-3 flex gap-4 py-1">
-                <h3 class="text-blue-200">Номер телефона:</h3><span>{{ order.phone }}</span>
-              </div>
-              <div class="col-span-full text-lg flex gap-4 pb-1 border-y">
-                <h3 class=" text-blue-200">Комментарий к адресу:</h3><span>{{ order.delivery.comment }}</span>
-              </div>
-              <div class="col-span-full text-lg flex gap-4 pt-1 pb-1">
-                <h3 class="text-blue-200">Комментарий к заказу:</h3><span>{{ order.order_comment }}</span>
-              </div>
-            </div>
               <div
                 v-for="dish in order?.dishes"
                 :key="dish.id"
