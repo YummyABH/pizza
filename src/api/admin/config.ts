@@ -12,8 +12,11 @@ export const APIInstanceAdmin = $fetch.create({
     if (!accessToken) return
     options.headers.append('Authorization', `Bearer ${accessToken}`) 
   },
+
   async onResponse() {},
   async onResponseError({ response }) {
-    return Promise.reject(response)
+    if (response?.detail === 'jwt must be provided') {
+      
+    }
   },
 })
