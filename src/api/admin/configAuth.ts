@@ -4,9 +4,9 @@ import { authAPI } from '@/api/admin/auth.ts'
 // const { refresh, logout, check } = authAPI()
 
 export const APIInstance = $fetch.create({
-  baseURL: 'https://apsny-billboard-production.up.railway.app/api',
+  baseURL: 'https://restik-street-style.onrender.com/api',
 
-  async onRequest({ request, options }) {},
+  
 
   async onResponseError({ response }) {
     return Promise.reject('ошибка ', response)
