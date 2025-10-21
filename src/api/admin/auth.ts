@@ -1,9 +1,9 @@
-import { APIInstance, refreshInstance } from '@/api/admin/configAuth.ts'
+import { refreshInstance } from '@/api/admin/configAuth.ts'
 import { ofetch } from 'ofetch'
 
 const authAPI = () => {
   const login = async (credentials) => {
-    return await APIInstance('/auth/login', {
+    return await ofetch('https://restik-street-style.onrender.com/api/auth/login', {
       method: 'POST',
       body: credentials,
     })
@@ -16,16 +16,15 @@ const authAPI = () => {
     })
   }
 
-  const check = async (accessToken) => {
-    return await ofetch('https://apsny-billboard-production.up.railway.app/api/auth/token-check', {
+  const refresh = async () => {
+    const refreshToken = localStorage.getItem('refreshToken')
+    return await ofetch('https://restik-street-style.onrender.com/api/auth/refresh', {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      body: { token: refreshToken },
     })
   }
 
-  return { logout, login, check }
+  return { login, refresh }
 }
 
 export { authAPI }

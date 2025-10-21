@@ -5,9 +5,7 @@ export const APIInstance = $fetch.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  async onResponse({ response }) {
-    return response
-  },
+
   async onResponseError({ response }) {
     return Promise.reject(response)
   },

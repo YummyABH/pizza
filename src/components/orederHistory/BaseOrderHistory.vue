@@ -6,8 +6,8 @@ const historyOrderStore = useOrderHistoryStore()
 </script>
 
 <template>
-  <div class="text-center px-10 w-full mt-25 py-12 bg-white rounded-2xl">
-    <h1 class="text-3xl font-semibold mb-12">Ваши заказы</h1>
+  <div class="text-center px-10 max-sm:px-3 w-full mt-25 py-12 bg-white rounded-2xl">
+    <h1 class="text-3xl font-semibold mb-0">Ваши заказы</h1>
     <div
       class="max-sm:pt-6 pt-8"
       v-for="(historyOrder, indexOrder) in historyOrderStore.historyOrder"
