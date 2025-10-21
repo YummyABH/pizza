@@ -1,9 +1,9 @@
-import { $fetch, ofetch } from 'ofetch'
+import { $fetch } from 'ofetch'
 import { authAPI } from './auth'
 
 const { refresh } = authAPI()
 
-export const APIInstanceAdmin = $fetch.create({
+const APIInstanceAdminBase = $fetch.create({
   baseURL: 'https://restik-street-style.onrender.com',
   headers: {
     'Content-Type': 'application/json',
@@ -13,25 +13,25 @@ export const APIInstanceAdmin = $fetch.create({
     if (!accessToken) return
     options.headers.set('Authorization', `Bearer ${accessToken}`)
   },
+})
 
-  async onResponseError({ response, request, options }) {
-    if (response.status === 403) {
+export const APIInstanceAdmin = async (url, options = {}) => {
+  try {
+    return await APIInstanceAdminBase(url, options)
+  } catch (error) {
+    if (error.response?.status === 403) {
       try {
         const refreshResponse = await refresh()
+        if (!refreshResponse.accessToken) {
+          throw new Error('No access token received after refresh')
+        }
         localStorage.setItem('accessToken', refreshResponse.accessToken)
-        const newOptions = { ...options, retry: true }
-
-        const newResponse = await ofetch.raw(request, newOptions)
-
-        Object.assign(response, newResponse)
-        console.log('newResponse._data: ', newResponse._data)
-        console.log('response._data: ', response._data)
-
-        response.status = newResponse.status
-        response._data = newResponse._data
-      } catch (error) {
-        console.log('error: ', error)
+        return await APIInstanceAdminBase(url, { ...options, _retryAttempted: true })
+      } catch (refreshError) {
+        console.error('Refresh token error: ', refreshError)
+        throw refreshError 
       }
     }
-  },
-})
+    throw error
+  }
+}

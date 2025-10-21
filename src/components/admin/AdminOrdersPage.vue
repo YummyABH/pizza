@@ -3,15 +3,23 @@ import { orderAPI } from '@/api/apiOrder'
 import IconEye from '@/components/icons/IconEye.vue'
 import { useAdminStore } from '@/stores/adminStore'
 import { useOrderAllStore } from '@/stores/orderAllStore'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const store = useOrderAllStore()
 const storeAdmin = useAdminStore()
 const activeDish = ref(null)
 
 onMounted(async () => {
-  const allHistoryOrder = await orderAPI.getAllOrder()
-  store.updateAllHistoryOrder(allHistoryOrder)
+  try {
+    const allHistoryOrder = await orderAPI.getAllOrder()
+    console.log('allHistoryOrder: ', allHistoryOrder);
+    
+    store.updateAllHistoryOrder(allHistoryOrder)
+  } catch (error) {
+    console.log('error allHistoryOrder: ', error);
+    
+  }
+
 })
 
 function normalizeTime(time: string) {
@@ -20,6 +28,11 @@ function normalizeTime(time: string) {
   const formatted = `${pad(date.getHours())}:${pad(date.getMinutes())} ${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
   return formatted
 }
+
+watch(store.allHistoryOrder, () => {
+  console.log('store.allHistoryOrder: ', store.allHistoryOrder);
+  
+})
 </script>
 
 <template>
