@@ -14,7 +14,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ContentContainer>
+  <div class="max-w-[1580px] mx-auto px-10 max-md:px-5 max-sm:px-0">
     <BaseOrderHistory />
-  </ContentContainer>
+  </div>
 </template>

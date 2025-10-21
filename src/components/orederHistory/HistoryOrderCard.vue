@@ -25,7 +25,8 @@ defineProps({
           <span class="font-medium"
             ><span class="font-normal">Количество:</span> {{ dish.quantity }}</span
           >
-          |
+          <span class="max-sm:hidden">|</span>
+          <span class="sm:hidden"></span>
           <span class="font-medium"><span class="font-normal">Размер:</span> {{ dish.size }}</span>
         </div>
         <div
