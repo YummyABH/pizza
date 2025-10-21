@@ -20,7 +20,7 @@ const authAPI = () => {
     const refreshToken = localStorage.getItem('refreshToken')
     return await ofetch('https://restik-street-style.onrender.com/api/auth/refresh', {
       method: 'POST',
-      body: { token: refreshToken },
+      headers: { refresh_token: refreshToken },
     })
   }
 

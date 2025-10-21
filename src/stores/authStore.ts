@@ -11,9 +11,11 @@ export const useAdminAuthStore = defineStore('adminAuth', () => {
   })
 
   async function loginAdmin() {
-    await login(authData)
-    const accessToken = response._data.accessToken || null
-    const refreshToken = response._data.refreshToken || null
+    const response = await login(authData)
+    console.log('response ', response)
+
+    const accessToken = response.accessToken || null
+    const refreshToken = response.refreshToken || null
 
     localStorage.setItem('accessToken', accessToken)
     localStorage.setItem('refreshToken', refreshToken)

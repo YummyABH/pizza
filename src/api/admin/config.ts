@@ -11,20 +11,27 @@ export const APIInstanceAdmin = $fetch.create({
   async onRequest({ options }) {
     const accessToken = localStorage.getItem('accessToken')
     if (!accessToken) return
-    options.headers.append('Authorization', `Bearer ${accessToken}`)
+    options.headers.set('Authorization', `Bearer ${accessToken}`)
   },
 
-  async onResponse(response) {
-    // const accessToken = response
-    // console.log('response: ', accessToken)
-    // localStorage.setItem('accessToken', accessToken)
-  },
   async onResponseError({ response, request, options }) {
     if (response.status === 403) {
       try {
-        await refresh()
-        await ofetch.raw(request, options)
-      } catch (error) {}
+        const refreshResponse = await refresh()
+        localStorage.setItem('accessToken', refreshResponse.accessToken)
+        const newOptions = { ...options, retry: true }
+
+        const newResponse = await ofetch.raw(request, newOptions)
+
+        Object.assign(response, newResponse)
+        console.log('newResponse._data: ', newResponse._data)
+        console.log('response._data: ', response._data)
+
+        response.status = newResponse.status
+        response._data = newResponse._data
+      } catch (error) {
+        console.log('error: ', error)
+      }
     }
   },
 })
