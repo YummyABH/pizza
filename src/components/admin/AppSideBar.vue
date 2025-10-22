@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router'
 import IconArrow from '../icons/IconArrow.vue'
 import { useAdminStore } from '@/stores/adminStore'
 import IconLogout from '../icons/IconLogout.vue'
+import OrdersModalCard from '@/api/admin/orders/OrdersModalCard.vue'
 
 const storeAdmin = useAdminStore()
 const route = useRoute()
