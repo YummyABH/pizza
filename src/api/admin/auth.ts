@@ -10,7 +10,7 @@ const authAPI = () => {
   }
 
   const logout = async (credentials) => {
-    return await APIInstance('/auth/login', {
+    return await ofetch('https://restik-street-style.onrender.com/api/auth/login', {
       method: 'POST',
       body: credentials,
     })
@@ -24,7 +24,7 @@ const authAPI = () => {
     })
   }
 
-  return { login, refresh }
+  return { login, refresh, logout }
 }
 
 export { authAPI }

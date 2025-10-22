@@ -6,13 +6,7 @@ import { authAPI } from '@/api/admin/auth.ts'
 export const refreshInstance = $fetch.create({
   baseURL: 'https://restik-street-style.onrender.com/api',
 
-  async onRequest({ request, options }) {
-    // const token = localStorage.getItem('refresh_token')
-    // if (token) {
-    //   options.headers = request?.headers || {}
-    //   options.headers['Authorization'] = `Bearer ${token}`
-    // }
-  },
+  async onRequest({ request, options }) {},
   async onResponseError({ response }) {
     return Promise.reject('ошибка ', response)
   },
