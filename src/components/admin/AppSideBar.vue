@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import IconMenu from '../icons/IconMenu.vue'
 import IconOrderHistoryMini from '../icons/IconOrderHistoryMini.vue'
 import IconUsers from '../icons/IconUsers.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import IconArrow from '../icons/IconArrow.vue'
 import { useAdminStore } from '@/stores/adminStore'
 import IconLogout from '../icons/IconLogout.vue'
-import OrdersModalCard from '@/api/admin/orders/OrdersModalCard.vue'
+import { useLogout } from '../composible/useLogout'
 
+const { handlerLogout } = useLogout()
 const storeAdmin = useAdminStore()
 const route = useRoute()
 const openSublistId = ref(null)
@@ -129,6 +130,7 @@ watch(route, () => {
         </div>
       </div>
       <div
+        @click="handlerLogout"
         class="text-2xl ml-3 mb-10 flex gap-x-3 items-center duration-200 hover:bg-[#1f2b45] bg-[#1b233a] cursor-pointer p-3 rounded-xl"
       >
         <span><IconLogout /></span><span>Выход</span>
