@@ -23,19 +23,6 @@ defineProps({
         |
         <span class="font-medium"><span class="font-normal">Размер:</span> {{ dish.size }}</span>
       </div>
-      <div
-        class="flex my-3 gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 max-sm:mb-3 max-sm:flex-wrap"
-      >
-        <span class="font-medium flex gap-x-3"
-          ><span class="font-normal">Статус:</span>
-          <div
-            :class="dish.status ? 'bg-green-500 text-white' : 'bg-yellow-500'"
-            class="px-2 py-0.5 rounded-xl max-sm:px-1.5 max-sm:text-[12px]"
-          >
-            {{ dish.status ? 'Доставлен' : 'В процессе' }}
-          </div></span
-        >
-      </div>
     </div>
   </div>
 </template>

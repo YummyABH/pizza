@@ -2,12 +2,14 @@
 import { orderAPI } from '@/api/apiOrder'
 import { useAdminStore } from '@/stores/adminStore'
 import { useOrderAllStore } from '@/stores/orderAllStore'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import OrdersDishCard from '@/api/admin/ui/card/OrdersDishCard.vue'
 import OrdersTableCardMini from '@/api/admin/ui/card/table/OrdersTableCardMini.vue'
 import OrderTableItem from '@/api/admin/ui/card/table/OrderTableItem.vue'
 import OrdersModalCard from '@/api/admin/orders/OrdersModalCard.vue'
 import IconCrass from '../icons/IconCrass.vue'
+
+const ws = ref<WebSocket | null>(null)
 
 const store = useOrderAllStore()
 const storeAdmin = useAdminStore()
@@ -29,6 +31,26 @@ onMounted(async () => {
     const allHistoryOrder = await orderAPI.getAllOrder()
     store.updateAllHistoryOrder(allHistoryOrder)
   } catch (error) {}
+})
+
+onMounted(() => {
+  ws.value = new WebSocket(
+    `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,
+  ) // Замени на свой URL
+
+  ws.value.onopen = () => {
+    console.log('WebSocket connected')
+    ws.value.send(JSON.stringify({ type: 'get_orders' }))
+  }
+
+  ws.value.onmessage = (event) => {
+    const data = JSON.parse(event.data)
+    if (data.type === 'orders_update' && data.changeType === 'added') {
+      store.addHistoryOrder(data.data[0])
+    }
+    // store.allHistoryOrder()
+    console.log('Обновления заказов:', data)
+  }
 })
 </script>
 
