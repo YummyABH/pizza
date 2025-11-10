@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
 
+//#region  types
+
+//#endregion
+
 export const useDishesStore = defineStore('dishes', () => {
   const dishes = ref([])
 
