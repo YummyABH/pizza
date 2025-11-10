@@ -1,83 +1,124 @@
 <script setup lang="ts">
 import { orderAPI } from '@/api/apiOrder'
-import IconEye from '@/components/icons/IconEye.vue'
 import { useAdminStore } from '@/stores/adminStore'
 import { useOrderAllStore } from '@/stores/orderAllStore'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
+import OrdersDishCard from '@/api/admin/ui/card/OrdersDishCard.vue'
+import OrdersTableCardMini from '@/api/admin/ui/card/table/OrdersTableCardMini.vue'
+import OrderTableItem from '@/api/admin/ui/card/table/OrderTableItem.vue'
+import OrdersModalCard from '@/api/admin/orders/OrdersModalCard.vue'
+import IconCrass from '../icons/IconCrass.vue'
+
+const ws = ref<WebSocket | null>(null)
 
 const store = useOrderAllStore()
 const storeAdmin = useAdminStore()
-const activeDish = ref(null)
+const activeDish = ref(false)
+const dishesList = ref([])
+const idActiveModal = ref(null)
+const activeOrder = reactive({
+  cutlery_status: false,
+  cutlery_quantity: 0,
+  phone: '',
+  delivery: {
+    comment: '',
+  },
+  order_comment: '',
+})
 
 onMounted(async () => {
   try {
     const allHistoryOrder = await orderAPI.getAllOrder()
-    console.log('allHistoryOrder: ', allHistoryOrder);
-    
     store.updateAllHistoryOrder(allHistoryOrder)
-  } catch (error) {
-    console.log('error allHistoryOrder: ', error);
-    
-  }
-
+  } catch (error) {}
 })
 
-function normalizeTime(time: string) {
-  const date = new Date(time)
-  const pad = (n: number) => n.toString().padStart(2, '0')
-  const formatted = `${pad(date.getHours())}:${pad(date.getMinutes())} ${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
-  return formatted
-}
+onMounted(() => {
+  ws.value = new WebSocket(
+    `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,
+  ) // Замени на свой URL
 
-watch(store.allHistoryOrder, () => {
-  console.log('store.allHistoryOrder: ', store.allHistoryOrder);
-  
+  ws.value.onopen = () => {
+    console.log('WebSocket connected')
+    ws.value.send(JSON.stringify({ type: 'get_orders' }))
+  }
+
+  ws.value.onmessage = (event) => {
+    const data = JSON.parse(event.data)
+    if (data.type === 'orders_update' && data.changeType === 'added') {
+      store.addHistoryOrder(data.data[0])
+    }
+    // store.allHistoryOrder()
+    console.log('Обновления заказов:', data)
+  }
 })
 </script>
 
 <template>
   <div
-    :class="storeAdmin.openSidebar ? 'pl-70 max-2xl:pl-50' : 'pl-0'"
+    v-show="idActiveModal"
+    class="md:hidden overflow-y-scroll fixed h-full left-0 -top-24 text-center px-10 max-sm:px-3 w-full mt-25 max-md:py-6 py-12 bg-white rounded-2xl"
+  >
+    <div class="bg-white fixed left-0 top-0 z-50 w-full px-10 py-2">
+      <div class="flex justify-self-end border rounded-full p-0.5" @click="idActiveModal = false">
+        <IconCrass />
+      </div>
+    </div>
+    <div
+      class="col-span-3 text-white gap-x-3 grid grid-cols-8 rounded-xl mt-6 py-2 bg-[#1b233a] px-5"
+    >
+      <div class="text-sm col-span-full border-b flex gap-4 py-1 justify-center">
+        <h3 class="text-blue-200">Приборы:</h3>
+        <span>{{
+          activeOrder.cutlery_status ? activeOrder.cutlery_quantity + ' шт.' : 'Не нужны'
+        }}</span>
+      </div>
+      <div class="text-sm col-span-full flex gap-4 py-1 justify-center">
+        <h3 class="text-blue-200">Номер телефона:</h3>
+        <span>{{ activeOrder.phone }}</span>
+      </div>
+      <div class="col-span-full flex flex-col text-sm pb-1 border-y">
+        <h3 class="text-blue-200">Комментарий к адресу:</h3>
+        <span>{{ activeOrder.delivery.comment }}</span>
+      </div>
+      <div class="col-span-full flex-col text-sm flex pt-1 pb-1">
+        <h3 class="text-blue-200">Комментарий к заказу:</h3>
+        <span>{{ activeOrder.order_comment }}</span>
+      </div>
+    </div>
+    <h1 class="text-3xl font-semibold mt-4">Заказы</h1>
+    <div class="max-sm:pt-6 pt-8">
+      <div
+        class="w-full grid grid-cols-4 gap-10 max-xl:grid-cols-3 max-sm:gap-4 max-sm:gap-y-8 max-lg:grid-cols-2"
+      >
+        <OrdersModalCard v-for="(dish, indexDish) in dishesList" :key="indexDish" :dish="dish" />
+      </div>
+    </div>
+  </div>
+  <div
+    :class="storeAdmin.openSidebar ? 'pl-70 max-2xl:pl-50 max-md:pl-0' : 'pl-0'"
     class="w-screen flex justify-self-end text-white"
   >
-    <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0">
-      <h1 class="mb-8 text-2xl font-medium">Заказы</h1>
+    <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0 max-md:mx-0">
+      <h1 class="mb-8 text-2xl text-center font-medium">Заказы</h1>
       <!-- <div class="grid grid-cols-4 gap-7"></div> -->
-      <div class="bg-[#111827] rounded-xl p-5 max-w-full overflow-x-scroll">
+      <div class="max-md:hidden bg-[#111827] rounded-xl p-5 max-w-full overflow-x-au">
         <div class="min-w-300 grid grid-cols-7 w-full justify-between gap-x-3">
           <div class="grid grid-cols-subgrid col-span-7 border-b border-t">
             <div class="flex px-5 py-3 justify-self-center w-max">Номер заказа</div>
             <div class="flex px-5 py-3 justify-self-center w-max">Имя</div>
             <div class="flex px-5 py-3 justify-self-center w-max">Дата заказа</div>
             <div class="flex px-5 py-3 justify-self-center w-max">Адрес</div>
-            <div class="flex px-5 py-3 justify-self-center w-max">Сумма</div>
             <div class="flex px-5 py-3 justify-self-center w-max">Статус</div>
+            <div class="flex px-5 py-3 justify-self-center w-max">Сумма</div>
             <div class="flex px-5 py-3 justify-self-center w-max"></div>
           </div>
-          <div
+          <OrderTableItem
             v-for="order in store.allHistoryOrder"
             :key="order.id"
-            @click="order.id === activeDish ? (activeDish = null) : (activeDish = order.id)"
-            class="grid grid-cols-subgrid col-span-7 border-b border-t"
+            :order="order"
+            v-model:active-dish="activeDish"
           >
-            <div class="flex px-5 py-3 justify-self-center w-max">{{ order.id }}</div>
-            <div class="flex px-5 py-3 justify-self-center w-max">{{ order.name }}</div>
-            <div class="flex px-5 py-3 justify-self-center w-max">
-              {{ normalizeTime(order.created_at) }}
-            </div>
-            <div class="flex px-5 py-3 justify-self-center w-max">
-              {{ order.delivery.status ? order.delivery.address : 'Самовывоз' }}
-            </div>
-            <div class="flex px-5 py-3 justify-self-center w-max">
-              <div
-                :class="order.status ? 'bg-green-500 text-white' : 'bg-yellow-500'"
-                class="px-2 py-0.5 rounded-xl max-sm:px-1.5 max-sm:text-[12px]"
-              >
-                {{ order.status ? 'Доставлен' : 'В процессе' }}
-              </div>
-            </div>
-            <div class="flex px-5 py-3 justify-self-center w-max">{{ order.total_price }}</div>
-            <div class="flex px-5 py-3 justify-self-center w-max"><IconEye /></div>
             <div
               @click.stop
               class="col-span-7 justify-between px-5 py-7 grid grid-cols-3 gap-4 bg-[#6760c4]"
@@ -103,48 +144,23 @@ watch(store.allHistoryOrder, () => {
                   <span>{{ order.order_comment }}</span>
                 </div>
               </div>
-              <div
-                v-for="dish in order?.dishes"
-                :key="dish.id"
-                class="rounded-xl flex gap-x-3 bg-[#1b233a]"
-              >
-                <img
-                  :src="`https://restik-street-style.onrender.com/uploads/${dish?.image}`"
-                  class="aspect-1/1 object-cover w-25 rounded-lg"
-                />
-                <div class="">
-                  <h3 class="mb-1 font-medium max-sm:text-base text-start">
-                    <span class="font-normal">Название:</span> {{ dish.name }}
-                  </h3>
-                  <div
-                    class="flex gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 max-sm:mb-3 max-sm:flex-wrap"
-                  >
-                    <span class="font-medium"
-                      ><span class="font-normal">Количество:</span> {{ dish.quantity }}</span
-                    >
-                    |
-                    <span class="font-medium"
-                      ><span class="font-normal">Размер:</span> {{ dish.size }}</span
-                    >
-                  </div>
-                  <div
-                    class="flex my-3 gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 max-sm:mb-3 max-sm:flex-wrap"
-                  >
-                    <span class="font-medium flex gap-x-3"
-                      ><span class="font-normal">Статус:</span>
-                      <div
-                        :class="dish.status ? 'bg-green-500 text-white' : 'bg-yellow-500'"
-                        class="px-2 py-0.5 rounded-xl max-sm:px-1.5 max-sm:text-[12px]"
-                      >
-                        {{ dish.status ? 'Доставлен' : 'В процессе' }}
-                      </div></span
-                    >
-                  </div>
-                </div>
-              </div>
+              <OrdersDishCard v-for="dish in order?.dishes" :key="dish.id" :dish="dish" />
             </div>
-          </div>
+          </OrderTableItem>
         </div>
+      </div>
+      <div class="py-6 grid px-4 gap-4 sm:grid-cols-3 md:hidden [480px]:grid-cols-2 grid-cols-1">
+        <OrdersTableCardMini
+          v-for="order in store.allHistoryOrder"
+          :key="order.id"
+          @click="
+            ((dishesList = order.dishes),
+            idActiveModal ? (idActiveModal = false) : (idActiveModal = true),
+            (activeOrder = order))
+          "
+          :order="order"
+          v-model:activeDish="activeDish"
+        />
       </div>
     </div>
   </div>

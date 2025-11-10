@@ -1,4 +1,3 @@
-import { refreshInstance } from '@/api/admin/configAuth.ts'
 import { ofetch } from 'ofetch'
 
 const authAPI = () => {
@@ -10,9 +9,11 @@ const authAPI = () => {
   }
 
   const logout = async (credentials) => {
-    return await APIInstance('/auth/login', {
+    const refreshToken = localStorage.getItem('refreshToken')
+    return await ofetch('https://restik-street-style.onrender.com/api/auth/logout', {
       method: 'POST',
       body: credentials,
+      headers: { refresh_token: refreshToken },
     })
   }
 
@@ -24,7 +25,7 @@ const authAPI = () => {
     })
   }
 
-  return { login, refresh }
+  return { login, refresh, logout }
 }
 
 export { authAPI }

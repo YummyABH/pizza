@@ -1,3 +1,4 @@
+import { orderAPI } from '@/api/apiOrder'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -9,5 +10,16 @@ export const useOrderAllStore = defineStore('orderAll', () => {
 
     allHistoryOrder.value = [...newValue]
   }
-  return { allHistoryOrder, updateAllHistoryOrder }
+
+  function addHistoryOrder(newValue) {
+    if (!newValue) return
+
+    allHistoryOrder.value.push(newValue)
+  }
+
+  async function updateStatusOrder(id: number) {
+    await orderAPI.postUpdateStatus(id)
+  }
+
+  return { allHistoryOrder, updateAllHistoryOrder, addHistoryOrder, updateStatusOrder }
 })

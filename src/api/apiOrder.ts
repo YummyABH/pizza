@@ -29,4 +29,11 @@ export const orderAPI = {
       method: 'GET',
     })
   },
+  async postUpdateStatus(id: number) {
+    const url = '/api/orders/access-order'
+    return await APIInstanceAdmin(url, {
+      method: 'POST',
+      body: { id: id },
+    })
+  },
 }

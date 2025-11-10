@@ -1,7 +1,9 @@
 import { $fetch } from 'ofetch'
 import { authAPI } from './auth'
+import { useLogout } from '@/components/composible/useLogout'
 
 const { refresh } = authAPI()
+const { handlerLogout } = useLogout()
 
 const APIInstanceAdminBase = $fetch.create({
   baseURL: 'https://restik-street-style.onrender.com',
@@ -19,6 +21,9 @@ export const APIInstanceAdmin = async (url, options = {}) => {
   try {
     return await APIInstanceAdminBase(url, options)
   } catch (error) {
+    if (error.response?.status === 401) {
+      // handlerLogout()
+    }
     if (error.response?.status === 403) {
       try {
         const refreshResponse = await refresh()
@@ -29,7 +34,7 @@ export const APIInstanceAdmin = async (url, options = {}) => {
         return await APIInstanceAdminBase(url, { ...options, _retryAttempted: true })
       } catch (refreshError) {
         console.error('Refresh token error: ', refreshError)
-        throw refreshError 
+        throw refreshError
       }
     }
     throw error
