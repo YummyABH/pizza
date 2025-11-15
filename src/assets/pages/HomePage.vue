@@ -8,7 +8,7 @@ const store = useDishesStore()
 const baseMenu = ref(null)
 
 onMounted(async () => {
-  const dishesList = await categoriesAPI.getDishes()
+  const dishesList = await categoriesAPI.getDishes()  
   store.updateDishes(dishesList)
 })
 </script>

@@ -6,7 +6,7 @@ import type { CreateOrderRequest, CreateOrderResponse } from '@/types/api'
 export const orderAPI = {
   async postOrder(data: CreateOrderRequest) {
     const url = '/api/orders/create'
-    return await APIInstancePersonal(url, {
+    return await APIInstancePersonal<CreateOrderResponse>(url, {
       method: 'POST',
       body: data,
     })

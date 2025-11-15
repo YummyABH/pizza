@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia'
 import { orderAPI } from '@/api/apiOrder'
 import { reactive, ref, watch } from 'vue'
+import type { OrderState } from '@/types/stores'
+import type { MenuDishResponse, BaseDish } from '@/types/api'
 
 export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
-  const initialOrder = savedOrder ? JSON.parse(savedOrder) : null
+  const initialOrder:OrderState | null = savedOrder ? JSON.parse(savedOrder) : null
 
   const dataAddress = ref([])
 
-  const order = reactive(
+  const order = reactive<OrderState>(
     initialOrder || {
       name: '',
       phone: '',
@@ -27,48 +29,50 @@ export const useOrderStore = defineStore('order', () => {
   watch(
     order,
     (newOrder) => {
-      console.log(order)
-
       localStorage.setItem('order', JSON.stringify(newOrder))
     },
     { deep: true },
   )
 
-  function cutleryAdd() {
+  function cutleryAdd(): number{
     return order.cutlery_quantity >= 50 ? (order.cutlery_quantity = 50) : order.cutlery_quantity++
   }
 
-  function cutleryReduce() {
+  function cutleryReduce(): number{
     return order.cutlery_quantity <= 1 ? (order.cutlery_quantity = 1) : order.cutlery_quantity--
   }
 
-  function dishAdd(id: number, default_characteristics: number) {
+  function dishAdd(id: number, default_characteristics: number): number | void {
     const dish = order.dishes.find(
       (dish) => dish.id === id && dish.default_characteristics === default_characteristics,
     )
-    return dish.quantity >= 99 ? (dish.quantity = 99) : dish.quantity++
+    if (dish) {
+      return dish.quantity >= 99 ? (dish.quantity = 99) : dish.quantity++
+    }
   }
 
-  function dishReduce(id: number, default_characteristics: number) {
+  function dishReduce(id: number, default_characteristics: number): number | void {
     const dish = order.dishes.find(
       (dish) => dish.id === id && dish.default_characteristics === default_characteristics,
     )
-    return dish.quantity <= 1 ? (dish.quantity = 1) : dish.quantity--
+    if (dish) {
+      return dish.quantity <= 1 ? (dish.quantity = 1) : dish.quantity--
+    }
   }
 
-  function deleteDish(removeDish: object) {
+  function deleteDish(removeDish: MenuDishResponse): void {
     order.dishes = order.dishes.filter(
       (dish) => JSON.stringify(dish) !== JSON.stringify(removeDish),
     )
   }
 
-  function clearDishesInOrder() {
+  function clearDishesInOrder(): void {
     order.dishes = []
   }
 
-  function addDishItem(newDish: object, indexCharacteristics?: string) {
+  function addDishItem(newDish: MenuDishResponse, indexCharacteristics: number): void {
     const addDish = { ...newDish }
-    let status = false
+    let status: boolean = false
 
     for (const dish of order.dishes) {
       if (dish.id === addDish.id && dish.default_characteristics === indexCharacteristics) {
@@ -83,7 +87,7 @@ export const useOrderStore = defineStore('order', () => {
     order.dishes = [...order.dishes, addDish]
   }
 
-  function normalizeDishOrder(dish: object) {
+  function normalizeDishOrder(dish: MenuDishResponse): BaseDish {
     return {
       id: dish.id,
       quantity: dish.quantity,
@@ -93,9 +97,12 @@ export const useOrderStore = defineStore('order', () => {
 
   async function postOrder() {
     try {
-      const data = { ...order }
-      data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
-      const result = await orderAPI.postOrder(data)
+      const rawData = { ...order }
+      const normalizeData = { 
+        ...rawData,
+        dishes: rawData.dishes.map((dish) => normalizeDishOrder(dish))
+      }
+      const result = await orderAPI.postOrder(normalizeData)
       return result
     } catch (error) {
       console.log(error)
@@ -103,7 +110,7 @@ export const useOrderStore = defineStore('order', () => {
   }
 
   function createDebouncedGeoRequest() {
-    let timer = null
+    let timer: number | undefined = undefined
 
     return () => {
       clearTimeout(timer)
