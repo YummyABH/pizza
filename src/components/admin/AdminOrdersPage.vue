@@ -39,7 +39,6 @@ onMounted(() => {
   ) // Замени на свой URL
 
   ws.value.onopen = () => {
-    console.log('WebSocket connected')
     ws.value.send(JSON.stringify({ type: 'get_orders' }))
   }
 
@@ -48,8 +47,6 @@ onMounted(() => {
     if (data.type === 'orders_update' && data.changeType === 'added') {
       store.addHistoryOrder(data.data[0])
     }
-    // store.allHistoryOrder()
-    console.log('Обновления заказов:', data)
   }
 })
 </script>
