@@ -8,19 +8,19 @@ export const useOrderInputStore = defineStore('orderInput', () => {
   //#region fields
   // Ошибки для полей
   const formErrors = {
-    name: ref(null),
-    phone: ref(null),
-    address: ref(null),
-    comment: ref(null),
-    order_comment: ref(null),
+    name: ref<null | string>(null),
+    phone: ref<null | string>(null),
+    address: ref<null | string>(null),
+    comment: ref<null | string>(null),
+    order_comment: ref<null | string>(null),
   }
 
   //#endregion
 
   //#region masks
   const displayFields = {
-    address: computed(() => orderStore.order.delivery.status),
-    comment: computed(() => orderStore.order.delivery.status),
+    address: computed<boolean>(() => orderStore.order.delivery.status),
+    comment: computed<boolean>(() => orderStore.order.delivery.status),
   }
 
   const nameMask = {
@@ -40,27 +40,32 @@ export const useOrderInputStore = defineStore('orderInput', () => {
 
   //#region validation
   const validationRules = {
-    name: (value) => (value.trim().length > 1 ? null : 'Заполните поле'),
-    phone: (value) =>
+    name: (value: string): null | string => (value.trim().length > 1 ? null : 'Заполните поле'),
+    phone: (value: string): null | string =>
       value.replace(/\D/g, '').length === 11 ? null : 'Введите корректный номер телефона',
-    address: (value) =>
+    address: (value: string): null | string =>
       value.trim().length > 3 ? null : `Введите адрес, значение с ошибкой: ${value}, вот`,
-    comment: (value) => (value.trim().length >= 0 ? null : ''),
-    order_comment: (value) => (value.trim().length >= 0 ? null : ''),
+    comment: (value: string): null | string => (value.trim().length >= 0 ? null : ''),
+    order_comment: (value: string): null | string => (value.trim().length >= 0 ? null : ''),
   }
 
-  function validateForm() {
-    let isValid = true
+  function validateForm(): boolean {
+    let isValid: boolean = true
 
-    for (const field in validationRules) {
-      if (field in displayFields && !displayFields[field].value) continue
+    for (const key in validationRules) {
+      const field = key as keyof typeof validationRules
 
-      const error =
+      if (field in displayFields) {
+        const isDisplayed = displayFields[field as keyof typeof displayFields].value
+        if (!isDisplayed) {
+          continue
+        }
+      }
+
+      const error:null | string =
         field === 'address' || field === 'comment'
           ? validationRules[field](orderStore.order.delivery[field])
           : validationRules[field](orderStore.order[field])
-
-      console.log(error)
 
       formErrors[field].value = error
 
@@ -70,8 +75,8 @@ export const useOrderInputStore = defineStore('orderInput', () => {
     return isValid
   }
 
-  function clearError(field) {
-    formErrors[field] ? (formErrors[field].value = null) : ''
+  function clearError(field: keyof typeof formErrors) {
+    return formErrors[field] ? (formErrors[field].value = null) : ''
   }
   //#endregion
 

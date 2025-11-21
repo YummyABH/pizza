@@ -27,26 +27,31 @@ const activeOrder = reactive({
 })
 
 onMounted(async () => {
-  try {
-    const allHistoryOrder = await orderAPI.getAllOrder()
-    store.updateAllHistoryOrder(allHistoryOrder)
-  } catch (error) {}
+    // const allHistoryOrder = await orderAPI.getAllOrder()
+    // store.updateAllHistoryOrder(allHistoryOrder)
 })
 
 onMounted(() => {
   ws.value = new WebSocket(
     `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,
-  ) // Замени на свой URL
+  )
 
   ws.value.onopen = () => {
     ws.value.send(JSON.stringify({ type: 'get_orders' }))
+
   }
 
   ws.value.onmessage = (event) => {
     const data = JSON.parse(event.data)
     if (data.type === 'orders_update' && data.changeType === 'added') {
-      store.addHistoryOrder(data.data[0])
+      console.log(data);
+
+      store.updateAllHistoryOrder(data.orders)
     }
+<<<<<<< HEAD
+=======
+    console.log('Обновления заказов:', data)
+>>>>>>> 6d287420a7c83ef2ebe439cf5daea668e1106773
   }
 })
 </script>

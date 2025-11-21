@@ -1,12 +1,12 @@
 import { APIInstancePersonal } from './configPersonal'
-import { APIInstance } from './config'
 import { APIYandexInstance } from './yandexConfig'
 import { APIInstanceAdmin } from '@/api/admin/config'
+import type { CreateOrderRequest, CreateOrderResponse } from '@/types/api'
 
 export const orderAPI = {
-  async postOrder(data: object) {
+  async postOrder(data: CreateOrderRequest) {
     const url = '/api/orders/create'
-    return await APIInstancePersonal(url, {
+    return await APIInstancePersonal<CreateOrderResponse>(url, {
       method: 'POST',
       body: data,
     })

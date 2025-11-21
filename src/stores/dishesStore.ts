@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { readonly, ref } from 'vue'
+import type { MenuCategory } from '@/types/api'
 
 export const useDishesStore = defineStore('dishes', () => {
-  const dishes = ref([])
+  const dishes = ref<MenuCategory[]>([])
 
-  function updateDishes(newValue) {
+  function updateDishes(newValue: MenuCategory[]) {
     if (!newValue) return
 
     dishes.value = [...newValue]
@@ -14,20 +15,20 @@ export const useDishesStore = defineStore('dishes', () => {
     newDefaultCharacteristics: number,
     indexCategory: number,
     indexDish: number,
-  ) {
+  ): void{
     if (!dishes.value[indexCategory].dishes[indexDish]) return
     dishes.value[indexCategory].dishes[indexDish].default_characteristics =
       newDefaultCharacteristics
   }
 
-  function dishAdd(indexCategory: number, indexDish: number) {
+  function dishAdd(indexCategory: number, indexDish: number): number | void{
     const dish = dishes.value[indexCategory].dishes[indexDish]
     if (!dish) return
 
     return dish.quantity >= 99 ? (dish.quantity = 99) : dish.quantity++
   }
 
-  function dishReduce(indexCategory: number, indexDish: number) {
+  function dishReduce(indexCategory: number, indexDish: number): number | void{
     const dish = dishes.value[indexCategory].dishes[indexDish]
     if (!dish) return
 
