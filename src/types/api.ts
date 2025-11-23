@@ -39,7 +39,7 @@ export interface MenuDishResponse {
     composition: string[]
     quantity: number
     image: string
-    categoryid: number
+    categoryId: number
     default_characteristics: number
     characteristics: DishCharacteristics[]
   }

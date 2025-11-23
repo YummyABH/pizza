@@ -15,11 +15,12 @@ export const useOrderAllStore = defineStore('orderAll', () => {
   function addHistoryOrder(newValue: CreateOrderResponse) {
     if (!newValue) return
 
-    allHistoryOrder.value.push(newValue)
+    allHistoryOrder.value.unshift(newValue)
   }
 
-  async function updateStatusOrder(id: number) {
-    await orderAPI.postUpdateStatus(id)
+  async function updateStatusOrder(newValue: CreateOrderResponse, id: number) {
+    const idUpdatedOrder: number = allHistoryOrder.value.findIndex(item => item.id === id)
+    allHistoryOrder.value[idUpdatedOrder] = newValue
   }
 
   return { allHistoryOrder, updateAllHistoryOrder, addHistoryOrder, updateStatusOrder }

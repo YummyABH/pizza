@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { useAdminStore } from '@/stores/adminStore'
+import DishesTableItem from '@/components/admin/ui/table/DishesTableItem.vue';
+import { categoriesAPI } from '@/api/apiGetDish';
+import { useAdminMenuStore } from '@/stores/adminMenuStore';
+import { onMounted } from 'vue';
 
+const adminMenuStore = useAdminMenuStore()
 const storeAdmin = useAdminStore()
+
+onMounted(async () => {
+  const response = await categoriesAPI.getAllDishes()
+  adminMenuStore.updateAdminDishes(response)
+})
 </script>
 
 <template>
@@ -11,7 +21,7 @@ const storeAdmin = useAdminStore()
   >
     <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0 max-md:mx-0">
       <h1 class="mb-8 text-2xl text-center font-medium">Блюда</h1>
-      <div class="max-md:hidden bg-[#111827] rounded-xl p-5 max-w-full overflow-x-au">
+        <div class="max-md:hidden bg-[#111827] rounded-xl p-5 max-w-full overflow-x-au">
         <div class="min-w-300 grid grid-cols-7 w-full justify-between gap-x-3">
           <div class="grid grid-cols-subgrid col-span-7 border-b border-t">
             <div class="flex px-5 py-3 justify-self-center w-max">Номер блюда</div>
@@ -21,6 +31,7 @@ const storeAdmin = useAdminStore()
             <div class="flex px-5 py-3 justify-self-center col-start-6 w-max">Статус</div>
             <div class="flex px-5 py-3 justify-self-center w-max"></div>
           </div>
+          <DishesTableItem v-for="dish in adminMenuStore.adminDishes" :key="dish.id" :dish="dish"/>
           <!-- <OrderTableItem
             v-for="order in store.allHistoryOrder"
             :key="order.id"

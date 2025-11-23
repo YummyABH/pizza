@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/assets/pages/HomePage.vue'
 import OrderModalSide from '@/components/order/OrderModalSide.vue'
-import OrderHistory from '@/assets/pages/OrderHistory.vue'
+import OrderHistoryPage from '@/assets/pages/OrderHistoryPage.vue'
 import AdminLoginPage from '@/components/admin/AdminLoginPage.vue'
 import AdminOrdersPage from '@/components/admin/AdminOrdersPage.vue'
 import AdminMenuPage from '@/components/admin/auth/AdminMenuPage.vue'
@@ -28,8 +28,8 @@ const router = createRouter({
     },
     {
       path: '/order-history',
-      name: 'OrderHistory',
-      component: OrderHistory,
+      name: 'OrderHistoryPage',
+      component: OrderHistoryPage,
       meta: { layout: 'user', lockScroll: false },
     },
     {
@@ -69,6 +69,12 @@ const router = createRouter({
           meta: { layout: 'admin', lockScroll: false, noSidebar: false },
         },
       ],
+    },
+    {
+      path: '/dishes/edit/:id',
+      name: 'AdminUsersPage',
+      component: AdminUsersPage,
+      meta: { layout: 'admin', lockScroll: false, noSidebar: false },
     },
   ],
 })

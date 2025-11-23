@@ -1,5 +1,6 @@
+import { APIInstanceAdmin } from './admin/config'
 import { APIInstance } from './config'
-import type { MenuCategory, CategoryDishes } from '@/types/api'
+import type { MenuCategory, CategoryDishes, MenuDishResponse } from '@/types/api'
 
 export const categoriesAPI = {
   async getCategories() {
@@ -10,8 +11,14 @@ export const categoriesAPI = {
   },
   async getDishes() {
     const url = '/api/categories/read-with-dishes'
-    return await APIInstance<MenuCategory>(url, {
+    return await APIInstance<MenuCategory[]>(url, {
       method: 'GET',
     })
   },
+  async getAllDishes() {
+    const url = '/api/dishes/read-all'
+    return await APIInstanceAdmin(url, {
+      method: 'GET',
+    }) as MenuDishResponse[]
+  }
 }
