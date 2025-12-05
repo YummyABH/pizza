@@ -8,7 +8,7 @@ const authAPI = () => {
     })
   }
 
-  const logout = async (credentials) => {
+  const logout = async (credentials: string) => {
     const refreshToken = localStorage.getItem('refreshToken')
     return await ofetch('https://restik-street-style.onrender.com/api/auth/logout', {
       method: 'POST',

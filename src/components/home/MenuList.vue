@@ -30,8 +30,8 @@ const setCategoryRefs = (el) => {
     :ref="setCategoryRefs"
     class="max-sm:pt-6 pt-8"
     v-for="(dishList, indexCategory) in store.dishes"
-    :key="dishList.categoryId"
-    :id="`${dishList.categoryId}`"
+    :key="dishList.category_id"
+    :id="`${dishList.category_id}`"
   >
     <h2 class="mb-6 text-2xl font-semibold">{{ dishList.category_name }}</h2>
     <div

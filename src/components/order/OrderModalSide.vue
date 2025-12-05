@@ -34,7 +34,7 @@ const sumPrice = computed(() =>
     <div class="flex flex-col gap-y-6">
       <div
         v-for="dish in storeOrder.order.dishes"
-        :key="dish.categoryid"
+        :key="dish.category_id"
         class="flex group gap-x-3"
       >
         <div class="w-14 h-14">
