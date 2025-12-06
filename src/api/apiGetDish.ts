@@ -1,6 +1,6 @@
 import { APIInstanceAdmin } from './admin/config'
 import { APIInstance } from './config'
-import type { MenuCategory, CategoryDishes, MenuDishResponse } from '@/types/api'
+import type { MenuCategory, CategoryDishes, MenuDishResponse, CategoryDishes } from '@/types/api'
 
 export const categoriesAPI = {
   async getCategories() {
@@ -21,11 +21,25 @@ export const categoriesAPI = {
       method: 'GET',
     })) as MenuDishResponse[]
   },
+
+  async addCategory(data) {
+    const url = '/api/categories/create'
+    return (await APIInstanceAdmin(url, {
+      method: 'POST',
+      body: data
+    })) as CategoryDishes[]
+  },
+  // async delateCategory() {
+  //   const url = '/api/dishes/read-all'
+  //   return (await APIInstanceAdmin(url, {
+  //     method: 'GET',
+  //   })) as MenuDishResponse[]
+  // },
   async updateDish(data) {
     const url = '/api/dishes/update'
     return (await APIInstanceAdmin(url, {
       method: 'POST',
-      data: data,
-    })) as MenuDishResponse[]
+      body: data,
+    }, 'multipart/form-data')) as MenuDishResponse[]
   },
 }

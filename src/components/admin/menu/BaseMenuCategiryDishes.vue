@@ -1,19 +1,31 @@
 <script setup lang="ts">
 import { useAdminStore } from '@/stores/adminStore'
 import { categoriesAPI } from '@/api/apiGetDish'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAdminMenuStore } from '@/stores/adminMenuStore'
+import IconBasket from '@/components/icons/IconBasket.vue'
+import BaseDelateItem from '@/components/ui/BaseDelateItem.vue'
+import { addCatigories } from '@/utility/addCategories'
 
 const storeAdmin = useAdminStore()
 const adminMenuStore = useAdminMenuStore()
 
+const isOpenDelateModal = ref<boolean>(false)
+
+function updateCategories() {
+  addCatigories(adminMenuStore.adminMenu, adminMenuStore.lengthAdminMenu)
+
+}
+
 onMounted(async () => {
   const response = await categoriesAPI.getCategories()
   adminMenuStore.updateAdminCategory(response)
+  adminMenuStore.updateLengthAdminMenu()
 })
 </script>
 
 <template>
+  <BaseDelateItem v-model:is-open-delate-modal="isOpenDelateModal"/>
   <div
     :class="storeAdmin.openSidebar ? 'pl-70 max-2xl:pl-50 max-md:pl-0' : 'pl-0'"
     class="w-screen flex justify-self-end text-white"
@@ -23,6 +35,7 @@ onMounted(async () => {
       <div class="bg-[#111827] rounded-xl p-5 max-w-full max-sm:px-2 text-base">
         <div class="flex justify-self-end mb-4 gap-6 flex-wrap">
           <div
+          @click="updateCategories"
             class="text-lg rounded-lg px-3 py-2 cursor-pointer bg-gray-600 duration-200 hover:bg-blue-600"
           >
             Сохранить
@@ -39,20 +52,25 @@ onMounted(async () => {
           <div>Название</div>
         </div>
         <div
-          v-for="category in adminMenuStore.adminMenu"
-          :key="category.id"
-          class="flex justify-between border-y py-3 px-5 text-lg max-md:text-lg font-medium max-sm:text-sm max-sm:font-normal"
+        v-for="category in adminMenuStore.adminMenu"
+        :key="category.id"
+        class="flex justify-between border-y py-3 px-5 text-lg max-md:text-lg font-medium max-sm:text-sm max-sm:font-normal"
         >
           <input
             class="block w-15 border-gray-600 border-[1px] bg-gray-800 rounded-lg px-3 py-2 focus:outline-0 focus-within:border focus-within:border-gray-600"
-            type="text"
-            :value="category.id"
+            type="number"
+            v-model="category.position"
           />
-          <input
-            class="block w-auto max-sm:w-40 border-gray-600 border-[1px] bg-gray-800 rounded-lg px-3 py-2 focus:outline-0 focus-within:border focus-within:border-gray-600"
-            type="text"
-            :value="category.name"
-          />
+          <div class="flex gap-x-6 items-center">
+            <input
+              class="block w-auto max-sm:w-40 border-gray-600 border-[1px] bg-gray-800 rounded-lg px-3 py-2 focus:outline-0 focus-within:border focus-within:border-gray-600"
+              type="text"
+              v-model="category.name"
+            />
+            <div @click="isOpenDelateModal = true" class="border border-gray-600 bg-gray-800 hover:bg-gray-600 duration-200 cursor-pointer p-2 rounded-lg">
+              <IconBasket/>
+            </div>
+          </div>
         </div>
       </div>
     </div>

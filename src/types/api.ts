@@ -38,7 +38,7 @@ export interface MenuDishResponse {
   dish_status: boolean
   composition: string[]
   quantity: number
-  image: string
+  image: string | File
   category_id: number
   default_characteristics: number
   characteristics: DishCharacteristics[]
@@ -51,6 +51,8 @@ export interface MenuCategory {
 }
 
 export interface CategoryDishes {
+  position: number
+  status: boolean
   id: number
   name: string
 }

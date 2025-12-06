@@ -1,24 +1,25 @@
 <script setup lang="ts">
+import { useAdminMenuStore } from '@/stores/adminMenuStore'
 import { ref } from 'vue'
 
-const file = ref<File | null>(null)
 const urlImg = ref<string>('')
+const store = useAdminMenuStore()
 
 function delateImg() {
-  file.value = null
+  store.updateFieldEditDish('image', null)
   urlImg.value = ''
 }
 
 function handleChange(event: Event) {
   if (!event.target?.files[0]) return
-  file.value = event.target?.files[0]
-  urlImg.value = URL.createObjectURL(file.value)
+  store.updateFieldEditDish('image', event.target?.files[0])
+  urlImg.value = URL.createObjectURL(event.target?.files[0])
 }
 
 function handleDrop(event: DragEvent) {
   if (event.dataTransfer?.files[0]) {
-    file.value = event.dataTransfer.files[0]
-    urlImg.value = URL.createObjectURL(file.value)
+    store.updateFieldEditDish('image', event.dataTransfer?.files[0])
+    urlImg.value = URL.createObjectURL(event.dataTransfer?.files[0])
   }
 }
 </script>
@@ -33,20 +34,19 @@ function handleDrop(event: DragEvent) {
       <label for="file" class="inline-block z-20 absolute top-3 left-3 text-white">
         Нажмите для выбора файла или перенесите его в данную область
       </label>
-      <img v-show="urlImg" :src="urlImg" class="w-full h-full" />
+      <img v-show="urlImg || store.adminEditDish?.image" :src="urlImg || `https://restik-street-style.onrender.com/uploads/${store.adminEditDish?.image}`" class="w-full h-full" />
       <input
         accept="image/*"
         id="file"
         name="file"
         class="opacity-0 absolute top-0 left-0 w-full h-full"
-        ref="file"
         type="file"
         @change="handleChange"
       />
       <div
-        v-show="urlImg"
+        v-show="urlImg || store.adminEditDish?.image"
         @click="delateImg"
-        class="absolute right-3 top-3 z-50 rounded-full p-1 border border-white cursor-pointer duration-200 hover:bg-red-700 bg-red-600"
+        class="absolute right-3 top-3 z-20 rounded-full p-1 border border-white cursor-pointer duration-200 hover:bg-red-700 bg-red-600"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

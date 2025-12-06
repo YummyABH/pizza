@@ -8,7 +8,7 @@ const { handlerLogout } = useLogout()
 const APIInstanceAdminBase = $fetch.create({
   baseURL: 'https://restik-street-style.onrender.com',
   headers: {
-    'Content-Type': 'application/json',
+    // 'Content-Type': 'application/json',
   },
   async onRequest({ options }) {
     const accessToken = localStorage.getItem('accessToken')
@@ -17,9 +17,21 @@ const APIInstanceAdminBase = $fetch.create({
   },
 })
 
-export const APIInstanceAdmin = async (url, options = {}) => {
-  try {
-    return await APIInstanceAdminBase(url, options)
+export const APIInstanceAdmin = async (url, options = {}, contentType: string = 'application/json') => {
+  try {    
+    const fetchOptions = { ...options }
+
+    const isFormData = options.body instanceof FormData
+    if (contentType && !isFormData && fetchOptions.headers) {
+      fetchOptions.headers['Content-Type'] = contentType
+    } else if (contentType && !isFormData) {
+      fetchOptions.headers = { 
+        ...fetchOptions.headers, 
+        'Content-Type': contentType
+      }
+    }
+
+    return await APIInstanceAdminBase(url, fetchOptions)
   } catch (error) {
     if (error.response?.status === 401) {
       // handlerLogout()
