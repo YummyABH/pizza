@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAdminStore } from '@/stores/adminStore'
 import { useAdminMenuStore } from '@/stores/adminMenuStore'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { categoriesAPI } from '@/api/apiGetDish'
 import { useRoute, useRouter } from 'vue-router'
 import IconBasket from '../icons/IconBasket.vue'
@@ -16,35 +16,50 @@ const route = useRoute()
 const adminMenuStore = useAdminMenuStore()
 const storeAdmin = useAdminStore()
 
+const loadingStatus = ref<boolean>(false)
 const formDishEdit = ref()
 const idEditDish = route.fullPath.split('/')[4]
 const idOpenCharacteristics = ref<number | null>(null)
-const response = await categoriesAPI.getAllDishes()
-const responseCategories = await categoriesAPI.getCategories()
-adminMenuStore.updateAdminDishes(response)
-adminMenuStore.updateAdminCategory(responseCategories)
-adminMenuStore.updateEditDish(Number(idEditDish))
+// const response = await categoriesAPI.getAllDishes()
+// const responseCategories = await categoriesAPI.getCategories()
+// adminMenuStore.updateAdminDishes(response)
+// adminMenuStore.updateAdminCategory(responseCategories)
+// adminMenuStore.updateEditDish(Number(idEditDish))
 
 async function saveUpdatingEditDish() {
-  // const formData = new FormData();
-
-  //     // Добавляем только заполненные поля (кроме id — он обязателен)
-  //     for (const [key, value] of new FormData(formDishEdit.value)) {
-        
-  //         formData.append(key, value);
-        
-  //     }
-
-      
-  const normalizeDish = normalizeData(adminMenuStore.adminEditDish)
-  // console.log(formDishEdit);
-  const respoonse = await categoriesAPI.updateDish(normalizeDish)
-  console.log(respoonse);
-  
+  try {
+    loadingStatus.value = true
+    const normalizeDish = normalizeData(adminMenuStore.adminEditDish)
+    await categoriesAPI.updateDish(normalizeDish)
+  } catch (error) {
+    
+  } finally {
+    loadingStatus.value = false
+  }
 }
+
+onMounted(async () => {
+  try {
+    document.body.style.overflow = 'hidden'
+    loadingStatus.value = true
+    const response = await categoriesAPI.getAllDishes()
+    const responseCategories = await categoriesAPI.getCategories()
+    adminMenuStore.updateAdminDishes(response)
+    adminMenuStore.updateAdminCategory(responseCategories)
+    adminMenuStore.updateEditDish(Number(idEditDish))
+  } catch (error) {
+    
+  } finally {
+    loadingStatus.value = false
+    document.body.style.overflow = ''
+  }
+})
 </script>
 
 <template>
+  <div v-show="loadingStatus" class="w-screen h-screen bg-black/35 flex fixed top-0 left-0 z-50 justify-center items-center">
+    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-400"></div>
+  </div>
   <BaseDelateItem v-model:is-open-delate-modal="isOpenDelateModal" name="Пицца" />
   <div
   :class="storeAdmin.openSidebar ? 'pl-70 max-2xl:pl-50 max-md:pl-0' : 'pl-0'"
@@ -96,7 +111,7 @@ async function saveUpdatingEditDish() {
           <div class="p-2 rounded-lg max-md:col-span-full">
             <label class="text-xl inline-block mb-3"> Название: </label>
             <input
-            v-model="adminMenuStore.adminEditDish.dish_name"
+            v-model="adminMenuStore.adminEditDish.name"
             class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-3 py-2 focus:outline-0 focus-within:border focus-within:border-gray-600"
             type="text"
             />
@@ -113,6 +128,7 @@ async function saveUpdatingEditDish() {
           <div class="p-2 rounded-lg max-md:col-span-full">
             <label class="text-xl inline-block mb-3"> Позиция: </label>
             <input
+            v-model="adminMenuStore.adminEditDish.position"
             class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-3 py-2 focus:outline-0 focus-within:border focus-within:border-gray-600"
             type="number"
             />

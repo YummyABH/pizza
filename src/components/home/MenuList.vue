@@ -27,6 +27,7 @@ const setCategoryRefs = (el) => {
   />
 
   <div
+    v-show="dishList.dishes.length"
     :ref="setCategoryRefs"
     class="max-sm:pt-6 pt-8"
     v-for="(dishList, indexCategory) in store.dishes"
@@ -38,6 +39,7 @@ const setCategoryRefs = (el) => {
       class="w-full grid grid-cols-4 gap-10 max-xl:grid-cols-3 max-sm:gap-4 max-sm:gap-y-8 max-lg:grid-cols-2"
     >
       <MenuListCard
+        v-show="dish.dish_status"
         v-for="(dish, indexDish) in dishList.dishes"
         @click="((indexDishModal = indexDish), (indexCategoryModal = indexCategory))"
         v-model:statusModalDish="statusModalDish"

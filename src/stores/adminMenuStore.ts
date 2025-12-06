@@ -1,11 +1,29 @@
 import { defineStore } from 'pinia'
-import { readonly, ref, watch } from 'vue'
+import { readonly, ref } from 'vue'
 import type { MenuDishResponse, CategoryDishes } from '@/types/api'
 
 export const useAdminMenuStore = defineStore('adminMenu', () => {
   const adminMenu = ref<CategoryDishes[]>([])
   const adminDishes = ref<MenuDishResponse[]>([])
-  const adminEditDish = ref<MenuDishResponse | null>(null)
+  const adminEditDish = ref<MenuDishResponse>({
+    id: null,
+    name: null,
+    category_id: null,
+    category_name: null,
+    characteristics: [{
+       size: null,
+       price: null,
+       measure: null,
+       quantity: null,
+    }],
+    composition: [],
+    default_characteristics: null,
+    description: null,
+    dish_status: null,
+    image: null,
+    position: null,
+  })
+
   const lengthAdminMenu = ref<number>(0)
 
   function updateAdminCategory(newValue: CategoryDishes[]) {
@@ -16,6 +34,12 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   function updateAdminDishes(newValue: MenuDishResponse[]) {
     if (!newValue) return
     adminDishes.value = [...newValue]
+  }
+
+  function updateAdminDishesItem(newValue: MenuDishResponse, id: number) {
+    if (!newValue) return
+    adminDishes.value[id] = newValue
+    
   }
 
   function updateEditDish(id: number) {
@@ -86,5 +110,6 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     delateAdminComposition,
     addAdminComposition,
     updateLengthAdminMenu,
+    updateAdminDishesItem,
   }
 })

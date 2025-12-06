@@ -8,6 +8,7 @@ import AdminUsersPage from '@/components/admin/auth/AdminUsersPage.vue'
 import BaseMenuDishes from '@/components/admin/menu/BaseMenuDishes.vue'
 import BaseMenuCategiryDishes from '@/components/admin/menu/BaseMenuCategiryDishes.vue'
 import EditDishesPage from '@/components/admin/EditDishesPage.vue'
+import { watch } from 'vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
