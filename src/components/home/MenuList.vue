@@ -2,7 +2,7 @@
 import MenuListCard from './MenuListCard.vue'
 import MenuDishModal from './MenuDishModal.vue'
 import { useDishesStore } from '@/stores/dishesStore'
-import { ref } from 'vue'
+import { ref, toRaw } from 'vue'
 
 const store = useDishesStore()
 

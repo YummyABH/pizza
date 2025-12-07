@@ -29,14 +29,27 @@ export const categoriesAPI = {
       body: data
     })) as CategoryDishes[]
   },
-  // async delateCategory() {
-  //   const url = '/api/dishes/read-all'
+  async delateDish(id: number) {
+    const url = `/api/dishes/delete?dishId=${id}`
+    return (await APIInstanceAdmin(url, {
+      method: 'DELETE',
+    })) as MenuDishResponse[]
+  },
+  // async delateCategory(id: number) {
+  //   const url = `/api/dishes/delete?dishId=${id}`
   //   return (await APIInstanceAdmin(url, {
-  //     method: 'GET',
+  //     method: 'DELETE',
   //   })) as MenuDishResponse[]
   // },
   async updateDish(data) {
     const url = '/api/dishes/update'
+    return (await APIInstanceAdmin(url, {
+      method: 'POST',
+      body: data,
+    }, 'multipart/form-data')) as MenuDishResponse[]
+  },
+  async createDish(data) {
+    const url = '/api/dishes/create'
     return (await APIInstanceAdmin(url, {
       method: 'POST',
       body: data,

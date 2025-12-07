@@ -1,43 +1,26 @@
 <script setup lang="ts">
-import { useAdminStore } from '@/stores/adminStore'
-import { useAdminMenuStore } from '@/stores/adminMenuStore'
-import { onMounted, onUnmounted, ref } from 'vue'
-import { categoriesAPI } from '@/api/apiGetDish'
-import { useRoute, useRouter } from 'vue-router'
-import IconBasket from '../icons/IconBasket.vue'
-import DragAndDropFile from './ui/table/DragAndDropFile.vue'
-import IconLongArrow from '../icons/IconLongArrow.vue'
-import BaseDelateItem from '../ui/BaseDelateItem.vue'
-import {normalizeData} from '@/components/composible/useNormalizeData'
+import { categoriesAPI } from '@/api/apiGetDish';
+import { useAdminMenuStore } from '@/stores/adminMenuStore';
+import { useAdminStore } from '@/stores/adminStore';
+import { useRouter } from 'vue-router';
+import { normalizeData } from '../composible/useNormalizeData';
+import { onMounted, ref } from 'vue';
+import DragAndDropFile from './ui/table/DragAndDropFile.vue';
+import IconLongArrow from '../icons/IconLongArrow.vue';
+import IconBasket from '../icons/IconBasket.vue';
 
-const isOpenDelateModal = ref<boolean>(false)
 const router = useRouter()
-const route = useRoute()
-const adminMenuStore = useAdminMenuStore()
 const storeAdmin = useAdminStore()
+const adminMenuStore = useAdminMenuStore()
 
 const loadingStatus = ref<boolean>(false)
-const idEditDish = route.fullPath.split('/')[4]
 const idOpenCharacteristics = ref<number | null>(null)
 
 async function saveUpdatingEditDish() {
   try {
     loadingStatus.value = true
-    const normalizeDish = normalizeData(adminMenuStore.adminEditDish)
-    await categoriesAPI.updateDish(normalizeDish)
-  } catch (error) {
-    
-  } finally {
-    loadingStatus.value = false
-  }
-}
-
-async function deleteEditDish(id: number) {
-  try {
-    loadingStatus.value = true
-    await categoriesAPI.delateDish(id)
-    adminMenuStore.deleteAdminDishesItem(id)
-    router.back()    
+    const normalizeDish = normalizeData(adminMenuStore.adminEditDish, 'create')
+    await categoriesAPI.createDish(normalizeDish)
   } catch (error) {
     
   } finally {
@@ -49,11 +32,8 @@ onMounted(async () => {
   try {
     document.body.style.overflow = 'hidden'
     loadingStatus.value = true
-    const response = await categoriesAPI.getAllDishes()
     const responseCategories = await categoriesAPI.getCategories()
-    adminMenuStore.updateAdminDishes(response)
     adminMenuStore.updateAdminCategory(responseCategories)
-    adminMenuStore.updateEditDish(Number(idEditDish))
   } catch (error) {
     
   } finally {
@@ -61,18 +41,13 @@ onMounted(async () => {
     document.body.style.overflow = ''
   }
 })
-
-onUnmounted(() => {
-  adminMenuStore.resetAdminEditDish()
-})
 </script>
 
 <template>
-  <div v-show="loadingStatus" class="w-screen h-screen bg-black/35 flex fixed top-0 left-0 z-50 justify-center items-center">
+<div v-show="loadingStatus" class="w-screen h-screen bg-black/35 flex fixed top-0 left-0 z-50 justify-center items-center">
     <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-400"></div>
   </div>
-  <BaseDelateItem @delete-item="deleteEditDish(adminMenuStore.adminEditDish.id)" v-model:is-open-delate-modal="isOpenDelateModal" name="Пицца" />
-  <div
+    <div
   :class="storeAdmin.openSidebar ? 'pl-70 max-2xl:pl-50 max-md:pl-0' : 'pl-0'"
   class="w-screen flex justify-self-end text-white"
   >
@@ -100,12 +75,6 @@ onUnmounted(() => {
             </div>
           </div>
           <div class="flex gap-x-6">
-            <div
-            @click="isOpenDelateModal = true"
-            class="px-2 py-1 rounded-lg cursor-pointer hover:bg-red-600 duration-200 bg-red-500 text-xl"
-            >
-              Удалить
-            </div>
             <div
             @click="saveUpdatingEditDish"
             class="px-2 py-1 rounded-lg cursor-pointer hover:bg-green-600 duration-200 bg-green-500 text-xl"

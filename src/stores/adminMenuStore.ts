@@ -26,9 +26,34 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
 
   const lengthAdminMenu = ref<number>(0)
 
+  function resetAdminEditDish() {
+    adminEditDish.value = {
+      id: null,
+      name: null,
+      category_id: null,
+      category_name: null,
+      characteristics: [{
+         size: null,
+         price: null,
+         measure: null,
+         quantity: null,
+      }],
+      composition: [],
+      default_characteristics: null,
+      description: null,
+      dish_status: null,
+      image: null,
+      position: null,
+    }
+  }
+
   function updateAdminCategory(newValue: CategoryDishes[]) {
     if (!newValue) return
     adminMenu.value = [...newValue]
+  }
+
+  function deleteAdminDishesItem(id:number) {
+    adminDishes.value = adminDishes.value.filter(item => item.id !== id)
   }
 
   function updateAdminDishes(newValue: MenuDishResponse[]) {
@@ -36,14 +61,14 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     adminDishes.value = [...newValue]
   }
 
-  function updateAdminDishesItem(newValue: MenuDishResponse, id: number) {
-    if (!newValue) return
-    adminDishes.value[id] = newValue
-    
+  function updateAdminDishesItem(newValue: MenuDishResponse, idEdit: number) {
+    if (!newValue) return    
+    adminDishes.value.map((item, index) => item.id === idEdit ? adminDishes.value[index] = newValue : '')
   }
 
   function updateEditDish(id: number) {
-    adminEditDish.value = JSON.parse(JSON.stringify(adminDishes.value[id]))
+    const item = adminDishes.value.find(item => item.id === id)
+    adminEditDish.value = JSON.parse(JSON.stringify(item))
   }
 
   function delateCharacteristics(index: number) {
@@ -65,7 +90,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   }
 
   function updateFieldEditDish(field: string, value: unknown) {
-    if (!adminEditDish.value[field]) return
+    if (!adminEditDish.value[field]) return;
     adminEditDish.value[field] = value  
   }
 
@@ -111,5 +136,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     addAdminComposition,
     updateLengthAdminMenu,
     updateAdminDishesItem,
+    deleteAdminDishesItem,
+    resetAdminEditDish,
   }
 })

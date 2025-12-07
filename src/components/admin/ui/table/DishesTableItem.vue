@@ -13,11 +13,11 @@ async function updateStatus() {
   try {
     const formData = new FormData()
     
-    const status = props.dish.dish_status ? false : true
+    const status = props.dish.dish_status ? false : true    
     formData.append('id', props.dish.id)
     formData.append('dish_status', status)
-    const response = await categoriesAPI.updateDish(formData)    
-    adminMenuStore.updateAdminDishesItem(response, response.id)
+    const response = await categoriesAPI.updateDish(formData)        
+    adminMenuStore.updateAdminDishesItem(response[0], props.dish.id)
     // console.log(adminMenuStore.adminDishes[response.id][0].dish_status);
     
   } catch (error) {
@@ -43,7 +43,7 @@ async function updateStatus() {
         {{ dish.dish_status ? 'Активно' : 'Скрыт' }}
       </div>
     </div>
-    <router-link :to="`/admin-menu/dishes/edit/${dish.id - 1}`">
+    <router-link :to="`/admin-menu/dishes/edit/${dish.id}`">
       <div class="flex px-5 py-3 justify-self-center w-max col-start-6"><IconEdit /></div>
     </router-link>
   </div>

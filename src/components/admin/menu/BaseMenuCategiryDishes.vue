@@ -6,15 +6,31 @@ import { useAdminMenuStore } from '@/stores/adminMenuStore'
 import IconBasket from '@/components/icons/IconBasket.vue'
 import BaseDelateItem from '@/components/ui/BaseDelateItem.vue'
 import { addCatigories } from '@/utility/addCategories'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const storeAdmin = useAdminStore()
 const adminMenuStore = useAdminMenuStore()
 
+const loadingStatus = ref<boolean>(false)
 const isOpenDelateModal = ref<boolean>(false)
 
 function updateCategories() {
   addCatigories(adminMenuStore.adminMenu, adminMenuStore.lengthAdminMenu)
 
+}
+
+async function deleteEditDish(id: number) {
+  try {
+    loadingStatus.value = true
+    // await categoriesAPI.delateCategory(id)
+    adminMenuStore.deleteAdminDishesItem(id)
+    router.back()    
+  } catch (error) {
+    
+  } finally {
+    loadingStatus.value = false
+  }
 }
 
 onMounted(async () => {
@@ -25,7 +41,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BaseDelateItem v-model:is-open-delate-modal="isOpenDelateModal"/>
+  <BaseDelateItem @delete-item="deleteEditDish(adminMenuStore.adminEditDish.id)" v-model:is-open-delate-modal="isOpenDelateModal"/>
   <div
     :class="storeAdmin.openSidebar ? 'pl-70 max-2xl:pl-50 max-md:pl-0' : 'pl-0'"
     class="w-screen flex justify-self-end text-white"

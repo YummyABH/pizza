@@ -22,6 +22,13 @@ onMounted(async () => {
     <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0 max-md:mx-0">
       <h1 class="mb-8 text-2xl text-center font-medium">Блюда</h1>
       <div class="bg-[#111827] rounded-xl p-5 max-w-full max-sm:px-2">
+        <div class="flex justify-self-end">
+          <router-link to="/admin-menu/dishes/create"
+            class="text-lg mb-4 rounded-lg px-3 py-2 cursor-pointer bg-green-600 duration-200 hover:bg-green-500"
+          >
+            Добавить
+          </router-link>
+        </div>
         <div class="grid grid-cols-6 w-full justify-between gap-x-3">
           <div class="grid grid-cols-subgrid max-sm:text-xs col-span-6 border-b border-t">
             <div class="flex max-sm:px-1 px-5 py-3 justify-self-center w-max">Номер</div>

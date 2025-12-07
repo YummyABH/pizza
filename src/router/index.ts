@@ -9,6 +9,7 @@ import BaseMenuDishes from '@/components/admin/menu/BaseMenuDishes.vue'
 import BaseMenuCategiryDishes from '@/components/admin/menu/BaseMenuCategiryDishes.vue'
 import EditDishesPage from '@/components/admin/EditDishesPage.vue'
 import { watch } from 'vue'
+import CreateDishPage from '@/components/admin/CreateDishPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,6 +72,12 @@ const router = createRouter({
           path: 'dishes/edit/:id',
           name: 'EditDishesPage',
           component: EditDishesPage,
+          meta: { layout: 'admin', lockScroll: false, noSidebar: false },
+        },
+        {
+          path: 'dishes/create',
+          name: 'CreateDishPage',
+          component: CreateDishPage,
           meta: { layout: 'admin', lockScroll: false, noSidebar: false },
         },
       ],

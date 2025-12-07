@@ -7,6 +7,12 @@ defineProps({
 })
 
 const isOpen = defineModel('isOpenDelateModal')
+
+const emits = defineEmits(['deleteItem']);
+
+const deleteItem = () => {
+  emits('deleteItem'); // Теперь Vue знает, что это кастомное событие
+}
 </script>
 
 <template>
@@ -36,6 +42,7 @@ const isOpen = defineModel('isOpenDelateModal')
           Отменить
         </div>
         <div
+          @click="deleteItem"
           class="py-2 px-3 text-white rounded-lg border border-red-500 bg-red-500 duration-200 hover:bg-red-400 cursor-pointer"
         >
           Подтвердить
