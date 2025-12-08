@@ -57,7 +57,7 @@ onUnmounted(() => {
     class="w-screen flex justify-self-end text-white"
   >
     <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0 max-md:mx-0">
-      <div @click="router.back" class="flex items-center gap-x-4 cursor-pointer">
+      <div @click="router.back" class="flex w-min items-center gap-x-4 cursor-pointer">
         <IconLongArrow />
         <span class="text-xl">Назад</span>
       </div>
@@ -84,7 +84,7 @@ onUnmounted(() => {
               @click="saveUpdatingEditDish"
               class="px-2 py-1 rounded-lg cursor-pointer hover:bg-green-600 duration-200 bg-green-500 text-xl"
             >
-              Сохранить
+              Создать
             </div>
           </div>
         </div>

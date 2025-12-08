@@ -43,7 +43,7 @@ export const categoriesAPI = {
     })) as MenuDishResponse[]
   },
   async delateCategory(id: number) {
-    const url = `/api/dishes/delete?dishId=${id}`
+    const url = `/api/categories/delete?id=${id}`
     return (await APIInstanceAdmin(url, {
       method: 'DELETE',
     })) as MenuDishResponse[]

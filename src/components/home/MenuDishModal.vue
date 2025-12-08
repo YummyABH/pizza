@@ -78,7 +78,7 @@ onBeforeUnmount(() => {
       </div>
     </div>
     <div
-      class="relative max-h-9/10 pb-20 max-sm:max-w-full max-sm:pb-18 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
+      class="relative max-h-9/10 pb-20 min-w-128 max-sm:max-w-full max-sm:pb-18 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
     >
       <div
         @click="statusModalDish = false"

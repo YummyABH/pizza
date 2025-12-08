@@ -44,6 +44,12 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div
+    v-show="loadingStatus"
+    class="w-screen h-screen bg-black/35 flex fixed top-0 left-0 z-100 justify-center items-center"
+  >
+    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-400"></div>
+  </div>
   <BaseDelateItem
     @delete-item="deleteCategory(idActiveCategory)"
     v-model:is-open-delate-modal="isOpenDelateModal"

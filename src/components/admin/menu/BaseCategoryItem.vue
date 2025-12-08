@@ -4,17 +4,6 @@ import IconBasket from '@/components/icons/IconBasket.vue'
 const category = defineModel('category')
 const isOpenDelateModal = defineModel('isOpenDelateModal')
 const idActiveCategory = defineModel('idActiveCategory')
-
-// async function updateStatus() {
-//   try {
-//     const status = category.status ? false : true
-//     const response = await categoriesAPI.updateDish(formData)
-//     adminMenuStore.updateAdminDishesItem(response[0], props.dish.id)
-//     // console.log(adminMenuStore.adminDishes[response.id][0].dish_status);
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
 </script>
 
 <template>
