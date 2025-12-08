@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { readonly, ref } from 'vue'
+import { ref } from 'vue'
 import type { MenuDishResponse, CategoryDishes } from '@/types/api'
 
 export const useAdminMenuStore = defineStore('adminMenu', () => {
@@ -7,19 +7,21 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   const adminDishes = ref<MenuDishResponse[]>([])
   const adminEditDish = ref<MenuDishResponse>({
     id: null,
-    name: null,
-    category_id: null,
+    name: '',
+    category_id: 1,
     category_name: null,
-    characteristics: [{
-       size: null,
-       price: null,
-       measure: null,
-       quantity: null,
-    }],
+    characteristics: [
+      {
+        size: '',
+        price: '',
+        measure: '',
+        quantity: '',
+      },
+    ],
     composition: [],
-    default_characteristics: null,
-    description: null,
-    dish_status: null,
+    default_characteristics: 1,
+    description: '',
+    dish_status: false,
     image: null,
     position: null,
   })
@@ -29,19 +31,21 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   function resetAdminEditDish() {
     adminEditDish.value = {
       id: null,
-      name: null,
-      category_id: null,
+      name: '',
+      category_id: 1,
       category_name: null,
-      characteristics: [{
-         size: null,
-         price: null,
-         measure: null,
-         quantity: null,
-      }],
+      characteristics: [
+        {
+          size: '',
+          price: '',
+          measure: '',
+          quantity: '',
+        },
+      ],
       composition: [],
-      default_characteristics: null,
-      description: null,
-      dish_status: null,
+      default_characteristics: 1,
+      description: '',
+      dish_status: false,
       image: null,
       position: null,
     }
@@ -50,10 +54,11 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   function updateAdminCategory(newValue: CategoryDishes[]) {
     if (!newValue) return
     adminMenu.value = [...newValue]
+    updateLengthAdminMenu()
   }
 
-  function deleteAdminDishesItem(id:number) {
-    adminDishes.value = adminDishes.value.filter(item => item.id !== id)
+  function deleteAdminDishesItem(id: number) {
+    adminDishes.value = adminDishes.value.filter((item) => item.id !== id)
   }
 
   function updateAdminDishes(newValue: MenuDishResponse[]) {
@@ -62,12 +67,14 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   }
 
   function updateAdminDishesItem(newValue: MenuDishResponse, idEdit: number) {
-    if (!newValue) return    
-    adminDishes.value.map((item, index) => item.id === idEdit ? adminDishes.value[index] = newValue : '')
+    if (!newValue) return
+    adminDishes.value.map((item, index) =>
+      item.id === idEdit ? (adminDishes.value[index] = newValue) : '',
+    )
   }
 
   function updateEditDish(id: number) {
-    const item = adminDishes.value.find(item => item.id === id)
+    const item = adminDishes.value.find((item) => item.id === id)
     adminEditDish.value = JSON.parse(JSON.stringify(item))
   }
 
@@ -80,39 +87,46 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
       size: '',
       price: '',
       measure: '',
-      quantity: ''
+      quantity: '',
     }
     adminEditDish.value?.characteristics.push(characteristic)
   }
 
   function updateLengthAdminMenu() {
-      lengthAdminMenu.value = adminMenu.value.length
+    lengthAdminMenu.value = adminMenu.value.length
   }
 
   function updateFieldEditDish(field: string, value: unknown) {
-    if (!adminEditDish.value[field]) return;
-    adminEditDish.value[field] = value  
+    if (!(field in adminEditDish.value)) return
+    adminEditDish.value[field] = value
   }
 
   function addAdminCategory() {
+    const newPosition = adminMenu.value[adminMenu.value.length - 1].position + 1
     const newId = adminMenu.value[adminMenu.value.length - 1].id + 1
-    adminMenu.value.push({ id: newId, name: '' })
+    adminMenu.value.push({ position: newPosition, id: newId, name: '', status: false })
   }
 
   function updateAdminIngredient(index: number, value: string) {
     if (!adminEditDish.value) return
     adminEditDish.value.composition[index] = value
   }
-  
+
   function delateAdminComposition(index: number) {
     if (!adminEditDish.value) return
     adminEditDish.value.composition.splice(index, 1)
   }
-  
+
   function addAdminComposition() {
     if (!adminEditDish.value) return
     adminEditDish.value.composition.push('')
   }
+
+  function deleteCategoriesItem(id: number) {
+    const indexDelete = adminMenu.value.findIndex((el) => el.id === id)
+    adminMenu.value.splice(indexDelete, 1)
+  }
+
   function taggleStatusDish() {
     if (!('dish_status' in adminEditDish.value)) return
     adminEditDish.value.dish_status = !adminEditDish.value?.dish_status
@@ -120,7 +134,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
 
   return {
     adminMenu,
-    adminDishes: readonly(adminDishes),
+    adminDishes,
     adminEditDish,
     lengthAdminMenu,
     updateAdminDishes,
@@ -138,5 +152,6 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     updateAdminDishesItem,
     deleteAdminDishesItem,
     resetAdminEditDish,
+    deleteCategoriesItem,
   }
 })

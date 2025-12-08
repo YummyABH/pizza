@@ -26,7 +26,14 @@ export const categoriesAPI = {
     const url = '/api/categories/create'
     return (await APIInstanceAdmin(url, {
       method: 'POST',
-      body: data
+      body: data,
+    })) as CategoryDishes[]
+  },
+  async updateCategory(data) {
+    const url = '/api/categories/update'
+    return (await APIInstanceAdmin(url, {
+      method: 'POST',
+      body: data,
     })) as CategoryDishes[]
   },
   async delateDish(id: number) {
@@ -35,24 +42,32 @@ export const categoriesAPI = {
       method: 'DELETE',
     })) as MenuDishResponse[]
   },
-  // async delateCategory(id: number) {
-  //   const url = `/api/dishes/delete?dishId=${id}`
-  //   return (await APIInstanceAdmin(url, {
-  //     method: 'DELETE',
-  //   })) as MenuDishResponse[]
-  // },
+  async delateCategory(id: number) {
+    const url = `/api/dishes/delete?dishId=${id}`
+    return (await APIInstanceAdmin(url, {
+      method: 'DELETE',
+    })) as MenuDishResponse[]
+  },
   async updateDish(data) {
     const url = '/api/dishes/update'
-    return (await APIInstanceAdmin(url, {
-      method: 'POST',
-      body: data,
-    }, 'multipart/form-data')) as MenuDishResponse[]
+    return (await APIInstanceAdmin(
+      url,
+      {
+        method: 'POST',
+        body: data,
+      },
+      'multipart/form-data',
+    )) as MenuDishResponse[]
   },
   async createDish(data) {
     const url = '/api/dishes/create'
-    return (await APIInstanceAdmin(url, {
-      method: 'POST',
-      body: data,
-    }, 'multipart/form-data')) as MenuDishResponse[]
+    return (await APIInstanceAdmin(
+      url,
+      {
+        method: 'POST',
+        body: data,
+      },
+      'multipart/form-data',
+    )) as MenuDishResponse[]
   },
 }

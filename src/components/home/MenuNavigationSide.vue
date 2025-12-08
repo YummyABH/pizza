@@ -10,6 +10,10 @@ const props = defineProps({
 const styleMenuCategories = computed(() => (id: string) => {
   return props.activeCategory === id ? 'text-white bg-black' : 'bg-white text-black'
 })
+
+const hasVisibleDish = computed(() => (index: number) => {
+  return store.dishes[index].dishes.find((dish) => dish.dish_status === true)
+})
 </script>
 
 <template>
@@ -18,9 +22,9 @@ const styleMenuCategories = computed(() => (id: string) => {
       class="sticky top-20 pr-8 py-8 pl-12 max-lg:pl-4 max-lg:pr-4 flex flex-col gap-1 text-lg font-semibold"
     >
       <li
-        v-show="category.dishes.length"
+        v-show="hasVisibleDish(index) && category.status"
         @click="$emit('scroll', category.category_id)"
-        v-for="category in store.dishes"
+        v-for="(category, index) in store.dishes"
         :key="category.category_id"
         :class="styleMenuCategories(category.category_id)"
         class="cursor-pointer px-3 py-2 min-w-full rounded-3xl w-max"

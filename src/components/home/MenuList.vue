@@ -2,7 +2,7 @@
 import MenuListCard from './MenuListCard.vue'
 import MenuDishModal from './MenuDishModal.vue'
 import { useDishesStore } from '@/stores/dishesStore'
-import { ref, toRaw } from 'vue'
+import { computed, ref, toRaw } from 'vue'
 
 const store = useDishesStore()
 
@@ -16,6 +16,10 @@ const setCategoryRefs = (el) => {
     listCategory.value.push(el)
   }
 }
+
+const hasVisibleDish = computed(() => (index: number) => {
+  return store.dishes[index].dishes.find((dish) => dish.dish_status === true)
+})
 </script>
 
 <template>
@@ -27,7 +31,7 @@ const setCategoryRefs = (el) => {
   />
 
   <div
-    v-show="dishList.dishes.length"
+    v-show="dishList.status && hasVisibleDish(indexCategory)"
     :ref="setCategoryRefs"
     class="max-sm:pt-6 pt-8"
     v-for="(dishList, indexCategory) in store.dishes"
