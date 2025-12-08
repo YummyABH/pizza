@@ -1,16 +1,39 @@
 <script setup lang="ts">
 import { orderAPI } from '@/api/apiOrder'
 import ContentContainer from '@/components/ContentContainer.vue'
+import { connectWebSocket } from '@/components/composible/useWebSocketUser'
 import BaseOrderHistory from '@/components/orederHistory/BaseOrderHistory.vue'
 import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
+import { ref } from 'vue'
 import { onMounted } from 'vue'
 
 const store = useOrderHistoryStore()
+const ws = ref<WebSocket>()
 
-onMounted(async () => {
-  const historyOrder = await orderAPI.getHistoryOrder()
-  store.updateHistoryOrder(historyOrder)
+onMounted(() => {
+  // ws.value = new WebSocket(
+  //   `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,
+  // )
+
+  // ws.value.onopen = () => {
+  //   ws.value.send(JSON.stringify({ type: 'get_orders' }))
+  // }
+
+  // ws.value.onmessage = (event) => {
+  //   const data = JSON.parse(event.data)
+  //   if (data.type === 'orders_update' && data.changeType === 'added') {
+  //     console.log(data)
+
+  //     // store.updateAllHistoryOrder(data.orders)
+  //   }
+  // }
+  ws.value = connectWebSocket()
 })
+
+// onMounted(async () => {
+//   const historyOrder = await orderAPI.getHistoryOrder()
+//   store.updateHistoryOrder(historyOrder)
+// })
 </script>
 
 <template>
