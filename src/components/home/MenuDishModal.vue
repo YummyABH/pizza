@@ -72,13 +72,14 @@ onBeforeUnmount(() => {
         ></div>
       </div>
       <div
+        @click="storeOrder.addDishItem(dish, indexCharacteristics)"
         class="bg-[#64f77c] cursor-pointer py-2 px-2 rounded-3xl text-lg w-full text-center font-medium"
       >
         Добавить
       </div>
     </div>
     <div
-      class="relative max-h-9/10 pb-20 min-w-128 max-sm:max-w-full max-sm:pb-18 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
+      class="relative max-h-9/10 pb-20 md:min-w-128 max-sm:max-w-full max-sm:pb-18 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
     >
       <div
         @click="statusModalDish = false"

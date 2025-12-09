@@ -28,22 +28,6 @@ const activeOrder = reactive({
 })
 
 onMounted(() => {
-  ws.value = new WebSocket(
-    `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,
-  )
-
-  ws.value.onopen = () => {
-    ws.value.send(JSON.stringify({ type: 'get_orders' }))
-  }
-
-  ws.value.onmessage = (event) => {
-    const data = JSON.parse(event.data)
-    if (data.type === 'orders_update' && data.changeType === 'added') {
-      console.log(data)
-
-      store.updateAllHistoryOrder(data.orders)
-    }
-  }
   ws.value = connectWebSocket()
 })
 </script>

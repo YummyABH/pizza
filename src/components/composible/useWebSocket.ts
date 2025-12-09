@@ -5,28 +5,35 @@ import { useLogout } from './useLogout'
 
 let ws: WebSocket | null = null
 
+function resetWs() {
+  if (ws) {
+    ws.close()
+    ws = null
+  }
+}
+
 function connectWebSocket() {
   const { refresh } = authAPI()
   const router = useRouter()
   const store = useOrderAllStore()
+  console.log('ws: ', ws)
 
   if (ws) return ws
+  console.log('продолжаю')
 
   ws = new WebSocket(
     `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,
   )
 
   ws.onopen = () => {
-    console.log(ws?.readyState);
-    
     if (ws?.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ type: 'all-orders' }))
-    }  
+    }
   }
 
   ws.onmessage = async (event) => {
     const data = JSON.parse(event.data)
-    
+
     if (data.type === 'orders' && data.changeType === 'added') {
       store.addHistoryOrder(data.orders[0])
     }
@@ -38,34 +45,56 @@ function connectWebSocket() {
     }
 
     if (data.type === 'error') {
-        try {
-          const response = await refresh()
-          localStorage.setItem('accessToken', response.accessToken)
-          
-          connectWebSocket()          
-        } catch (error) {
-          
-        }
+      try {
+        const response = await refresh()
+        localStorage.setItem('accessToken', response.accessToken)
+
+        resetWs()
+
+        setTimeout(connectWebSocket, 1000)
+      } catch (error) {
+        console.error('Refresh failed:', error)
+        resetWs()
+        useLogout()
+        router.push('/admin-login')
       }
-    console.log('Обновления заказов:', data)
+    }
   }
 
-  ws.onerror = (err) => {
+  ws.onerror = async (err) => {
     console.log('WS ошибка:', err)
+    try {
+      const response = await refresh()
+      localStorage.setItem('accessToken', response.accessToken)
+
+      resetWs()
+      setTimeout(connectWebSocket, 3000)
+      console.log('пытаюсь переподключиться после ошибки')
+    } catch (error) {
+      console.error('Refresh failed:', error)
+      resetWs()
+      useLogout()
+      router.push('/admin-login')
+    }
   }
 
   ws.onclose = async (err) => {
-    console.log('закрылось ', err);
+    console.log('закрылось ', err)
     try {
-          const response = await refresh()
-          localStorage.setItem('accessToken', response.accessToken)          
-          connectWebSocket()
-        } catch (error) {
-          useLogout()
-          router.push('/admin-login')
-        }
+      const response = await refresh()
+      localStorage.setItem('accessToken', response.accessToken)
+
+      resetWs()
+      setTimeout(connectWebSocket, 1000)
+      console.log('пытаюсь переподключиться')
+    } catch (error) {
+      console.error('Refresh failed:', error)
+      resetWs()
+      useLogout()
+      router.push('/admin-login')
+    }
   }
 
   return ws
 }
-export {connectWebSocket}
+export { connectWebSocket, resetWs }
