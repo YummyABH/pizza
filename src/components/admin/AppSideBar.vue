@@ -130,7 +130,7 @@ watch(route, () => {
         </div>
       </div>
       <div
-        @click="handlerLogout"
+        @click="handlerLogout()"
         class="text-2xl mb-10 flex gap-x-3 items-center duration-200 hover:bg-[#1f2b45] bg-[#1b233a] cursor-pointer p-3 rounded-xl"
       >
         <span><IconLogout /></span><span>Выход</span>

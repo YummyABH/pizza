@@ -17,24 +17,28 @@ const APIInstanceAdminBase = $fetch.create({
   },
 })
 
-export const APIInstanceAdmin = async (url, options = {}, contentType: string = 'application/json') => {
-  try {    
+export const APIInstanceAdmin = async (
+  url,
+  options = {},
+  contentType: string = 'application/json',
+) => {
+  try {
     const fetchOptions = { ...options }
 
     const isFormData = options.body instanceof FormData
     if (contentType && !isFormData && fetchOptions.headers) {
       fetchOptions.headers['Content-Type'] = contentType
     } else if (contentType && !isFormData) {
-      fetchOptions.headers = { 
-        ...fetchOptions.headers, 
-        'Content-Type': contentType
+      fetchOptions.headers = {
+        ...fetchOptions.headers,
+        'Content-Type': contentType,
       }
     }
 
     return await APIInstanceAdminBase(url, fetchOptions)
   } catch (error) {
-    if (error.response?.status === 401) {
-      // handlerLogout()
+    if (error.response.status === 401) {
+      handlerLogout()
     }
     if (error.response?.status === 403) {
       try {
@@ -45,6 +49,7 @@ export const APIInstanceAdmin = async (url, options = {}, contentType: string = 
         localStorage.setItem('accessToken', refreshResponse.accessToken)
         return await APIInstanceAdminBase(url, { ...options, _retryAttempted: true })
       } catch (refreshError) {
+        handlerLogout()
         console.error('Refresh token error: ', refreshError)
         throw refreshError
       }

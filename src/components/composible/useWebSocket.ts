@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useLogout } from './useLogout'
 
 let ws: WebSocket | null = null
+const { handlerLogout } = useLogout()
 
 function resetWs() {
   if (ws) {
@@ -55,8 +56,7 @@ function connectWebSocket() {
       } catch (error) {
         console.error('Refresh failed:', error)
         resetWs()
-        useLogout()
-        router.push('/admin-login')
+        handlerLogout(router)
       }
     }
   }
@@ -73,25 +73,23 @@ function connectWebSocket() {
     } catch (error) {
       console.error('Refresh failed:', error)
       resetWs()
-      useLogout()
-      router.push('/admin-login')
+      handlerLogout(router)
     }
   }
 
   ws.onclose = async (err) => {
     console.log('закрылось ', err)
     try {
-      const response = await refresh()
-      localStorage.setItem('accessToken', response.accessToken)
+      // const response = await refresh()
+      // localStorage.setItem('accessToken', response.accessToken)
 
       resetWs()
-      setTimeout(connectWebSocket, 1000)
+      // setTimeout(connectWebSocket, 1000)
       console.log('пытаюсь переподключиться')
     } catch (error) {
       console.error('Refresh failed:', error)
       resetWs()
-      useLogout()
-      router.push('/admin-login')
+      handlerLogout(router)
     }
   }
 

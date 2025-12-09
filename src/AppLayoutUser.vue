@@ -10,7 +10,8 @@ function generateSecretKey(length = 32) {
 
 if (!localStorage.getItem('secretKey')) {
   const secretKey = generateSecretKey()
-  localStorage.setItem('secretKey', secretKey)
+  const normalizeSecretKey = secretKey.replace(/\+/g, '')
+  localStorage.setItem('secretKey', normalizeSecretKey)
 }
 </script>
 

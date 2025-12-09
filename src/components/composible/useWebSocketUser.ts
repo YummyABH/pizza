@@ -24,6 +24,8 @@ function connectWebSocket() {
       store.addHistoryOrder(data.orders[0])
     }
     if (data.type === 'orders' && data.changeType === 'updated') {
+      console.log(data.orders)
+
       store.updateHistoryOrder(data.orders)
     }
     if (data.type === 'orders' && data.changeType === 'update_status') {

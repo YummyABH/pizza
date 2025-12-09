@@ -8,8 +8,20 @@ import AdminUsersPage from '@/components/admin/auth/AdminUsersPage.vue'
 import BaseMenuDishes from '@/components/admin/menu/BaseMenuDishes.vue'
 import BaseMenuCategiryDishes from '@/components/admin/menu/BaseMenuCategiryDishes.vue'
 import EditDishesPage from '@/components/admin/EditDishesPage.vue'
-import { watch } from 'vue'
 import CreateDishPage from '@/components/admin/CreateDishPage.vue'
+
+const authGuard = function (to, from, next) {
+  const isAuth = localStorage.getItem('accessToken') || null
+  // const responce = authAPI.check(isAuth)
+  if (isAuth == null) next({ path: '/admin-login' })
+  else next()
+}
+
+const loginGuard = function (to, from, next) {
+  const isAuth = localStorage.getItem('accessToken') || null
+  if (isAuth !== null) next({ path: '/admin-orders' })
+  else next()
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,28 +45,40 @@ const router = createRouter({
       name: 'OrderHistoryPage',
       component: OrderHistoryPage,
       meta: { layout: 'user', lockScroll: false },
+      children: [
+        {
+          path: '/order',
+          name: 'OrderModalSide',
+          component: OrderModalSide,
+          meta: { layout: 'user', lockScroll: true },
+        },
+      ],
     },
     {
       path: '/admin-login',
       name: 'AdminLoginPage',
       component: AdminLoginPage,
       meta: { layout: 'admin', lockScroll: true, noSidebar: true },
+      beforeEnter: loginGuard,
     },
     {
       path: '/admin-orders',
       name: 'AdminOrdersPage',
       component: AdminOrdersPage,
       meta: { layout: 'admin', lockScroll: false, noSidebar: false },
+      beforeEnter: authGuard,
     },
     {
       path: '/admin-users',
       name: 'AdminUsersPage',
       component: AdminUsersPage,
       meta: { layout: 'admin', lockScroll: false, noSidebar: false },
+      beforeEnter: authGuard,
     },
     {
       path: '/admin-menu',
       meta: { layout: 'admin', lockScroll: false, noSidebar: false },
+      beforeEnter: authGuard,
       children: [
         {
           path: 'dishes',

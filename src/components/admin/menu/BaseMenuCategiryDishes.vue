@@ -16,8 +16,13 @@ const adminMenuStore = useAdminMenuStore()
 const loadingStatus = ref<boolean>(false)
 const isOpenDelateModal = ref<boolean>(false)
 
-function updateCategories() {
-  addCatigories(adminMenuStore.adminMenu, adminMenuStore.lengthAdminMenu)
+async function updateCategories() {
+  const response = await addCatigories(adminMenuStore.adminMenu, adminMenuStore.lengthAdminMenu)
+  if (response) {
+    console.log('response: ', response)
+
+    adminMenuStore.updateAdminCategory(response)
+  }
 }
 
 async function deleteCategory(id: number) {
