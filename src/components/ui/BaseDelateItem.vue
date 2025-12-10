@@ -8,10 +8,10 @@ defineProps({
 
 const isOpen = defineModel('isOpenDelateModal')
 
-const emits = defineEmits(['deleteItem']);
+const emits = defineEmits(['deleteItem'])
 
 const deleteItem = () => {
-  emits('deleteItem'); // Теперь Vue знает, что это кастомное событие
+  emits('deleteItem')
 }
 </script>
 
@@ -36,7 +36,7 @@ const deleteItem = () => {
       <div class="text-gray-100 mb-8">Вы уверены, что хотите это сделать?</div>
       <div class="flex gap-x-3 justify-self-center">
         <div
-        @click="isOpen = false"
+          @click="isOpen = false"
           class="py-2 px-3 text-white rounded-lg border bg-gray-10 border-gray-150 cursor-pointer duration-200 hover:bg-gray-150"
         >
           Отменить

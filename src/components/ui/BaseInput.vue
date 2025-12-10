@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useOrderInputStore } from '@/stores/orderInputStore.ts'
 import { useOrderStore } from '@/stores/orderStore.ts'
 import { vMaska } from 'maska/vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const modelValue = defineModel()
 const props = defineProps({
@@ -39,7 +39,7 @@ const props = defineProps({
   },
 })
 
-const orderStore = useOrderStore()
+const refInput = ref(null)
 const orderInputStore = useOrderInputStore()
 
 const formClass = computed(() => ({
@@ -50,11 +50,18 @@ const formClass = computed(() => ({
 const borderClass = computed(() => {
   return orderInputStore.formErrors['phone'] ? 'border-red-500' : ''
 })
+
+const setFocus = () => {
+  if (refInput.value) {
+    refInput.value.focus()
+  }
+}
 </script>
 
 <template>
   <div class="relative">
     <input
+      ref="refInput"
       :placeholder="placeholder"
       :required="required"
       :min="minDate"
@@ -68,6 +75,7 @@ const borderClass = computed(() => {
       @input="orderInputStore.clearError(select)"
     />
     <label
+      @click="setFocus"
       :class="formClass"
       class="peer-focus:-top-[10px] left-0 peer-focus:left-0 peer-focus:px-1 cursor-text select-none duration-200 absolute block text-sm font-medium"
       for="name"

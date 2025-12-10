@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useDishesStore } from '@/stores/dishesStore'
 import { useOrderStore } from '@/stores/orderStore'
+import { toastCreate } from '@/utility/createToast'
 
 const storeDishes = useDishesStore()
 const storeOrder = useOrderStore()
@@ -44,6 +45,13 @@ onMounted(() => {
 onBeforeUnmount(() => {
   body.removeEventListener('click', goHome)
 })
+
+function addDishInOrder() {
+  const statusAdd = !storeOrder.addDishItem(dish.value, indexCharacteristics.value)
+
+  if (statusAdd) return toastCreate('Блюдо добавлено в заказ !', 'success')
+  toastCreate('Блюдо уже было добавлено в заказ', 'info')
+}
 </script>
 
 <template>
@@ -72,7 +80,7 @@ onBeforeUnmount(() => {
         ></div>
       </div>
       <div
-        @click="storeOrder.addDishItem(dish, indexCharacteristics)"
+        @click="addDishInOrder"
         class="bg-[#64f77c] cursor-pointer py-2 px-2 rounded-3xl text-lg w-full text-center font-medium"
       >
         Добавить
@@ -107,7 +115,7 @@ onBeforeUnmount(() => {
           ></div>
         </div>
         <div
-          @click="storeOrder.addDishItem(dish, indexCharacteristics)"
+          @click="addDishInOrder"
           class="bg-[#64f77c] cursor-pointer py-2.5 px-5 rounded-3xl text-xl w-full text-center font-medium"
         >
           Добавить

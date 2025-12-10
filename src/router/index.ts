@@ -31,28 +31,12 @@ const router = createRouter({
       name: 'home',
       component: HomePage,
       meta: { layout: 'user', lockScroll: false },
-      children: [
-        {
-          path: '/order',
-          name: 'OrderModalSide',
-          component: OrderModalSide,
-          meta: { layout: 'user', lockScroll: true },
-        },
-      ],
     },
     {
       path: '/order-history',
       name: 'OrderHistoryPage',
       component: OrderHistoryPage,
       meta: { layout: 'user', lockScroll: false },
-      children: [
-        {
-          path: '/order',
-          name: 'OrderModalSide',
-          component: OrderModalSide,
-          meta: { layout: 'user', lockScroll: true },
-        },
-      ],
     },
     {
       path: '/admin-login',

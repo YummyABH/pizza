@@ -15,27 +15,28 @@ const sumPrice = computed(() =>
     return sum + (+dish.characteristics[dish.default_characteristics].price * dish.quantity || 0)
   }, 0),
 )
-
-const goBack = () => {
-  router.back()
-}
 </script>
 
 <template>
-  <div @click="goBack" class="fixed w-full h-full bg-black/50 z-10 top-0 left-0"></div>
   <div
+    v-show="storeOrder.isOpenOrderModal"
+    @click="storeOrder.taggleOrderModal"
+    class="fixed w-full h-full bg-black/50 z-10 top-0 left-0"
+  ></div>
+  <div
+    v-show="storeOrder.isOpenOrderModal"
     class="fixed scrollbar-hidden z-20 right-0 top-0 bg-white h-full p-6 overflow-scroll min-w-125 max-sm:min-w-auto max-sm:w-full"
   >
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-medium">Заказ</h2>
       <div
-        @click="goBack"
+        @click="storeOrder.taggleOrderModal"
         class="relative w-5 h-5 after:absolute after:w-full after:h-0.5 after:top-1/2 after:left-1/2 after:bg-black after:transform after:-translate-1/2 after:rotate-45 before:absolute before:w-full before:h-0.5 before:left-1/2 before:top-1/2 before:bg-black before:transform before:-translate-1/2 before:-rotate-45"
       ></div>
     </div>
     <div class="flex justify-between mb-4">
       <div class="text-xl font-medium"><span>Блюд: </span>{{ storeOrder.order.dishes.length }}</div>
-      <IconBasket @click="storeOrder.clearDishesInOrder" />
+      <IconBasket class="cursor-pointer" @click="storeOrder.clearDishesInOrder" />
     </div>
     <div class="flex flex-col gap-y-6">
       <div

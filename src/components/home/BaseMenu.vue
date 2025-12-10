@@ -63,8 +63,8 @@ onBeforeUnmount(() => {
       <div
         class="bg-white rounded-r-4xl max-sm:px-3 max-md:rounded-4xl py-8 px-8 max-md:px-6 max-md:py-6 w-full"
       >
-        <h1 class="mb-4 text-3xl font-bold">Меню</h1>
-        <SearchInput />
+        <h1 class="text-3xl font-bold">Меню</h1>
+        <!-- <SearchInput /> -->
         <MenuNavigation @scroll="scrollToCategory" :activeCategory="activeCategory" />
         <MenuList v-model:listCategory="listCategory" />
       </div>

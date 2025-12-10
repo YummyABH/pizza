@@ -3,10 +3,12 @@ import { orderAPI } from '@/api/apiOrder'
 import { reactive, ref, watch } from 'vue'
 import type { OrderState } from '@/types/stores'
 import type { MenuDishResponse, BaseDish } from '@/types/api'
+import { toastCreate } from '@/utility/createToast'
 
 export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
-  const initialOrder:OrderState | null = savedOrder ? JSON.parse(savedOrder) : null
+  const initialOrder: OrderState | null = savedOrder ? JSON.parse(savedOrder) : null
+  const isOpenOrderModal = ref<boolean>(false)
 
   const dataAddress = ref([])
 
@@ -34,11 +36,15 @@ export const useOrderStore = defineStore('order', () => {
     { deep: true },
   )
 
-  function cutleryAdd(): number{
+  function taggleOrderModal() {
+    isOpenOrderModal.value = !isOpenOrderModal.value
+  }
+
+  function cutleryAdd(): number {
     return order.cutlery_quantity >= 50 ? (order.cutlery_quantity = 50) : order.cutlery_quantity++
   }
 
-  function cutleryReduce(): number{
+  function cutleryReduce(): number {
     return order.cutlery_quantity <= 1 ? (order.cutlery_quantity = 1) : order.cutlery_quantity--
   }
 
@@ -70,21 +76,22 @@ export const useOrderStore = defineStore('order', () => {
     order.dishes = []
   }
 
-  function addDishItem(newDish: MenuDishResponse, indexCharacteristics: number): void {
+  function addDishItem(newDish: MenuDishResponse, indexCharacteristics: number): boolean {
     const addDish = { ...newDish }
     let status: boolean = false
 
     for (const dish of order.dishes) {
       if (dish.id === addDish.id && dish.default_characteristics === indexCharacteristics) {
         status = true
-        return
+        return status
       }
     }
 
-    if (status) return
+    if (status) return status
 
     addDish.default_characteristics = indexCharacteristics
     order.dishes = [...order.dishes, addDish]
+    return status
   }
 
   function normalizeDishOrder(dish: MenuDishResponse): BaseDish {
@@ -98,13 +105,15 @@ export const useOrderStore = defineStore('order', () => {
   async function postOrder() {
     try {
       const rawData = { ...order }
-      const normalizeData = { 
+      const normalizeData = {
         ...rawData,
-        dishes: rawData.dishes.map((dish) => normalizeDishOrder(dish))
+        dishes: rawData.dishes.map((dish) => normalizeDishOrder(dish)),
       }
       const result = await orderAPI.postOrder(normalizeData)
+      toastCreate('Заказ успешно создан !', 'success')
       return result
     } catch (error) {
+      toastCreate('Произошла ошибка, повторите попытку.', 'error')
       console.log(error)
     }
   }
@@ -136,6 +145,7 @@ export const useOrderStore = defineStore('order', () => {
   return {
     order,
     dataAddress,
+    isOpenOrderModal,
     cutleryAdd,
     cutleryReduce,
     clearDishesInOrder,
@@ -145,5 +155,6 @@ export const useOrderStore = defineStore('order', () => {
     deleteDish,
     postOrder,
     debouncedRequestGeo,
+    taggleOrderModal,
   }
 })

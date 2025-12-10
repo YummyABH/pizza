@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
+import OrderModalSide from './components/order/OrderModalSide.vue'
 
 function generateSecretKey(length = 32) {
   const array = new Uint8Array(length)
@@ -19,6 +20,7 @@ if (!localStorage.getItem('secretKey')) {
   <Suspense>
     <template #fallback></template>
     <RouterView v-slot="{ Component, route }">
+      <OrderModalSide />
       <AppHeader v-if="!route.meta.noHeader"></AppHeader>
       <main>
         <component :is="Component"></component>

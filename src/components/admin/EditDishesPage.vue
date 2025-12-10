@@ -9,6 +9,7 @@ import DragAndDropFile from './ui/table/DragAndDropFile.vue'
 import IconLongArrow from '../icons/IconLongArrow.vue'
 import BaseDelateItem from '../ui/BaseDelateItem.vue'
 import { normalizeData } from '@/components/composible/useNormalizeData'
+import { toastCreate } from '@/utility/createToast'
 
 const isOpenDelateModal = ref<boolean>(false)
 const router = useRouter()
@@ -25,7 +26,9 @@ async function saveUpdatingEditDish() {
     loadingStatus.value = true
     const normalizeDish = normalizeData(adminMenuStore.adminEditDish)
     await categoriesAPI.updateDish(normalizeDish)
+    toastCreate('Изменения сохранены', 'success')
   } catch (error) {
+    toastCreate('Произошла ошибка про сохранении', 'error')
   } finally {
     loadingStatus.value = false
   }
@@ -37,7 +40,9 @@ async function deleteEditDish(id: number) {
     await categoriesAPI.delateDish(id)
     adminMenuStore.deleteAdminDishesItem(id)
     router.back()
+    toastCreate('Блюдо удалено', 'success')
   } catch (error) {
+    toastCreate('Произошла ошибка удаления', 'error')
   } finally {
     loadingStatus.value = false
   }

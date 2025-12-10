@@ -3,6 +3,7 @@ import OrderMethodOptaining from './OrderMethodOptaining.vue'
 import { useOrderStore } from '@/stores/orderStore'
 import { useOrderInputStore } from '@/stores/orderInputStore'
 import BaseInput from '@/components/ui/BaseInput.vue'
+import { toastCreate } from '@/utility/createToast'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
@@ -13,9 +14,9 @@ const nameMask = orderInputStore.nameMask
 async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
   if (isValid) {
-    // Отправка запроса на бэкенд
     await store.postOrder()
   } else {
+    toastCreate('Вы заполнили не все обязательные поля', 'info')
     console.log('Форма содержит ошибки')
   }
 }
@@ -81,6 +82,10 @@ async function dataRequestCalculation() {
           label="Комментарий к заказу"
           :mask="addressMask"
         />
+      </div>
+      <div class="text-lg font-medium">
+        Время работы:
+        <span class="font-normal"> с 11:00 до 22:40 </span>
       </div>
     </div>
     <input

@@ -2,6 +2,9 @@
 import ContentContainer from '@/components/ContentContainer.vue'
 import IconBag from '@/components/icons/IconBag.vue'
 import IconOrderHistory from './icons/IconOrderHistory.vue'
+import { useOrderStore } from '@/stores/orderStore'
+
+const storeOrder = useOrderStore()
 </script>
 
 <template>
@@ -10,7 +13,7 @@ import IconOrderHistory from './icons/IconOrderHistory.vue'
     <ContentContainer>
       <div class="flex justify-between">
         <router-link to="/">
-          <div class="font-bold text-3xl">ЛОГОТИП</div>
+          <img src="/logo.png" class="w-15" alt="" />
         </router-link>
         <div class="flex gap-x-10 max-md:gap-x-5 items-center">
           <!-- <div
@@ -32,14 +35,20 @@ import IconOrderHistory from './icons/IconOrderHistory.vue'
               <IconOrderHistory />
             </div>
           </router-link>
-          <router-link
-            to="order"
+          <div
+            @click="storeOrder.taggleOrderModal"
             class="w-12 max-sm:p-2 max-sm:w-10 border rounded-full p-3 duration-200 hover:bg-gray-600 cursor-pointer hover:border-gray-600"
           >
-            <div>
+            <div class="relative">
+              <div
+                v-show="storeOrder.order.dishes.length"
+                class="absolute top-0 right-0 translate-4/5 text-sm rounded-full px-1.5 bg-green-600"
+              >
+                {{ storeOrder.order.dishes.length }}
+              </div>
               <IconBag />
             </div>
-          </router-link>
+          </div>
         </div>
       </div>
     </ContentContainer>

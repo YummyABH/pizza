@@ -17,10 +17,8 @@ function connectWebSocket() {
   const { refresh } = authAPI()
   const router = useRouter()
   const store = useOrderAllStore()
-  console.log('ws: ', ws)
 
   if (ws) return ws
-  console.log('продолжаю')
 
   ws = new WebSocket(
     `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,

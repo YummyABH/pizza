@@ -2,6 +2,7 @@
 import { useOrderStore } from '@/stores/orderStore'
 import { useDishesStore } from '@/stores/dishesStore'
 import { computed } from 'vue'
+import { toastCreate } from '@/utility/createToast'
 
 const store = useOrderStore()
 const storeDish = useDishesStore()
@@ -13,6 +14,13 @@ const props = defineProps({
 })
 
 const indexCharacteristics = computed(() => props.dishList.default_characteristics)
+
+function addDishInOrder() {
+  const statusAdd = !store.addDishItem(props.dishList, indexCharacteristics.value)
+
+  if (statusAdd) return toastCreate('Блюдо добавлено в заказ !', 'success')
+  toastCreate('Блюдо уже было добавлено в заказ', 'info')
+}
 </script>
 
 <template>
@@ -51,7 +59,7 @@ const indexCharacteristics = computed(() => props.dishList.default_characteristi
       </div>
 
       <div
-        @click="store.addDishItem(dishList, indexCharacteristics)"
+        @click="addDishInOrder"
         class="cursor-pointer w-full items-center hover:bg-gray-600 duration-200 justify-center flex gap-4 py-2 px-4 font-semibold rounded-3xl text-white bg-gray-700"
       >
         <svg

@@ -15,20 +15,20 @@ export const useDishesStore = defineStore('dishes', () => {
     newDefaultCharacteristics: number,
     indexCategory: number,
     indexDish: number,
-  ): void{
+  ): void {
     if (!dishes.value[indexCategory].dishes[indexDish]) return
     dishes.value[indexCategory].dishes[indexDish].default_characteristics =
       newDefaultCharacteristics
   }
 
-  function dishAdd(indexCategory: number, indexDish: number): number | void{
+  function dishAdd(indexCategory: number, indexDish: number): number | void {
     const dish = dishes.value[indexCategory].dishes[indexDish]
     if (!dish) return
 
     return dish.quantity >= 99 ? (dish.quantity = 99) : dish.quantity++
   }
 
-  function dishReduce(indexCategory: number, indexDish: number): number | void{
+  function dishReduce(indexCategory: number, indexDish: number): number | void {
     const dish = dishes.value[indexCategory].dishes[indexDish]
     if (!dish) return
 

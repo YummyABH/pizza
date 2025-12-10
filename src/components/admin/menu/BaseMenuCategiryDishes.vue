@@ -7,6 +7,7 @@ import BaseDelateItem from '@/components/ui/BaseDelateItem.vue'
 import { addCatigories } from '@/utility/addCategories'
 import { useRouter } from 'vue-router'
 import BaseCategoryItem from './BaseCategoryItem.vue'
+import { toastCreate } from '@/utility/createToast'
 
 const router = useRouter()
 const idActiveCategory = ref<number | null>(null)
@@ -17,12 +18,17 @@ const loadingStatus = ref<boolean>(false)
 const isOpenDelateModal = ref<boolean>(false)
 
 async function updateCategories() {
-  const response = await addCatigories(adminMenuStore.adminMenu, adminMenuStore.lengthAdminMenu)
-  if (response) {
-    console.log('response: ', response)
+  const { response, statusResponse } = await addCatigories(
+    adminMenuStore.adminMenu,
+    adminMenuStore.lengthAdminMenu,
+  )
+  console.log(response)
 
+  if (response) {
     adminMenuStore.updateAdminCategory(response)
   }
+  if (!statusResponse) return toastCreate('Произошла ошибка сохранения', 'error')
+  return toastCreate('Сохранение успешно', 'success')
 }
 
 async function deleteCategory(id: number) {
@@ -34,6 +40,7 @@ async function deleteCategory(id: number) {
       await categoriesAPI.delateCategory(id)
     }
     adminMenuStore.deleteCategoriesItem(id)
+    adminMenuStore.updateLengthAdminMenu()
   } catch (error) {
   } finally {
     loadingStatus.value = false

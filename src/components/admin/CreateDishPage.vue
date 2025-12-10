@@ -8,6 +8,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import DragAndDropFile from './ui/table/DragAndDropFile.vue'
 import IconLongArrow from '../icons/IconLongArrow.vue'
 import IconBasket from '../icons/IconBasket.vue'
+import { toastCreate } from '@/utility/createToast'
 
 const router = useRouter()
 const storeAdmin = useAdminStore()
@@ -21,7 +22,9 @@ async function saveUpdatingEditDish() {
     loadingStatus.value = true
     const normalizeDish = normalizeData(adminMenuStore.adminEditDish, 'create')
     await categoriesAPI.createDish(normalizeDish)
+    toastCreate('Блюдо создано', 'success')
   } catch (error) {
+    toastCreate('Заполните все поля', 'info')
   } finally {
     loadingStatus.value = false
   }

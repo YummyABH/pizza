@@ -9,8 +9,6 @@ const baseMenu = ref(null)
 
 onMounted(async () => {
   const dishesList = await categoriesAPI.getDishes()
-  console.log(dishesList)
-
   store.updateDishes(dishesList)
 })
 </script>

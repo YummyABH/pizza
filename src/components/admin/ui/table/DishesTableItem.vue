@@ -12,16 +12,16 @@ const props = defineProps({
 async function updateStatus() {
   try {
     const formData = new FormData()
-    
-    const status = props.dish.dish_status ? false : true    
+
+    const status = props.dish.dish_status ? false : true
     formData.append('id', props.dish.id)
     formData.append('dish_status', status)
-    const response = await categoriesAPI.updateDish(formData)        
+    const response = await categoriesAPI.updateDish(formData)
     adminMenuStore.updateAdminDishesItem(response[0], props.dish.id)
     // console.log(adminMenuStore.adminDishes[response.id][0].dish_status);
-    
   } catch (error) {
-    console.log(error);
+    toastCreate('Произошла ошибка изменения статуса', 'error')
+    console.log(error)
   }
 }
 </script>
