@@ -7,7 +7,7 @@ defineProps({
 <template>
   <div class="rounded-xl flex gap-x-3 bg-[#1b233a]">
     <img
-      :src="`https://restik-street-style.onrender.com/uploads/${dish?.image}`"
+      :src="`https://cemubribepit.beget.app/uploads/${dish?.image}`"
       class="aspect-1/1 object-cover w-25 rounded-lg"
     />
     <div class="">

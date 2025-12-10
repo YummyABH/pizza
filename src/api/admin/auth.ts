@@ -2,7 +2,7 @@ import { ofetch } from 'ofetch'
 
 const authAPI = () => {
   const login = async (credentials) => {
-    return await ofetch('https://restik-street-style.onrender.com/api/auth/login', {
+    return await ofetch('https://cemubribepit.beget.app/api/auth/login', {
       method: 'POST',
       body: credentials,
     })
@@ -10,7 +10,7 @@ const authAPI = () => {
 
   const logout = async (credentials: string) => {
     const refreshToken = localStorage.getItem('refreshToken')
-    return await ofetch('https://restik-street-style.onrender.com/api/auth/logout', {
+    return await ofetch('https://cemubribepit.beget.app/api/auth/logout', {
       method: 'POST',
       body: credentials,
       headers: { refresh_token: refreshToken },
@@ -19,7 +19,7 @@ const authAPI = () => {
 
   const refresh = async () => {
     const refreshToken = localStorage.getItem('refreshToken')
-    return await ofetch('https://restik-street-style.onrender.com/api/auth/refresh', {
+    return await ofetch('https://cemubribepit.beget.app/api/auth/refresh', {
       method: 'POST',
       headers: { refresh_token: refreshToken },
     })

@@ -30,7 +30,7 @@ function addDishInOrder() {
       class="cursor-pointer block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
     >
       <img
-        :src="`https://restik-street-style.onrender.com/uploads/${dishList.image}`"
+        :src="`https://cemubribepit.beget.app/uploads/${dishList.image}`"
         class="max-sm:aspect-3/2 w-full h-full object-cover"
       />
     </div>

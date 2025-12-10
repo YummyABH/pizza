@@ -6,7 +6,7 @@ const { refresh } = authAPI()
 const { handlerLogout } = useLogout()
 
 const APIInstanceAdminBase = $fetch.create({
-  baseURL: 'https://restik-street-style.onrender.com',
+  baseURL: 'https://cemubribepit.beget.app',
   headers: {
     // 'Content-Type': 'application/json',
   },

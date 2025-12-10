@@ -34,7 +34,7 @@ function handleDrop(event: DragEvent) {
       <label for="file" class="inline-block z-20 absolute top-3 left-3 text-white">
         Нажмите для выбора файла или перенесите его в данную область
       </label>
-      <img v-show="urlImg || store.adminEditDish?.image" :src="urlImg || `https://restik-street-style.onrender.com/uploads/${store.adminEditDish?.image}`" class="w-full h-full" />
+      <img v-show="urlImg || store.adminEditDish?.image" :src="urlImg || `https://cemubribepit.beget.app/uploads/${store.adminEditDish?.image}`" class="w-full h-full" />
       <input
         accept="image/*"
         id="file"

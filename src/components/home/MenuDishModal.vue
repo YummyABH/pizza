@@ -124,7 +124,7 @@ function addDishInOrder() {
       <div class="min-w-full min-h-full h-full w-full overflow-hidden">
         <img
           class="w-full aspect-1/1 object-cover"
-          :src="`https://restik-street-style.onrender.com/uploads/${dish?.image}`"
+          :src="`https://cemubribepit.beget.app/uploads/${dish?.image}`"
         />
       </div>
       <div

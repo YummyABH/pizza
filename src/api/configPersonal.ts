@@ -1,7 +1,7 @@
 import { $fetch } from 'ofetch'
 
 export const APIInstancePersonal = $fetch.create({
-  baseURL: 'https://restik-street-style.onrender.com',
+  baseURL: 'https://cemubribepit.beget.app',
   headers: {
     'Content-Type': 'application/json',
     secret_key: localStorage.getItem('secretKey'),
