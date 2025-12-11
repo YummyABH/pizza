@@ -8,6 +8,7 @@ import IconArrow from '../icons/IconArrow.vue'
 import { useAdminStore } from '@/stores/adminStore'
 import IconLogout from '../icons/IconLogout.vue'
 import { useLogout } from '../composible/useLogout'
+import IconDelivery from '../icons/IconDelivery.vue'
 
 const { handlerLogout } = useLogout()
 const storeAdmin = useAdminStore()
@@ -45,6 +46,12 @@ const tab = [
         link: '/admin-menu/category-dishes',
       },
     ],
+  },
+  {
+    id: 4,
+    name: 'Доставка',
+    link: '/admin-delivery',
+    icon: IconDelivery,
   },
 ]
 

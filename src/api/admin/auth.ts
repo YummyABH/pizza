@@ -13,7 +13,7 @@ const authAPI = () => {
     return await ofetch('https://cemubribepit.beget.app/api/auth/logout', {
       method: 'POST',
       body: credentials,
-      headers: { refresh_token: refreshToken },
+      headers: { 'refresh-token': refreshToken },
     })
   }
 
@@ -21,7 +21,7 @@ const authAPI = () => {
     const refreshToken = localStorage.getItem('refreshToken')
     return await ofetch('https://cemubribepit.beget.app/api/auth/refresh', {
       method: 'POST',
-      headers: { refresh_token: refreshToken },
+      headers: { 'refresh-token': refreshToken },
     })
   }
 

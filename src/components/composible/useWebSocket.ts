@@ -20,9 +20,7 @@ function connectWebSocket() {
 
   if (ws) return ws
 
-  ws = new WebSocket(
-    `wss://restik-street-style.onrender.com/ws?token=${localStorage.getItem('accessToken')}`,
-  )
+  ws = new WebSocket(`wss://cemubribepit.beget.app/ws?token=${localStorage.getItem('accessToken')}`)
 
   ws.onopen = () => {
     if (ws?.readyState === WebSocket.OPEN) {
