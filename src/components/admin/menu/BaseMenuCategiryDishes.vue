@@ -72,7 +72,7 @@ onMounted(async () => {
   >
     <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0 max-md:mx-0">
       <h1 class="mb-8 text-2xl text-center font-medium">Категории блюд</h1>
-      <div class="bg-[#111827] rounded-xl p-5 max-w-full max-sm:px-2 text-base">
+      <div class="bg-[#111827]  rounded-xl p-5 max-w-full max-sm:px-2 text-base">
         <div class="flex justify-self-end mb-4 gap-6 flex-wrap">
           <div
             @click="updateCategories"
@@ -91,14 +91,16 @@ onMounted(async () => {
           <div>Номер</div>
           <div>Название</div>
         </div>
-        <BaseCategoryItem
-          v-for="(category, index) in adminMenuStore.adminMenu"
-          :key="category.id"
-          v-model:category="adminMenuStore.adminMenu[index]"
-          v-model:is-open-delate-modal="isOpenDelateModal"
-          v-model:id-active-category="idActiveCategory"
-          class="flex justify-between border-y py-3 px-5 text-lg max-md:text-lg font-medium max-sm:text-sm max-sm:font-normal"
-        />
+        <div class="overflow-auto">
+          <BaseCategoryItem
+            v-for="(category, index) in adminMenuStore.adminMenu"
+            :key="category.id"
+            v-model:category="adminMenuStore.adminMenu[index]"
+            v-model:is-open-delate-modal="isOpenDelateModal"
+            v-model:id-active-category="idActiveCategory"
+            class="flex justify-between border-y py-3 px-5 text-lg max-md:text-lg font-medium max-sm:text-sm max-sm:font-normal"
+          />
+        </div>
       </div>
     </div>
   </div>
