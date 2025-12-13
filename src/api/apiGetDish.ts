@@ -70,4 +70,13 @@ export const categoriesAPI = {
       'multipart/form-data',
     )) as MenuDishResponse[]
   },
+  async getPrices() {
+    const url = '/api/cfg/read'
+    return (await APIInstanceAdmin(
+      url,
+      {
+        method: 'GET',
+      }
+    ))
+  },
 }

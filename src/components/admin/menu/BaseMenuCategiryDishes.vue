@@ -22,8 +22,6 @@ async function updateCategories() {
     adminMenuStore.adminMenu,
     adminMenuStore.lengthAdminMenu,
   )
-  console.log(response)
-
   if (response) {
     adminMenuStore.updateAdminCategory(response)
   }

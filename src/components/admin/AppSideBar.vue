@@ -50,7 +50,7 @@ const tab = [
   {
     id: 4,
     name: 'Доставка',
-    link: '/admin-delivery',
+    link: '/admin-menu/admin-delivery',
     icon: IconDelivery,
   },
 ]

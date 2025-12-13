@@ -8,7 +8,7 @@ function connectWebSocket() {
   if (ws) return ws
 
   ws = new WebSocket(
-    `wss://cemubribepit.beget.app/ws?secret_key=${localStorage.getItem('secretKey')}`,
+    `wss://cemubribepit.beget.app/ws?secret-key=${localStorage.getItem('secretKey')}`,
   )
 
   ws.onopen = () => {

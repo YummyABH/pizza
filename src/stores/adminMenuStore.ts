@@ -5,6 +5,7 @@ import type { MenuDishResponse, CategoryDishes } from '@/types/api'
 export const useAdminMenuStore = defineStore('adminMenu', () => {
   const adminMenu = ref<CategoryDishes[]>([])
   const adminDishes = ref<MenuDishResponse[]>([])
+  const adminPrices = ref([])
   const adminEditDish = ref<MenuDishResponse>({
     id: null,
     name: '',
@@ -57,6 +58,11 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     updateLengthAdminMenu()
   }
 
+  function updateAdminPrices(newValue) {
+    if (!newValue) return
+    adminPrices.value = [...newValue]
+  }
+
   function deleteAdminDishesItem(id: number) {
     adminDishes.value = adminDishes.value.filter((item) => item.id !== id)
   }
@@ -88,6 +94,15 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
       price: '',
       measure: '',
       quantity: '',
+    }
+    adminEditDish.value?.characteristics.push(characteristic)
+  }
+
+  function addPrice() {
+    const characteristic = {
+      to: '',
+      from: '',
+      price: '',
     }
     adminEditDish.value?.characteristics.push(characteristic)
   }
@@ -137,6 +152,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     adminDishes,
     adminEditDish,
     lengthAdminMenu,
+    adminPrices,
     updateAdminDishes,
     updateAdminCategory,
     addAdminCategory,
@@ -153,5 +169,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     deleteAdminDishesItem,
     resetAdminEditDish,
     deleteCategoriesItem,
+    updateAdminPrices,
+    addPrice,
   }
 })

@@ -9,6 +9,7 @@ import BaseMenuDishes from '@/components/admin/menu/BaseMenuDishes.vue'
 import BaseMenuCategiryDishes from '@/components/admin/menu/BaseMenuCategiryDishes.vue'
 import EditDishesPage from '@/components/admin/EditDishesPage.vue'
 import CreateDishPage from '@/components/admin/CreateDishPage.vue'
+import AdminDiliveryPage from '@/components/admin/AdminDiliveryPage.vue'
 
 const authGuard = function (to, from, next) {
   const isAuth = localStorage.getItem('accessToken') || null
@@ -93,6 +94,12 @@ const router = createRouter({
           path: 'dishes/create',
           name: 'CreateDishPage',
           component: CreateDishPage,
+          meta: { layout: 'admin', lockScroll: false, noSidebar: false },
+        },
+        {
+          path: 'admin-delivery',
+          name: 'AdminDiliveryPage',
+          component: AdminDiliveryPage,
           meta: { layout: 'admin', lockScroll: false, noSidebar: false },
         },
       ],

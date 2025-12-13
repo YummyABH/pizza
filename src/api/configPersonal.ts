@@ -4,7 +4,7 @@ export const APIInstancePersonal = $fetch.create({
   baseURL: 'https://cemubribepit.beget.app',
   headers: {
     'Content-Type': 'application/json',
-    secret_key: localStorage.getItem('secretKey'),
+    'secret-key': localStorage.getItem('secretKey'),
   },
   async onResponse() {},
   async onResponseError({ response }) {
