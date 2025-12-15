@@ -15,6 +15,7 @@ async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
   if (isValid) {
     await store.postOrder()
+    store.taggleOrderModal()
   } else {
     toastCreate('Вы заполнили не все обязательные поля', 'info')
     console.log('Форма содержит ошибки')

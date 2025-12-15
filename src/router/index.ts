@@ -60,13 +60,13 @@ const router = createRouter({
       meta: { layout: 'admin', lockScroll: false, noSidebar: false },
       beforeEnter: authGuard,
     },
-    // {
-    //   path: '/admin-delivery',
-    //   name: 'AdminUsersPage',
-    //   component: AdminUsersPage,
-    //   meta: { layout: 'admin', lockScroll: false, noSidebar: false },
-    //   beforeEnter: authGuard,
-    // },
+    {
+      path: '/admin-delivery',
+      name: 'AdminUsersPage',
+      component: AdminUsersPage,
+      meta: { layout: 'admin', lockScroll: false, noSidebar: false },
+      beforeEnter: authGuard,
+    },
     {
       path: '/admin-menu',
       meta: { layout: 'admin', lockScroll: false, noSidebar: false },

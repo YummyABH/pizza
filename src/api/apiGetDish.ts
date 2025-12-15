@@ -72,11 +72,15 @@ export const categoriesAPI = {
   },
   async getPrices() {
     const url = '/api/cfg/read'
-    return (await APIInstanceAdmin(
-      url,
-      {
-        method: 'GET',
-      }
-    ))
+    return await APIInstanceAdmin(url, {
+      method: 'GET',
+    })
+  },
+  async updatePrices(data) {
+    const url = '/api/cfg/update-price-list'
+    return await APIInstanceAdmin(url, {
+      method: 'POST',
+      body: { price_list: data },
+    })
   },
 }

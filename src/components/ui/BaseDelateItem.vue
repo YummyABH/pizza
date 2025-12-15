@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import IconBasket from '@/components/icons/IconBasket.vue'
 import IconCrass from '@/components/icons/IconCrass.vue'
+import { watch } from 'vue'
 
 defineProps({
   name: String,

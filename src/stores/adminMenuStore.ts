@@ -88,6 +88,12 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     adminEditDish.value?.characteristics.splice(index, 1)
   }
 
+  function delatePrice(indexCity: number, indexPrice: number) {
+    // console.log(adminPrices.value[indexCity].prices[indexPrice], indexCity)
+
+    adminPrices.value[indexCity].prices.splice(indexPrice, 1)
+  }
+
   function addCharacteristics() {
     const characteristic = {
       size: '',
@@ -98,13 +104,14 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     adminEditDish.value?.characteristics.push(characteristic)
   }
 
-  function addPrice() {
-    const characteristic = {
+  function addPrice(id: number) {
+    const price = {
       to: '',
       from: '',
       price: '',
     }
-    adminEditDish.value?.characteristics.push(characteristic)
+
+    adminPrices.value[id].prices.push(price)
   }
 
   function updateLengthAdminMenu() {
@@ -171,5 +178,6 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     deleteCategoriesItem,
     updateAdminPrices,
     addPrice,
+    delatePrice,
   }
 })

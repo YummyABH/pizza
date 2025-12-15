@@ -113,8 +113,10 @@ export const useOrderStore = defineStore('order', () => {
       toastCreate('Заказ успешно создан !', 'success')
       return result
     } catch (error) {
-      toastCreate('Произошла ошибка, повторите попытку.', 'error')
-      console.log(error)
+      console.log(error._data.type)
+
+      if (error._data.type === 'validation') return toastCreate(error._data.message, 'info')
+      toastCreate('Произошла ошибка, повторите попытку', 'error')
     }
   }
 

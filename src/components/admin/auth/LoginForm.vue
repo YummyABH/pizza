@@ -13,7 +13,7 @@ const handlerLogin = async () => {
     classButton.value = true
     await authStore.loginAdmin()
 
-    router.push('/admin-orders')
+    router.push('/admin-dishes')
   } catch (error) {
   } finally {
     classButton.value = false
