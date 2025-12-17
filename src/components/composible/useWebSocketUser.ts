@@ -5,6 +5,15 @@ let ws: WebSocket | null = null
 function connectWebSocket() {
   const store = useOrderHistoryStore()
 
+  function resetWs() {
+    if (ws) {
+      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        ws.close()
+      }
+      ws = null
+    }
+  }
+
   if (ws) return ws
 
   ws = new WebSocket(
@@ -34,6 +43,7 @@ function connectWebSocket() {
 
     if (data.type === 'error') {
       try {
+        resetWs()
         setTimeout(connectWebSocket, 2000)
       } catch (error) {}
     }
@@ -41,12 +51,14 @@ function connectWebSocket() {
   }
 
   ws.onerror = (err) => {
+    resetWs()
     console.log('WS ошибка:', err)
   }
 
   ws.onclose = async (err) => {
     console.log('закрылось ', err)
     try {
+      resetWs()
       setTimeout(connectWebSocket, 2000)
     } catch (error) {}
   }

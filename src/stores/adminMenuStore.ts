@@ -125,8 +125,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
 
   function addAdminCategory() {
     const newPosition = adminMenu.value[adminMenu.value.length - 1].position + 1
-    const newId = adminMenu.value[adminMenu.value.length - 1].id + 1
-    adminMenu.value.push({ position: newPosition, id: newId, name: '', status: false })
+    adminMenu.value.push({ position: newPosition, name: '', status: false })
   }
 
   function updateAdminIngredient(index: number, value: string) {

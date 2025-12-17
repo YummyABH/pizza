@@ -8,7 +8,9 @@ const { handlerLogout } = useLogout()
 
 function resetWs() {
   if (ws) {
-    ws.close()
+    if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+      ws.close()
+    }
     ws = null
   }
 }

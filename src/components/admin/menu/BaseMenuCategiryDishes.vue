@@ -18,10 +18,7 @@ const loadingStatus = ref<boolean>(false)
 const isOpenDelateModal = ref<boolean>(false)
 
 async function updateCategories() {
-  const { response, statusResponse } = await addCatigories(
-    adminMenuStore.adminMenu,
-    adminMenuStore.lengthAdminMenu,
-  )
+  const { response, statusResponse } = await addCatigories(adminMenuStore.adminMenu)
   if (response) {
     adminMenuStore.updateAdminCategory(response)
   }
@@ -34,11 +31,11 @@ async function deleteCategory(id: number) {
     loadingStatus.value = true
     const indexDelete = adminMenuStore.adminMenu.findIndex((el) => el.id === id)
 
-    if (indexDelete < adminMenuStore.lengthAdminMenu) {
+    if (indexDelete && indexDelete < adminMenuStore.lengthAdminMenu) {
       await categoriesAPI.delateCategory(id)
+      adminMenuStore.updateLengthAdminMenu()
     }
     adminMenuStore.deleteCategoriesItem(id)
-    adminMenuStore.updateLengthAdminMenu()
   } catch (error) {
   } finally {
     loadingStatus.value = false
@@ -70,7 +67,7 @@ onMounted(async () => {
   >
     <div class="mx-7 px-20 w-full p-5 rounded-2xl max-2xl:px-0 max-md:mx-0">
       <h1 class="mb-8 text-2xl text-center font-medium">Категории блюд</h1>
-      <div class="bg-[#111827]  rounded-xl p-5 max-w-full max-sm:px-2 text-base">
+      <div class="bg-[#111827] rounded-xl p-5 max-w-full max-sm:px-2 text-base">
         <div class="flex justify-self-end mb-4 gap-6 flex-wrap">
           <div
             @click="updateCategories"

@@ -27,6 +27,7 @@ async function saveUpdatingEditDish() {
     const normalizeDish = normalizeData(adminMenuStore.adminEditDish)
     await categoriesAPI.updateDish(normalizeDish)
     toastCreate('Изменения сохранены', 'success')
+    router.push('/admin-menu/dishes')
   } catch (error) {
     toastCreate('Произошла ошибка про сохранении', 'error')
   } finally {
@@ -39,7 +40,7 @@ async function deleteEditDish(id: number) {
     loadingStatus.value = true
     await categoriesAPI.delateDish(id)
     adminMenuStore.deleteAdminDishesItem(id)
-    router.back()
+    router.push('/admin-menu/dishes')
     toastCreate('Блюдо удалено', 'success')
   } catch (error) {
     toastCreate('Произошла ошибка удаления', 'error')
