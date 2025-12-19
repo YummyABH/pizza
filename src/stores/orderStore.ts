@@ -9,7 +9,10 @@ export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
   const initialOrder: OrderState | null = savedOrder ? JSON.parse(savedOrder) : null
   const isOpenOrderModal = ref<boolean>(false)
-
+  const openTime = ref({
+    closes_at: '--:--',
+    opens_at: '--:--',
+  })
   const dataAddress = ref([])
 
   const order = reactive<OrderState>(
@@ -35,6 +38,11 @@ export const useOrderStore = defineStore('order', () => {
     },
     { deep: true },
   )
+
+  function updateOpenTime(time) {
+    openTime.value.closes_at = time.closes_at
+    openTime.value.opens_at = time.opens_at
+  }
 
   function taggleOrderModal() {
     isOpenOrderModal.value = !isOpenOrderModal.value
@@ -109,6 +117,9 @@ export const useOrderStore = defineStore('order', () => {
         ...rawData,
         dishes: rawData.dishes.map((dish) => normalizeDishOrder(dish)),
       }
+      normalizeData.phone = normalizeData.phone.replace('+ ', '')
+      console.log(normalizeData)
+
       const result = await orderAPI.postOrder(normalizeData)
       toastCreate('Заказ успешно создан !', 'success')
       return result
@@ -148,6 +159,7 @@ export const useOrderStore = defineStore('order', () => {
     order,
     dataAddress,
     isOpenOrderModal,
+    openTime,
     cutleryAdd,
     cutleryReduce,
     clearDishesInOrder,
@@ -158,5 +170,6 @@ export const useOrderStore = defineStore('order', () => {
     postOrder,
     debouncedRequestGeo,
     taggleOrderModal,
+    updateOpenTime,
   }
 })

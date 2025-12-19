@@ -40,7 +40,7 @@ const hasVisibleDish = computed(() => (index: number) => {
   >
     <h2 class="mb-6 text-2xl font-semibold">{{ dishList.category_name }}</h2>
     <div
-      class="w-full grid grid-cols-4 gap-10 max-xl:grid-cols-3 max-sm:gap-4 max-sm:gap-y-8 max-lg:grid-cols-2"
+      class="w-full grid auto-rows-fr grid-cols-4 gap-10 max-xl:grid-cols-3 max-sm:gap-4 max-sm:gap-y-8 max-lg:grid-cols-2"
     >
       <MenuListCard
         v-show="dish.dish_status"

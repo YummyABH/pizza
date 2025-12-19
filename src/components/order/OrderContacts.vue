@@ -13,9 +13,11 @@ const nameMask = orderInputStore.nameMask
 
 async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
-  if (isValid) {
+  if (isValid && store.order.dishes.length) {
     await store.postOrder()
     store.taggleOrderModal()
+  } else if (!store.order.dishes.length) {
+    toastCreate('Вы не выбрали ни одного блюда', 'info')
   } else {
     toastCreate('Вы заполнили не все обязательные поля', 'info')
     console.log('Форма содержит ошибки')
@@ -86,7 +88,9 @@ async function dataRequestCalculation() {
       </div>
       <div class="text-lg font-medium">
         Время работы:
-        <span class="font-normal"> с 11:00 до 22:40 </span>
+        <span class="font-normal">
+          с {{ store.openTime.opens_at }} до {{ store.openTime.closes_at }}
+        </span>
       </div>
     </div>
     <input

@@ -13,7 +13,7 @@ const isOpenCity = ref<number | null>(null)
 async function updateCfg() {
   try {
     const response = await categoriesAPI.updatePrices(adminMenuStore.adminPrices)
-    adminMenuStore.updateAdminPrices(response[0].price_list)
+    adminMenuStore.updateAdminPrices(response.price_list)
     toastCreate('Успешно сохранено', 'success')
   } catch (error) {
     toastCreate('Произошла ошибка', 'error')

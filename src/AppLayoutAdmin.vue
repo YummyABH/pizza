@@ -8,10 +8,10 @@ const adminMenuStore = useAdminMenuStore()
 
 onMounted(async () => {
   const response = await categoriesAPI.getPrices()
-  adminMenuStore.updateAdminPrices(response[0].price_list)
+  adminMenuStore.updateAdminPrices(response.price_list)
   adminMenuStore.updateOpeningHours({
-    closes_at: response[0].closes_at,
-    opens_at: response[0].opens_at,
+    closes_at: response.closes_at,
+    opens_at: response.opens_at,
   })
 })
 </script>

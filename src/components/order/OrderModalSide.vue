@@ -31,7 +31,7 @@ const sumPrice = computed(() =>
       <h2 class="text-2xl font-medium">Заказ</h2>
       <div
         @click="storeOrder.taggleOrderModal"
-        class="relative w-5 h-5 after:absolute after:w-full after:h-0.5 after:top-1/2 after:left-1/2 after:bg-black after:transform after:-translate-1/2 after:rotate-45 before:absolute before:w-full before:h-0.5 before:left-1/2 before:top-1/2 before:bg-black before:transform before:-translate-1/2 before:-rotate-45"
+        class="cursor-pointer relative w-5 h-5 after:absolute after:w-full after:h-0.5 after:top-1/2 after:left-1/2 after:bg-black after:transform after:-translate-1/2 after:rotate-45 before:absolute before:w-full before:h-0.5 before:left-1/2 before:top-1/2 before:bg-black before:transform before:-translate-1/2 before:-rotate-45"
       ></div>
     </div>
     <div class="flex justify-between mb-4">

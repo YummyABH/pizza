@@ -2,6 +2,11 @@
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import OrderModalSide from './components/order/OrderModalSide.vue'
+import { useOrderStore } from './stores/orderStore'
+import { onMounted } from 'vue'
+import { categoriesAPI } from './api/apiGetDish'
+
+const storeOrder = useOrderStore()
 
 function generateSecretKey(length = 32) {
   const array = new Uint8Array(length)
@@ -14,6 +19,14 @@ if (!localStorage.getItem('secretKey')) {
   const normalizeSecretKey = secretKey.replace(/\+/g, '')
   localStorage.setItem('secretKey', normalizeSecretKey)
 }
+
+onMounted(async () => {
+  const response = await categoriesAPI.getPrices()
+  storeOrder.updateOpenTime({
+    closes_at: response.closes_at,
+    opens_at: response.opens_at,
+  })
+})
 </script>
 
 <template>

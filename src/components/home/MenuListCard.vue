@@ -24,7 +24,7 @@ function addDishInOrder() {
 </script>
 
 <template>
-  <div class="">
+  <div class="flex flex-col h-full">
     <div
       @click="statusModalDish = true"
       class="cursor-pointer block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
@@ -34,11 +34,12 @@ function addDishInOrder() {
         class="max-sm:aspect-3/2 w-full h-full object-cover"
       />
     </div>
-    <div class="flex flex-col justify-between min-h-36 max-sm:min-h-26">
+
+    <div class="flex flex-col flex-1 justify-between h-full">
       <div class="">
         <h3 class="text-lg mb-1 font-medium max-sm:text-base">{{ dishList.name }}</h3>
         <div
-          class="flex gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
+          class="flex flex-wrap gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
         >
           <span
             >{{ dishList.characteristics[indexCharacteristics].quantity }}
