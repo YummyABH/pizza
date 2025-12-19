@@ -19,11 +19,6 @@ async function updateCfg() {
     toastCreate('Произошла ошибка', 'error')
   }
 }
-
-onMounted(async () => {
-  const response = await categoriesAPI.getPrices()
-  adminMenuStore.updateAdminPrices(response[0].price_list)
-})
 </script>
 
 <template>

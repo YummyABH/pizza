@@ -83,4 +83,11 @@ export const categoriesAPI = {
       body: { price_list: data },
     })
   },
+  async updateTime(open, close) {
+    const url = '/api/cfg/change-time'
+    return await APIInstanceAdmin(url, {
+      method: 'POST',
+      body: { opens_at: open, closes_at: close },
+    })
+  },
 }

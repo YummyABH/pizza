@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAdminStore } from '@/stores/adminStore'
+import { useLogout } from '../composible/useLogout'
+import { vMaska } from 'maska/vue'
+import { useAdminMenuStore } from '@/stores/adminMenuStore'
+import { categoriesAPI } from '@/api/apiGetDish'
+import { toastCreate } from '@/utility/createToast'
+import IconArrow from '../icons/IconArrow.vue'
+import IconLogout from '../icons/IconLogout.vue'
+import IconDelivery from '../icons/IconDelivery.vue'
 import IconMenu from '../icons/IconMenu.vue'
 import IconOrderHistoryMini from '../icons/IconOrderHistoryMini.vue'
 import IconUsers from '../icons/IconUsers.vue'
-import { useRoute, useRouter } from 'vue-router'
-import IconArrow from '../icons/IconArrow.vue'
-import { useAdminStore } from '@/stores/adminStore'
-import IconLogout from '../icons/IconLogout.vue'
-import { useLogout } from '../composible/useLogout'
-import IconDelivery from '../icons/IconDelivery.vue'
 
 const { handlerLogout } = useLogout()
 const storeAdmin = useAdminStore()
 const route = useRoute()
 const openSublistId = ref(null)
 const activeSublist = ref(null)
+const adminMenuStore = useAdminMenuStore()
 
 const tab = [
   {
@@ -55,6 +60,18 @@ const tab = [
   },
 ]
 
+async function updateCfgTime() {
+  try {
+    const response = await categoriesAPI.updateTime(
+      adminMenuStore.adminOpeningHours.opens_at,
+      adminMenuStore.adminOpeningHours.closes_at,
+    )
+    toastCreate('Время обновлено', 'success')
+  } catch (error) {
+    toastCreate('Произошла ошибка при обновлении времени', 'error')
+  }
+}
+
 watch(route, () => {
   const active = tab
     .flatMap((item) =>
@@ -87,6 +104,29 @@ watch(route, () => {
     <div class="text-2xl font-medium px-7 py-3">ЛОГОТИП</div>
     <div class="px-4 pb-4 flex flex-col justify-between flex-1">
       <div class="">
+        <div class="mb-4">
+          <div class="font-medium text-lg text-[#9ca3af] pl-3 pb-2">Время работы</div>
+          <div class="flex flex-col gap-y-2 mb-4">
+            <div class="pl-3">Время открытия:</div>
+            <input
+              v-model="adminMenuStore.adminOpeningHours.opens_at"
+              @blur="updateCfgTime"
+              v-maska="'##:##'"
+              class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-1.5 py-1 focus:outline-0 focus-within:border focus-within:border-gray-600"
+              type="text"
+            />
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <div class="pl-3">Время закрытия:</div>
+            <input
+              v-model="adminMenuStore.adminOpeningHours.closes_at"
+              @blur="updateCfgTime"
+              v-maska="'##:##'"
+              class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-1.5 py-1 focus:outline-0 focus-within:border focus-within:border-gray-600"
+              type="text"
+            />
+          </div>
+        </div>
         <div class="font-medium text-[#9ca3af] pl-3 pb-4">МЕНЕДЖМЕНТ</div>
         <div v-for="item in tab" :key="item.id">
           <router-link

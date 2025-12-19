@@ -6,6 +6,11 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   const adminMenu = ref<CategoryDishes[]>([])
   const adminDishes = ref<MenuDishResponse[]>([])
   const adminPrices = ref([])
+  const adminOpeningHours = ref({
+    closes_at: '00:00',
+    opens_at: '00:00',
+  })
+
   const adminEditDish = ref<MenuDishResponse>({
     id: null,
     name: '',
@@ -28,6 +33,11 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
   })
 
   const lengthAdminMenu = ref<number>(0)
+
+  function updateOpeningHours(newTime) {
+    adminOpeningHours.value.closes_at = newTime.closes_at
+    adminOpeningHours.value.opens_at = newTime.opens_at
+  }
 
   function resetAdminEditDish() {
     adminEditDish.value = {
@@ -159,6 +169,8 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     adminEditDish,
     lengthAdminMenu,
     adminPrices,
+    adminOpeningHours,
+    updateOpeningHours,
     updateAdminDishes,
     updateAdminCategory,
     addAdminCategory,
