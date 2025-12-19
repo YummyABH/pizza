@@ -140,12 +140,21 @@ export const useOrderStore = defineStore('order', () => {
       timer = setTimeout(async () => {
         try {
           const result = await orderAPI.getAddress(order.delivery.address)
-          const addresses = result.results.filter(
-            (country) => country.address.component[0].name === 'Абхазия',
-          )
-          dataAddress.value = addresses.map((item) => {
-            return item.address.formatted_address
+          let addresses = []
+
+          addresses = result?.results?.filter((country) => {
+            if (country.address?.component) {
+              return country?.address?.component[0]?.name === 'Абхазия'
+            }
+            return false
           })
+          if (addresses) {
+            dataAddress.value = addresses?.map((item) => {
+              return item?.address?.formatted_address
+            })
+          } else {
+            dataAddress.value = []
+          }
         } catch (error) {
           console.log('error', error)
         }

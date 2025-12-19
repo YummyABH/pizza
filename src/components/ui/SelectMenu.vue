@@ -31,6 +31,12 @@ const props = defineProps({
   },
 })
 
+const emits = defineEmits(['checkAdress'])
+
+const checkAdress = () => {
+  emits('checkAdress')
+}
+
 const modelValue = defineModel()
 const calculationStore = useOrderStore()
 const orderInputStore = useOrderInputStore()
@@ -102,7 +108,7 @@ function onBlur() {
         v-maska="mask"
         autocomplete="off"
         @focus="isOpen = true"
-        @blur="onBlur"
+        @blur="(onBlur(), checkAdress())"
         :required
         @input="orderInputStore.clearError(selecte)"
         @change="modelValue = $event.target.value"

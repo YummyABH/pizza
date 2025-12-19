@@ -8,6 +8,7 @@ import { orderAPI } from '@/api/apiOrder'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
+const cities = ['сухум', 'гагра', 'пицунда', 'гал']
 const REGEX_ADRESS = ref(/^[a-zA-Zа-яА-ЯёЁ0-9\s\.,\-\/№]+$/)
 const REGEX_ADRESS_COMMENT = ref(/^[а-яА-ЯёЁ ]{0,255}$/)
 const addressMask = orderInputStore.addressMask
@@ -18,6 +19,25 @@ const classDelivery = computed(() => {
     pickup: store.order.delivery.status ? 'before:w-0' : 'before:w-32',
   }
 })
+
+function checkAdress() {
+  let hasCityOptions = false
+  const hasCityInput = cities.some((city) =>
+    store.order.delivery.address.toLowerCase().includes(city.toLowerCase()),
+  )
+
+  if (store.dataAddress.length) {
+    hasCityOptions = store.dataAddress.some((str) =>
+      cities.some((city) => str.toLowerCase().includes(city.toLowerCase())),
+    )
+  }
+
+  console.log('asdfasd', hasCityInput, hasCityOptions)
+
+  if (!(hasCityInput || hasCityOptions)) {
+    store.order.delivery.address = ''
+  }
+}
 </script>
 
 <template>
@@ -42,6 +62,7 @@ const classDelivery = computed(() => {
       </div>
       <div v-show="store.order.delivery.status" class="flex flex-col gap-y-5">
         <SelectMenu
+          @check-adress="checkAdress()"
           @input="store.debouncedRequestGeo"
           :options="store.dataAddress"
           selecte="address"
