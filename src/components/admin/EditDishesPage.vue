@@ -10,6 +10,7 @@ import IconLongArrow from '../icons/IconLongArrow.vue'
 import BaseDelateItem from '../ui/BaseDelateItem.vue'
 import { normalizeData } from '@/components/composible/useNormalizeData'
 import { toastCreate } from '@/utility/createToast'
+import { vMaska } from 'maska/vue'
 
 const isOpenDelateModal = ref<boolean>(false)
 const router = useRouter()
@@ -196,7 +197,8 @@ onUnmounted(() => {
                   <label class="text-xl inline-block mb-3"> Цена (₽) : </label>
                   <input
                     class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-3 py-2 focus:outline-0 focus-within:border focus-within:border-gray-600"
-                    type="number"
+                    type="text"
+                    v-maska="'########'"
                     v-model="characteristic.price"
                   />
                 </div>
