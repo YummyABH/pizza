@@ -30,7 +30,9 @@ async function saveUpdatingEditDish() {
     toastCreate('Изменения сохранены', 'success')
     router.push('/admin-menu/dishes')
   } catch (error) {
-    toastCreate('Произошла ошибка про сохранении', 'error')
+    console.log(error);
+    
+    toastCreate('Произошла ошибка: ' + error.data.message, 'error')
   } finally {
     loadingStatus.value = false
   }
