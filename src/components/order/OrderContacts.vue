@@ -4,10 +4,12 @@ import { useOrderStore } from '@/stores/orderStore'
 import { useOrderInputStore } from '@/stores/orderInputStore'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import { toastCreate } from '@/utility/createToast'
+import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
 const storeOrder = useOrderStore()
+const historyOrderStore = useOrderHistoryStore()
 
 const addressMask = orderInputStore.addressMask
 const nameMask = orderInputStore.nameMask
@@ -18,6 +20,7 @@ async function dataRequestCalculation() {
     try {
       await store.postOrder()
       storeOrder.clearDishesInOrder()
+      historyOrderStore.isViewAdd()
     } catch (error) {
       
     }

@@ -4,7 +4,16 @@ import type { CreateOrderResponse } from '@/types/api'
 
 export const useOrderHistoryStore = defineStore('orderHistory', () => {
   const historyOrder = ref<CreateOrderResponse[]>([])
+  const isView = ref(0)
 
+  function isViewAdd() {
+    isView.value++
+  }
+  
+  function isViewReset() {
+    isView.value = 0
+  }
+  
   function addHistoryOrder(newValue: CreateOrderResponse) {
     if (!newValue) return
 
@@ -13,8 +22,6 @@ export const useOrderHistoryStore = defineStore('orderHistory', () => {
 
   async function updateStatusOrder(newValue: CreateOrderResponse, id: number) {
     const idUpdatedOrder: number = historyOrder.value.findIndex(item => item.id === id)
-    console.log('historyOrder.value[idUpdatedOrder]: ', historyOrder.value[idUpdatedOrder]);
-    console.log('newValue: ', newValue);
     
     historyOrder.value[idUpdatedOrder] = newValue
   }
@@ -24,5 +31,5 @@ export const useOrderHistoryStore = defineStore('orderHistory', () => {
 
     historyOrder.value = [...newValue]
   }
-  return { historyOrder, updateHistoryOrder, addHistoryOrder, updateStatusOrder }
+  return { historyOrder, isView, updateHistoryOrder, addHistoryOrder, updateStatusOrder, isViewAdd, isViewReset }
 })

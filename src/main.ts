@@ -13,6 +13,7 @@ app.use(createPinia())
 app.use(router)
 app.use(Toast, {
   position: POSITION.TOP_CENTER,
+  timeout: 1500 
 })
 
 app.mount('#app')

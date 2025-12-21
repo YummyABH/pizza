@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { connectWebSocket } from '@/components/composible/useWebSocketUser'
 import BaseOrderHistory from '@/components/orederHistory/BaseOrderHistory.vue'
+import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
 import { onMounted } from 'vue'
 
+const historyOrderStore = useOrderHistoryStore()
 let ws
 
 onMounted(() => {
   ws = connectWebSocket()
+  historyOrderStore.isViewReset()
 })
 </script>
 

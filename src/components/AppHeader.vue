@@ -3,8 +3,10 @@ import ContentContainer from '@/components/ContentContainer.vue'
 import IconBag from '@/components/icons/IconBag.vue'
 import IconOrderHistory from './icons/IconOrderHistory.vue'
 import { useOrderStore } from '@/stores/orderStore'
+import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
 
 const storeOrder = useOrderStore()
+const historyOrderStore = useOrderHistoryStore()
 </script>
 
 <template>
@@ -31,7 +33,13 @@ const storeOrder = useOrderStore()
             to="order-history"
             class="w-12 max-sm:p-2 max-sm:w-10 border rounded-full p-3 duration-200 hover:bg-gray-600 cursor-pointer hover:border-gray-600"
           >
-            <div>
+            <div class="relative">
+              <div
+                v-show="historyOrderStore.isView"
+                class="absolute top-0 right-0 translate-4/5 text-sm rounded-full px-1.5 bg-green-600"
+              >
+                {{ historyOrderStore.isView }}
+              </div>
               <IconOrderHistory />
             </div>
           </router-link>

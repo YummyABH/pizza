@@ -95,6 +95,8 @@ function onBlur() {
   // Если инпут пустой, сбрасываем выбор
   if (!modelValue.value) {
     modelValue.value = ''
+  } else {    
+    modelValue.value = visibleItems.value[0]
   }
   isOpen.value = false
 }
