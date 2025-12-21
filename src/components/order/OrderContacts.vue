@@ -7,6 +7,7 @@ import { toastCreate } from '@/utility/createToast'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
+const storeOrder = useOrderStore()
 
 const addressMask = orderInputStore.addressMask
 const nameMask = orderInputStore.nameMask
@@ -14,7 +15,12 @@ const nameMask = orderInputStore.nameMask
 async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
   if (isValid && store.order.dishes.length) {
-    await store.postOrder()
+    try {
+      await store.postOrder()
+      storeOrder.clearDishesInOrder()
+    } catch (error) {
+      
+    }
     store.taggleOrderModal()
   } else if (!store.order.dishes.length) {
     toastCreate('Вы не выбрали ни одного блюда', 'info')

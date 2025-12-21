@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { connectWebSocket } from '@/components/composible/useWebSocketUser'
 import BaseOrderHistory from '@/components/orederHistory/BaseOrderHistory.vue'
-import { ref } from 'vue'
 import { onMounted } from 'vue'
 
-const ws = ref<WebSocket>()
+let ws
 
 onMounted(() => {
-  ws.value = connectWebSocket()
+  ws = connectWebSocket()
 })
 </script>
 

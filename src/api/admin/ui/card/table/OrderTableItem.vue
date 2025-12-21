@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import { connectWebSocket } from '@/components/composible/useWebSocket'
 import IconEye from '@/components/icons/IconEye.vue'
 import { normalizeTime } from '@/utility/normalizeData'
 import { computed } from 'vue'
 
 const props = defineProps({
   order: Object,
-  ws: WebSocket
 })
 
+const emits = defineEmits(['sendMessage'])
+
+const sendMessage = (id) => {
+  emits('sendMessage', id)
+}
 const activeDish = defineModel('activeDish')
 const isActiveStatusMenu = defineModel('isActiveStatusMenu')
 
@@ -18,10 +23,6 @@ const styleStatusOrder = computed(() => {
   return color
 })
 
-function sendMessage(id: number) {
-  const status = event?.target?.textContent
-  props.ws.send(JSON.stringify({ type: 'update-status', action: {id: id, status: status} }))
-}
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAdminStore } from '@/stores/adminStore'
 import { useOrderAllStore } from '@/stores/orderAllStore'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { connectWebSocket } from '../composible/useWebSocket'
 import OrdersDishCard from '@/api/admin/ui/card/OrdersDishCard.vue'
 import OrdersTableCardMini from '@/api/admin/ui/card/table/OrdersTableCardMini.vue'
@@ -9,7 +9,7 @@ import OrderTableItem from '@/api/admin/ui/card/table/OrderTableItem.vue'
 import OrdersModalCard from '@/api/admin/orders/OrdersModalCard.vue'
 import IconCrass from '../icons/IconCrass.vue'
 
-const ws = ref<WebSocket>()
+let ws
 
 const store = useOrderAllStore()
 const storeAdmin = useAdminStore()
@@ -27,9 +27,16 @@ const activeOrder = reactive({
   order_comment: '',
 })
 
+function sendMessage(id: number) {
+  const status = event?.target?.textContent
+  ws.value.send(JSON.stringify({ type: 'update-status', action: {id: id, status: status} }))  
+}
+
 onMounted(() => {
-  ws.value = connectWebSocket()
+  ws = connectWebSocket()
 })
+
+
 </script>
 
 <template>
@@ -125,7 +132,7 @@ onMounted(() => {
             v-for="order in store.allHistoryOrder"
             :key="order.id"
             :order="order"
-            :ws="ws"
+            @send-message="sendMessage"
             v-model:is-active-status-menu="isActiveStatusMenu"
             v-model:active-dish="activeDish"
           >

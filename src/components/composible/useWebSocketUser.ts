@@ -1,32 +1,33 @@
 import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
+import { ref } from 'vue'
 
-let ws: WebSocket | null = null
+const ws: WebSocket | null = ref(null)
 
 function connectWebSocket() {
   const store = useOrderHistoryStore()
 
   function resetWs() {
-    if (ws) {
-      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
-        ws.close()
+    if (ws.value) {
+      if (ws.value && (ws.value.readyState === WebSocket.OPEN || ws.value.readyState === WebSocket.CONNECTING)) {
+        ws.value.close()
       }
-      ws = null
+      ws.value = null
     }
   }
 
-  if (ws) return ws
+  if (ws.value) return ws
 
-  ws = new WebSocket(
+  ws.value = new WebSocket(
     `wss://cemubribepit.beget.app/ws?secret_key=${localStorage.getItem('secretKey')}`,
   )
 
-  ws.onopen = () => {
-    if (ws?.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({ type: 'user-orders' }))
+  ws.value.onopen = () => {
+    if (ws.value?.readyState === WebSocket.OPEN) {
+      ws.value.send(JSON.stringify({ type: 'user-orders' }))
     }
   }
 
-  ws.onmessage = async (event) => {
+  ws.value.onmessage = async (event) => {
     const data = JSON.parse(event.data)
 
     if (data.type === 'orders' && data.changeType === 'added') {
@@ -50,12 +51,12 @@ function connectWebSocket() {
     console.log('Обновления заказов:', data)
   }
 
-  ws.onerror = (err) => {
+  ws.value.onerror = (err) => {
     resetWs()
     console.log('WS ошибка:', err)
   }
 
-  ws.onclose = async (err) => {
+  ws.value.onclose = async (err) => {
     console.log('закрылось ', err)
     try {
       resetWs()

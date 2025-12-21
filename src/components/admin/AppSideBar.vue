@@ -112,7 +112,7 @@ watch(route, () => {
               v-model="adminMenuStore.adminOpeningHours.opens_at"
               @blur="updateCfgTime"
               v-maska="'##:##'"
-              class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-1.5 py-1 focus:outline-0 focus-within:border focus-within:border-gray-600"
+              class="block w-40 border-gray-600 border-[1px] bg-gray-800 rounded-lg px-1.5 py-1 focus:outline-0 focus-within:border focus-within:border-gray-600"
               type="text"
             />
           </div>
@@ -122,7 +122,7 @@ watch(route, () => {
               v-model="adminMenuStore.adminOpeningHours.closes_at"
               @blur="updateCfgTime"
               v-maska="'##:##'"
-              class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-1.5 py-1 focus:outline-0 focus-within:border focus-within:border-gray-600"
+              class="block w-40 border-gray-600 border-[1px] bg-gray-800 rounded-lg px-1.5 py-1 focus:outline-0 focus-within:border focus-within:border-gray-600"
               type="text"
             />
           </div>
