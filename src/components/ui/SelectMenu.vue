@@ -95,8 +95,15 @@ function onBlur() {
   // Если инпут пустой, сбрасываем выбор
   if (!modelValue.value) {
     modelValue.value = ''
-  } else {    
-    modelValue.value = visibleItems.value[0]
+    return (isOpen.value = false)
+  }
+  const visibleString = visibleItems.value.find((str) =>
+    str.toLowerCase().includes(modelValue.value.toLowerCase()),
+  )
+  console.log(visibleString)
+
+  if (visibleString) {
+    modelValue.value = visibleString
   }
   isOpen.value = false
 }

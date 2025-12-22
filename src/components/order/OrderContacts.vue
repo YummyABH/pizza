@@ -18,13 +18,13 @@ async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
   if (isValid && store.order.dishes.length) {
     try {
-      await store.postOrder()
+      const response = await store.postOrder()
+      console.log('response: ', response)
+
       storeOrder.clearDishesInOrder()
       historyOrderStore.isViewAdd()
-    } catch (error) {
-      
-    }
-    store.taggleOrderModal()
+      store.taggleOrderModal()
+    } catch (error) {}
   } else if (!store.order.dishes.length) {
     toastCreate('Вы не выбрали ни одного блюда', 'info')
   } else {

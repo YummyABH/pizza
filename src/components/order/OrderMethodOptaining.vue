@@ -31,9 +31,6 @@ function checkAdress() {
       cities.some((city) => str.toLowerCase().includes(city.toLowerCase())),
     )
   }
-
-  console.log('asdfasd', hasCityInput, hasCityOptions)
-
   if (!(hasCityInput || hasCityOptions)) {
     store.order.delivery.address = ''
   }
