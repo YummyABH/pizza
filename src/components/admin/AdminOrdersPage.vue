@@ -11,6 +11,21 @@ import IconCrass from '../icons/IconCrass.vue'
 
 let ws
 
+const permission = ref('default') // 'granted', 'denied', 'default'
+
+// Проверяем разрешение при загрузке
+if ('Notification' in window) {
+  permission.value = Notification.permission
+
+  if (Notification.permission === 'default') {
+    Notification.requestPermission().then((result) => {
+      permission.value = result
+    })
+  }
+}
+
+console.log(permission.value)
+
 const store = useOrderAllStore()
 const storeAdmin = useAdminStore()
 const isActiveStatusMenu = ref<boolean>(false)
@@ -29,14 +44,12 @@ const activeOrder = reactive({
 
 function sendMessage(id: number) {
   const status = event?.target?.textContent
-  ws.value.send(JSON.stringify({ type: 'update-status', action: {id: id, status: status} }))  
+  ws.value.send(JSON.stringify({ type: 'update-status', action: { id: id, status: status } }))
 }
 
 onMounted(() => {
   ws = connectWebSocket()
 })
-
-
 </script>
 
 <template>

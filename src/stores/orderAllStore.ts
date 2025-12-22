@@ -19,7 +19,7 @@ export const useOrderAllStore = defineStore('orderAll', () => {
   }
 
   async function updateStatusOrder(newValue: CreateOrderResponse, id: number) {
-    const idUpdatedOrder: number = allHistoryOrder.value.findIndex(item => item.id === id)
+    const idUpdatedOrder: number = allHistoryOrder.value.findIndex((item) => item.id === id)
     allHistoryOrder.value[idUpdatedOrder] = newValue
   }
 

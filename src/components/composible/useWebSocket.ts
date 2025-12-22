@@ -3,13 +3,17 @@ import { useOrderAllStore } from '@/stores/orderAllStore'
 import { useRouter } from 'vue-router'
 import { useLogout } from './useLogout'
 import { ref } from 'vue'
+import { playNotificationSound } from '@/utility/notificationPlay'
 
 const ws: WebSocket | null = ref(null)
 const { handlerLogout } = useLogout()
 
 function resetWs() {
   if (ws.value) {
-    if (ws.value && (ws.value.readyState === WebSocket.OPEN || ws.value.readyState === WebSocket.CONNECTING)) {
+    if (
+      ws.value &&
+      (ws.value.readyState === WebSocket.OPEN || ws.value.readyState === WebSocket.CONNECTING)
+    ) {
       ws.value.close()
     }
     ws.value = null
@@ -23,7 +27,9 @@ function connectWebSocket() {
 
   if (ws.value) return ws
 
-  ws.value = new WebSocket(`wss://cemubribepit.beget.app/ws?token=${localStorage.getItem('accessToken')}`)
+  ws.value = new WebSocket(
+    `wss://cemubribepit.beget.app/ws?token=${localStorage.getItem('accessToken')}`,
+  )
 
   ws.value.onopen = () => {
     if (ws.value?.readyState === WebSocket.OPEN) {
@@ -33,9 +39,9 @@ function connectWebSocket() {
 
   ws.value.onmessage = async (event) => {
     const data = JSON.parse(event.data)
-    
     if (data.type === 'orders' && data.changeType === 'added') {
       store.addHistoryOrder(data.orders[0])
+      playNotificationSound()
     }
     if (data.type === 'orders' && data.changeType === 'updated') {
       store.updateAllHistoryOrder(data.orders)
