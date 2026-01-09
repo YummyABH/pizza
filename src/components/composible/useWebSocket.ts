@@ -23,7 +23,7 @@ function connectWebSocket() {
 
   if (ws.value) return ws
 
-  ws.value = new WebSocket(`wss://cemubribepit.beget.app/ws?token=${localStorage.getItem('accessToken')}`)
+  ws.value = new WebSocket(`wss://pizzaabh.ru/ws?token=${localStorage.getItem('accessToken')}`)
 
   ws.value.onopen = () => {
     if (ws.value?.readyState === WebSocket.OPEN) {

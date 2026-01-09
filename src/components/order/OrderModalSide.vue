@@ -47,7 +47,7 @@ const sumPrice = computed(() =>
         <div class="w-14 h-14">
           <img
             class="w-full h-full object-cover aspect-1/1"
-            :src="`https://cemubribepit.beget.app/uploads/${dish.image}`"
+            :src="`https://pizzaabh.ru/uploads/${dish.image}`"
           />
         </div>
         <div class="flex text-sm flex-col w-full">
