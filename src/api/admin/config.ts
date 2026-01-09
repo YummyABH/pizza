@@ -6,7 +6,7 @@ const { refresh } = authAPI()
 const { handlerLogout } = useLogout()
 
 const APIInstanceAdminBase = $fetch.create({
-  baseURL: 'https://cemubribepit.beget.app',
+  baseURL: 'https://pizzaabh.ru',
   headers: {
     // 'Content-Type': 'application/json',
   },
