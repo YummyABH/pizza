@@ -26,6 +26,7 @@ onMounted(async () => {
     closes_at: response.closes_at,
     opens_at: response.opens_at,
   })
+  storeOrder.updatePriceList(response.price_list)
 })
 </script>
 

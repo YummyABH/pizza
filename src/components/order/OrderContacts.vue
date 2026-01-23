@@ -16,7 +16,7 @@ const nameMask = orderInputStore.nameMask
 
 async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
-  if (isValid && store.order.dishes.length) {
+  if ((isValid || !store.order.delivery.status) && store.order.dishes.length) {
     try {
       await store.postOrder()
       storeOrder.clearDishesInOrder()
@@ -46,9 +46,11 @@ async function dataRequestCalculation() {
             select="name"
             v-model="store.order.name"
             label="Имя"
+            :required="true"
             :mask="nameMask"
           />
           <BaseInput
+            :required="true"
             id="phone"
             title="Можно вводить только цифры"
             selecte="phone"

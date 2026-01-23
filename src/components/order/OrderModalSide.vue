@@ -9,12 +9,25 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const storeOrder = useOrderStore()
+const orderStore = useOrderStore()
 
 const sumPrice = computed(() =>
   storeOrder.order.dishes.reduce((sum, dish) => {
     return sum + (+dish.characteristics[dish.default_characteristics].price * dish.quantity || 0)
   }, 0),
 )
+
+const priceDelivery = computed(() => {
+  const prices = orderStore.priceList[0]?.prices  
+  let res = 0
+  if (!prices) return 0
+  for (const price of prices) {
+    if (price.from <= sumPrice.value && sumPrice.value <= price.to) {
+      return res = price.price
+    }
+  }
+  return res
+})
 </script>
 
 <template>
@@ -101,9 +114,17 @@ const sumPrice = computed(() =>
       </div>
       <ButtonSwitch />
     </div>
-    <div class="text-lg pb-4 font-medium flex justify-between mt-6">
-      <span>Итого:</span>
-      <span>{{ sumPrice }} ₽</span>
+    <div class="">
+      <div class="flex flex-col gap-y-1 -mb-4 mt-4">
+        <div v-for="(price, index) in orderStore.priceList[0]?.prices" :key="index" :class="priceDelivery === price.price ? 'text-green-500' : ''" class="flex justify-between text-sm">
+          <span>Доставка на сумму <span v-show="price.from !== 0">от {{ price.from }}</span> <span v-show="index + 1 !== orderStore.priceList[0]?.prices.length">до {{ price.to }}</span></span>
+          <span>{{ price.price }}</span>
+        </div>
+      </div>
+      <div class="text-lg pb-4 font-medium flex justify-between mt-6">
+        <span>Итого:</span>
+        <span>{{ sumPrice + priceDelivery }} ₽</span>
+      </div>
     </div>
     <OrderContacts />
   </div>

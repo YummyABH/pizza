@@ -8,6 +8,7 @@ import OrdersTableCardMini from '@/api/admin/ui/card/table/OrdersTableCardMini.v
 import OrderTableItem from '@/api/admin/ui/card/table/OrderTableItem.vue'
 import OrdersModalCard from '@/api/admin/orders/OrdersModalCard.vue'
 import IconCrass from '../icons/IconCrass.vue'
+import PushNotificationManager from './ui/PushNotificationManager.vue'
 
 let ws
 
@@ -89,6 +90,7 @@ onMounted(() => {
     class="w-screen flex justify-self-end text-white"
   >
     <div class="mx-2 px-20 w-full p-5 rounded-2xl max-2xl:px-0 max-md:mx-0">
+      <PushNotificationManager class="text-center"/>
       <h1 class="mb-8 text-2xl text-center font-medium">Заказы</h1>
       <!-- <div class="grid grid-cols-4 gap-7"></div> -->
       <div class="max-lg:hidden bg-[#111827] rounded-xl p-5 max-w-full">

@@ -9,6 +9,11 @@ import router from './router'
 
 const app = createApp(App)
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
 app.use(createPinia())
 app.use(router)
 app.use(Toast, {

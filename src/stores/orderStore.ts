@@ -4,6 +4,7 @@ import { reactive, ref, watch } from 'vue'
 import type { OrderState } from '@/types/stores'
 import type { MenuDishResponse, BaseDish } from '@/types/api'
 import { toastCreate } from '@/utility/createToast'
+import { sortAddresses } from '@/utility/calculateMatchScore'
 
 export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
@@ -13,6 +14,7 @@ export const useOrderStore = defineStore('order', () => {
     closes_at: '--:--',
     opens_at: '--:--',
   })
+  const priceList = ref([])
   const dataAddress = ref([])
 
   const order = reactive<OrderState>(
@@ -38,6 +40,10 @@ export const useOrderStore = defineStore('order', () => {
     },
     { deep: true },
   )
+
+  function updatePriceList(newValue) {
+    priceList.value = newValue
+  }
 
   function updateOpenTime(time) {
     openTime.value.closes_at = time.closes_at
@@ -152,6 +158,7 @@ export const useOrderStore = defineStore('order', () => {
             dataAddress.value = addresses?.map((item) => {
               return item?.address?.formatted_address
             })
+            dataAddress.value = sortAddresses(order.delivery.address, dataAddress.value)
           } else {
             dataAddress.value = []
           }
@@ -168,7 +175,9 @@ export const useOrderStore = defineStore('order', () => {
     order,
     dataAddress,
     isOpenOrderModal,
+    priceList,
     openTime,
+    updatePriceList,
     cutleryAdd,
     cutleryReduce,
     clearDishesInOrder,

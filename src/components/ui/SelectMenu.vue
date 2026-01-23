@@ -5,9 +5,15 @@ import { Combobox, ComboboxInput, ComboboxOptions, ComboboxOption } from '@headl
 import { useOrderStore } from '@/stores/orderStore.ts'
 import { useOrderInputStore } from '@/stores/orderInputStore.ts'
 import { vMaska } from 'maska/vue'
+import { sortAddresses } from '@/utility/calculateMatchScore'
 
 const props = defineProps({
   label: String,
+  footnote: {
+    type: String,
+    required: false,
+    default: ''
+  },
   options: {
     type: Array,
     required: true,
@@ -31,10 +37,14 @@ const props = defineProps({
   },
 })
 
-const emits = defineEmits(['checkAdress'])
+const emits = defineEmits(['checkAdress', 'sortComboboxOptions'])
 
 const checkAdress = () => {
   emits('checkAdress')
+}
+
+const sortComboboxOptions = () => {  
+  emits('sortComboboxOptions')
 }
 
 const modelValue = defineModel()
@@ -66,6 +76,10 @@ watch(
   },
 )
 
+watch(modelValue, () => {
+  sortComboboxOptions()
+})
+
 const formClass = computed(() => ({
   'top-3': !modelValue.value,
   '-top-[10px] bg-black-381 px-1': modelValue.value,
@@ -92,7 +106,6 @@ const handleKeyDown = () => {
 }
 
 function onBlur() {
-  // Если инпут пустой, сбрасываем выбор
   if (!modelValue.value) {
     modelValue.value = ''
   } else {    
@@ -100,10 +113,11 @@ function onBlur() {
   }
   isOpen.value = false
 }
+
 </script>
 
 <template>
-  <div class="input-container">
+  <div class="input-container mb-3">
     <Combobox v-model="modelValue" v-slot="{ open }" nullable>
       <ComboboxInput
         :disabled="!isDependencyFilled"
@@ -148,6 +162,10 @@ function onBlur() {
       for="brand"
       >{{ label }}</label
     >
+    <div class="flex gap-x-1 text-sm absolute -bottom-6">
+      <span class="text-red-600">*</span>
+      <span class="">{{ footnote }}</span>
+    </div>
   </div>
 </template>
 
