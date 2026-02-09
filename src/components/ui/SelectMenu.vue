@@ -144,6 +144,7 @@ function onBlur() {
             v-slot="{ active }"
             :value="item"
             :key="index"
+            @click="isOpen = false"
             class="option-mark"
           >
             <span :class="active ? 'active item-text' : 'item-text'">

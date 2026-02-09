@@ -2,17 +2,17 @@
 import MenuListCard from './MenuListCard.vue'
 import MenuDishModal from './MenuDishModal.vue'
 import { useDishesStore } from '@/stores/dishesStore'
-import { computed, ref, toRaw } from 'vue'
+import { computed, ref } from 'vue'
 
 const store = useDishesStore()
 
-const listCategory = defineModel('listCategory')
+const listCategory = defineModel<HTMLElement[]>('listCategory')
 const statusModalDish = ref<boolean>(false)
 const indexDishModal = ref<number>(0)
 const indexCategoryModal = ref<number>(0)
 
-const setCategoryRefs = (el) => {
-  if (el) {
+const setCategoryRefs = (el: HTMLElement | null) => {
+  if (el && listCategory.value) {
     listCategory.value.push(el)
   }
 }

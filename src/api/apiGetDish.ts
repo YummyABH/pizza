@@ -78,7 +78,7 @@ export const categoriesAPI = {
   },
   async updatePrices(data) {
     const url = '/api/cfg/update-price-list'
-    return await APIInstance(url, {
+    return await APIInstanceAdmin(url, {
       method: 'POST',
       body: { price_list: data },
     })

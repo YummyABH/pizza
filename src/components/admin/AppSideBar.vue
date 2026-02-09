@@ -12,9 +12,11 @@ import IconLogout from '../icons/IconLogout.vue'
 import IconDelivery from '../icons/IconDelivery.vue'
 import IconMenu from '../icons/IconMenu.vue'
 import IconOrderHistoryMini from '../icons/IconOrderHistoryMini.vue'
+import { usePushNotifications } from '@/components/composible/usePushNotifications';
 import IconUsers from '../icons/IconUsers.vue'
 
 const { handlerLogout } = useLogout()
+const { unsubscribeFromPush } = usePushNotifications()
 const storeAdmin = useAdminStore()
 const route = useRoute()
 const openSublistId = ref(null)
@@ -85,6 +87,11 @@ watch(route, () => {
   activeSublist.value = active?.parentId
   openSublistId.value = active?.parentId
 })
+
+async function logout() {
+  await unsubscribeFromPush('admin')
+  // await handlerLogout()
+}
 </script>
 
 <template>
@@ -177,7 +184,7 @@ watch(route, () => {
         </div>
       </div>
       <div
-        @click="handlerLogout()"
+        @click="logout()"
         class="text-2xl mb-10 flex gap-x-3 items-center duration-200 hover:bg-[#1f2b45] bg-[#1b233a] cursor-pointer p-3 rounded-xl"
       >
         <span><IconLogout /></span><span>Выход</span>

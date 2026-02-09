@@ -7,7 +7,7 @@ const error = ref(null);
 
 const {
     isSupported,
-    subscriptionAdmin,
+    subscriptionUser,
     subscribeToPush,
     registerServiceWorker,
     unsubscribeFromPush,
@@ -18,12 +18,14 @@ async function toggleNotifications() {
     loading.value = true;
     error.value = null;    
     try {
-        if (subscriptionAdmin.value) {
-            return await unsubscribeFromPush('admin')
+        if (subscriptionUser.value) {
+            return await unsubscribeFromPush('user')
             // return subscriptionAdmin.value = null
         }        
-        await subscribeToPush('admin');
-    } catch (err) {        
+        await subscribeToPush('user');
+    } catch (err) {  
+        console.log(err);
+              
         error.value = err.message;
     } finally {        
         loading.value = false;
@@ -41,7 +43,7 @@ onMounted(async () => {
 <template>
     <div v-if="isSupported" class="push-notification-manager">
         <button @click="toggleNotifications" :disabled="loading" class="notification-btn">
-            {{ subscriptionAdmin ? 'Отключить уведомления' : 'Включить уведомления' }}
+            {{ subscriptionUser ? 'Отключить уведомления' : 'Оповестить о изменении статуса заказа' }}
         </button>
 
         <p v-if="!isSupported" class="error">

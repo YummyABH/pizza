@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import ButtonSwitch from '../ButtonSwitch.vue'
 import IconBasket from '../icons/IconBasket.vue'
 import IconCutlery from '../icons/IconCutlery.vue'
 import OrderContacts from './OrderContacts.vue'
 import { useOrderStore } from '@/stores/orderStore'
 import { useRouter } from 'vue-router'
+import { disableScroll } from '@/utility/taggleScroll'
 
 const router = useRouter()
 const storeOrder = useOrderStore()
@@ -28,6 +29,7 @@ const priceDelivery = computed(() => {
   }
   return res
 })
+
 </script>
 
 <template>

@@ -54,6 +54,13 @@ export const orderAPI = {
       body: subscription,
     })
   },
+  async notificationSubscribeUser(subscription) {
+    const url = '/api/push/subscribe-client'
+    return await APIInstancePersonal(url, {
+      method: 'POST',
+      body: subscription,
+    })
+  },
   async notificationUnsubscribe(endpoint) {
     const url = 'api/push/unsubscribe'
     return await APIInstance(url, {

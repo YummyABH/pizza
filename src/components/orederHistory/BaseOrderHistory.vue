@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
 import HistoryOrderCard from '@/components/orederHistory/HistoryOrderCard.vue'
+import PushNotificationUser from './PushNotificationUser.vue';
 
 const historyOrderStore = useOrderHistoryStore()
 </script>
 
 <template>
   <div class="text-center px-10 max-sm:px-3 w-full mt-25 max-md:py-6 py-12 bg-white rounded-2xl">
+    <PushNotificationUser/>
     <h1 class="text-3xl font-semibold mb-0">Ваши заказы</h1>
     <div class="max-sm:pt-6 pt-8" v-for="(historyOrder, indexOrder) in historyOrderStore.historyOrder"
       :key="indexOrder">
@@ -33,6 +35,10 @@ const historyOrderStore = useOrderHistoryStore()
       <div class="w-full grid grid-cols-4 gap-10 max-xl:grid-cols-3 max-sm:gap-4 max-sm:gap-y-8 max-lg:grid-cols-2">
         <HistoryOrderCard v-for="(dish, indexDish) in historyOrder.dishes" :key="indexDish" :dish="dish" />
       </div>
+    </div>
+    <div v-show="historyOrderStore.historyOrder.length === 0" class="mt-6 flex items-center flex-col ">
+      <span class="text-2xl ">Тут пока пусто</span>
+      <img class="w-100 max-md:w-80 max-sm:w-60" src="/public/order_histoy_bg.png" alt="">
     </div>
   </div>
 </template>
