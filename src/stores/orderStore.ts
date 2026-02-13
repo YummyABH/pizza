@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { orderAPI } from '@/api/apiOrder'
 import { reactive, ref, watch } from 'vue'
-import type { OrderState } from '@/types/stores'
+import type { OrderState, PriceList, OpenTime } from '@/types/stores'
 import type { MenuDishResponse, BaseDish } from '@/types/api'
 import { toastCreate } from '@/utility/createToast'
 import { sortAddresses } from '@/utility/calculateMatchScore'
@@ -10,11 +10,11 @@ export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
   const initialOrder: OrderState | null = savedOrder ? JSON.parse(savedOrder) : null
   const isOpenOrderModal = ref<boolean>(false)
-  const openTime = ref({
+  const openTime = ref<OpenTime>({
     closes_at: '--:--',
     opens_at: '--:--',
   })
-  const priceList = ref([])
+  const priceList = ref<PriceList[]>([])
   const dataAddress = ref([])
 
   const order = reactive<OrderState>(
@@ -41,11 +41,11 @@ export const useOrderStore = defineStore('order', () => {
     { deep: true },
   )
 
-  function updatePriceList(newValue) {
+  function updatePriceList(newValue: PriceList[]) {
     priceList.value = newValue
   }
 
-  function updateOpenTime(time) {
+  function updateOpenTime(time: OpenTime) {
     openTime.value.closes_at = time.closes_at
     openTime.value.opens_at = time.opens_at
   }
@@ -129,15 +129,20 @@ export const useOrderStore = defineStore('order', () => {
       const result = await orderAPI.postOrder(normalizeData)
       toastCreate('Заказ успешно создан !', 'success')
       return result
-    } catch (error) {
-      console.log(error._data.type)
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null) {
+        if ('_data' in error) {
+          const errorData = (error as { _data: { type: string; message: string } })._data
 
-      if (error._data.type === 'validation') return toastCreate(error._data.message, 'info')
+          if (errorData.type === 'validation') {
+            return toastCreate(errorData.message, 'info')
+          }
+        }
+      }
       toastCreate('Произошла ошибка, повторите попытку', 'error')
     }
   }
 
-  
   function createDebouncedGeoRequest() {
     let timer: number | undefined = undefined
 

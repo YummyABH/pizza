@@ -2,7 +2,6 @@
 import ContentContainer from '@/components/ContentContainer.vue'
 import IconBag from '@/components/icons/IconBag.vue'
 import IconOrderHistory from './icons/IconOrderHistory.vue'
-import { disableScroll } from '@/utility/taggleScroll'
 import { useOrderStore } from '@/stores/orderStore'
 import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
 

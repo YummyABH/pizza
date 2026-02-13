@@ -1,3 +1,5 @@
+import type { OpenTime, PriceList } from "./stores"
+
 //#region Base types
 export interface BaseOrder<VDelivery, TDish> {
   name: string
@@ -9,12 +11,14 @@ export interface BaseOrder<VDelivery, TDish> {
   order_comment: string
 }
 
+// Проверил
 export interface BaseDish {
   id: number
   quantity: number
   size: string
 }
 
+// Проверил
 export interface BaseDelivery {
   status: boolean
   address: string
@@ -30,16 +34,16 @@ export interface DishCharacteristics {
   quantity: string
 }
 
+// Проверил
 export interface MenuDishResponse {
   id: number
   name: string
-  categoryName: string
   description: string
   dish_status: boolean
   composition: string[]
   quantity: number
   image: string | File
-  category_id: number
+  category_id?: number
   default_characteristics: number
   characteristics: DishCharacteristics[]
 }
@@ -50,6 +54,7 @@ export interface MenuCategory {
   dishes: MenuDishResponse[]
 }
 
+//Проверил
 export interface CategoryDishes {
   position: number
   status: boolean
@@ -82,5 +87,7 @@ export interface CreateOrderResponse extends BaseOrder<OrderDeliveryResponse, Or
 }
 
 export type CreateOrderRequest = BaseOrder<OrderDeliveryRequest, OrderDishRequest>
+
+export interface GetPrices extends OpenTime {price_list: PriceList[], id: number}  
 
 //#endregion

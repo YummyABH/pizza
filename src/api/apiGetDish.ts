@@ -1,6 +1,6 @@
 import { APIInstanceAdmin } from './admin/config'
 import { APIInstance } from './config'
-import type { MenuCategory, CategoryDishes, MenuDishResponse, CategoryDishes } from '@/types/api'
+import type { MenuCategory, MenuDishResponse, CategoryDishes, GetPrices } from '@/types/api'
 
 export const categoriesAPI = {
   async getCategories() {
@@ -74,7 +74,7 @@ export const categoriesAPI = {
     const url = '/api/cfg/read'
     return await APIInstanceAdmin(url, {
       method: 'GET',
-    })
+    }) as GetPrices
   },
   async updatePrices(data) {
     const url = '/api/cfg/update-price-list'

@@ -22,6 +22,7 @@ async function dataRequestCalculation() {
       storeOrder.clearDishesInOrder()
       historyOrderStore.isViewAdd()
     } catch (error) {
+      console.log(error);
       
     }
     store.taggleOrderModal()

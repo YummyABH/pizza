@@ -24,6 +24,7 @@ async function saveUpdatingEditDish() {
     await categoriesAPI.createDish(normalizeDish)
     toastCreate('Блюдо создано', 'success')
   } catch (error) {
+    
     toastCreate('Заполните все поля', 'info')
   } finally {
     loadingStatus.value = false
