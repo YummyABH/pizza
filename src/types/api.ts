@@ -48,6 +48,19 @@ export interface MenuDishResponse {
   characteristics: DishCharacteristics[]
 }
 
+export interface ApiDishBase {
+  id: number
+  name: string
+  description: string
+  dish_status: boolean
+  composition: string[]
+  quantity: number
+  image: string | File
+  category_id?: number
+  default_characteristics: number
+  characteristics: DishCharacteristics[]
+}
+
 export interface MenuCategory {
   category_id: number
   category_name: string

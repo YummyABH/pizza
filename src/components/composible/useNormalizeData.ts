@@ -17,5 +17,6 @@ export function normalizeData(data: MenuDishResponse, type: string = 'update') {
   if (typeof data.image === 'object') {
     formData.append('image', data.image)
   }
+  alert(JSON.stringify(data))
   return formData
 }
