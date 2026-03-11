@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useDishesStore } from '@/stores/dishesStore'
 import { useOrderStore } from '@/stores/orderStore'
+import { toastCreate } from '@/utility/createToast'
 
 const storeDishes = useDishesStore()
 const storeOrder = useOrderStore()
@@ -44,6 +45,13 @@ onMounted(() => {
 onBeforeUnmount(() => {
   body.removeEventListener('click', goHome)
 })
+
+function addDishInOrder() {
+  const statusAdd = !storeOrder.addDishItem(dish.value, indexCharacteristics.value)
+
+  if (statusAdd) return toastCreate('Блюдо добавлено в заказ !', 'success')
+  toastCreate('Блюдо уже было добавлено в заказ', 'info')
+}
 </script>
 
 <template>
@@ -72,13 +80,14 @@ onBeforeUnmount(() => {
         ></div>
       </div>
       <div
+        @click="addDishInOrder"
         class="bg-[#64f77c] cursor-pointer py-2 px-2 rounded-3xl text-lg w-full text-center font-medium"
       >
         Добавить
       </div>
     </div>
     <div
-      class="relative max-h-9/10 pb-20 max-sm:max-w-full max-sm:pb-18 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
+      class="relative max-h-9/10 pb-20 md:min-w-128 max-sm:max-w-full max-sm:pb-18 min-h-4/5 bg-white max-w-128 flex flex-col overflow-hidden rounded-2xl"
     >
       <div
         @click="statusModalDish = false"
@@ -106,7 +115,7 @@ onBeforeUnmount(() => {
           ></div>
         </div>
         <div
-          @click="storeOrder.addDishItem(dish, indexCharacteristics)"
+          @click="addDishInOrder"
           class="bg-[#64f77c] cursor-pointer py-2.5 px-5 rounded-3xl text-xl w-full text-center font-medium"
         >
           Добавить
@@ -115,7 +124,7 @@ onBeforeUnmount(() => {
       <div class="min-w-full min-h-full h-full w-full overflow-hidden">
         <img
           class="w-full aspect-1/1 object-cover"
-          :src="`https://restik-street-style.onrender.com/uploads/${dish?.image}`"
+          :src="`https://pizzaabh.ru/uploads/${dish?.image}`"
         />
       </div>
       <div

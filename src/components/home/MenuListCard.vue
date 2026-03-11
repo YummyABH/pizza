@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore'
 import { useDishesStore } from '@/stores/dishesStore'
-import { computed} from 'vue'
+import { computed } from 'vue'
+import { toastCreate } from '@/utility/createToast'
 
 const store = useOrderStore()
 const storeDish = useDishesStore()
@@ -13,24 +14,32 @@ const props = defineProps({
 })
 
 const indexCharacteristics = computed(() => props.dishList.default_characteristics)
+
+function addDishInOrder() {
+  const statusAdd = !store.addDishItem(props.dishList, indexCharacteristics.value)
+
+  if (statusAdd) return toastCreate('Блюдо добавлено в заказ !', 'success')
+  toastCreate('Блюдо уже было добавлено в заказ', 'info')
+}
 </script>
 
 <template>
-  <div class="">
+  <div class="flex flex-col h-full">
     <div
       @click="statusModalDish = true"
       class="cursor-pointer block h-46 max-sm:h-auto max-sm:rounded-2xl mb-3 rounded-3xl overflow-hidden"
     >
       <img
-        :src="`https://restik-street-style.onrender.com/uploads/${dishList.image}`"
+        :src="`https://pizzaabh.ru/uploads/${dishList.image}`"
         class="max-sm:aspect-3/2 w-full h-full object-cover"
       />
     </div>
-    <div class="flex flex-col justify-between min-h-36 max-sm:min-h-26">
+
+    <div class="flex flex-col flex-1 justify-between h-full">
       <div class="">
         <h3 class="text-lg mb-1 font-medium max-sm:text-base">{{ dishList.name }}</h3>
         <div
-          class="flex gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
+          class="flex flex-wrap gap-x-3 gap-y-1.5 max-sm:text-sm max-sm:gap-x-1.5 text-gray-600 mb-3 max-sm:mb-3 max-sm:flex-wrap"
         >
           <span
             >{{ dishList.characteristics[indexCharacteristics].quantity }}
@@ -51,24 +60,10 @@ const indexCharacteristics = computed(() => props.dishList.default_characteristi
       </div>
 
       <div
-        @click="store.addDishItem(dishList, indexCharacteristics)"
+        @click="addDishInOrder"
         class="cursor-pointer w-full items-center hover:bg-gray-600 duration-200 justify-center flex gap-4 py-2 px-4 font-semibold rounded-3xl text-white bg-gray-700"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-5"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-
+        
         <span>{{ dishList.characteristics[indexCharacteristics]?.price }} ₽</span>
       </div>
     </div>

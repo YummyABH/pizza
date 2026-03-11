@@ -1,14 +1,23 @@
 import { defineStore } from 'pinia'
 import { orderAPI } from '@/api/apiOrder'
 import { reactive, ref, watch } from 'vue'
+import type { OrderState, PriceList, OpenTime } from '@/types/stores'
+import type { MenuDishResponse, BaseDish } from '@/types/api'
+import { toastCreate } from '@/utility/createToast'
+import { sortAddresses } from '@/utility/calculateMatchScore'
 
 export const useOrderStore = defineStore('order', () => {
   const savedOrder = localStorage.getItem('order')
-  const initialOrder = savedOrder ? JSON.parse(savedOrder) : null
-
+  const initialOrder: OrderState | null = savedOrder ? JSON.parse(savedOrder) : null
+  const isOpenOrderModal = ref<boolean>(false)
+  const openTime = ref<OpenTime>({
+    closes_at: '--:--',
+    opens_at: '--:--',
+  })
+  const priceList = ref<PriceList[]>([])
   const dataAddress = ref([])
 
-  const order = reactive(
+  const order = reactive<OrderState>(
     initialOrder || {
       name: '',
       phone: '',
@@ -32,56 +41,74 @@ export const useOrderStore = defineStore('order', () => {
     { deep: true },
   )
 
-  function cutleryAdd() {
+  function updatePriceList(newValue: PriceList[]) {
+    priceList.value = newValue
+  }
+
+  function updateOpenTime(time: OpenTime) {
+    openTime.value.closes_at = time.closes_at
+    openTime.value.opens_at = time.opens_at
+  }
+
+  function taggleOrderModal() {
+    isOpenOrderModal.value = !isOpenOrderModal.value
+  }
+
+  function cutleryAdd(): number {
     return order.cutlery_quantity >= 50 ? (order.cutlery_quantity = 50) : order.cutlery_quantity++
   }
 
-  function cutleryReduce() {
+  function cutleryReduce(): number {
     return order.cutlery_quantity <= 1 ? (order.cutlery_quantity = 1) : order.cutlery_quantity--
   }
 
-  function dishAdd(id: number, default_characteristics: number) {
+  function dishAdd(id: number, default_characteristics: number): number | void {
     const dish = order.dishes.find(
       (dish) => dish.id === id && dish.default_characteristics === default_characteristics,
     )
-    return dish.quantity >= 99 ? (dish.quantity = 99) : dish.quantity++
+    if (dish) {
+      return dish.quantity >= 99 ? (dish.quantity = 99) : dish.quantity++
+    }
   }
 
-  function dishReduce(id: number, default_characteristics: number) {
+  function dishReduce(id: number, default_characteristics: number): number | void {
     const dish = order.dishes.find(
       (dish) => dish.id === id && dish.default_characteristics === default_characteristics,
     )
-    return dish.quantity <= 1 ? (dish.quantity = 1) : dish.quantity--
+    if (dish) {
+      return dish.quantity <= 1 ? (dish.quantity = 1) : dish.quantity--
+    }
   }
 
-  function deleteDish(removeDish: object) {
+  function deleteDish(removeDish: MenuDishResponse): void {
     order.dishes = order.dishes.filter(
       (dish) => JSON.stringify(dish) !== JSON.stringify(removeDish),
     )
   }
 
-  function clearDishesInOrder() {
+  function clearDishesInOrder(): void {
     order.dishes = []
   }
 
-  function addDishItem(newDish: object, indexCharacteristics?: string) {
+  function addDishItem(newDish: MenuDishResponse, indexCharacteristics: number): boolean {
     const addDish = { ...newDish }
-    let hasDish = false
+    let status: boolean = false
 
     for (const dish of order.dishes) {
       if (dish.id === addDish.id && dish.default_characteristics === indexCharacteristics) {
-        hasDish = true
-        return
+        status = true
+        return status
       }
     }
 
-    if (hasDish) return
+    if (status) return status
 
     addDish.default_characteristics = indexCharacteristics
     order.dishes = [...order.dishes, addDish]
+    return status
   }
 
-  function normalizeDishOrder(dish: object) {
+  function normalizeDishOrder(dish: MenuDishResponse): BaseDish {
     return {
       id: dish.id,
       quantity: dish.quantity,
@@ -91,18 +118,33 @@ export const useOrderStore = defineStore('order', () => {
 
   async function postOrder() {
     try {
-      const data = { ...order }
-      data.dishes = data.dishes.map((dish) => normalizeDishOrder(dish))
-      data.secret_key = localStorage.getItem('secretKey')
-      const result = await orderAPI.postOrder(data)
+      const rawData = { ...order }
+      const normalizeData = {
+        ...rawData,
+        dishes: rawData.dishes.map((dish) => normalizeDishOrder(dish)),
+      }
+      normalizeData.phone = normalizeData.phone.replace('+ ', '')
+      console.log(normalizeData)
+
+      const result = await orderAPI.postOrder(normalizeData)
+      toastCreate('Заказ успешно создан !', 'success')
       return result
-    } catch (error) {
-      console.log(error)
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null) {
+        if ('_data' in error) {
+          const errorData = (error as { _data: { type: string; message: string } })._data
+
+          if (errorData.type === 'validation') {
+            return toastCreate(errorData.message, 'info')
+          }
+        }
+      }
+      toastCreate('Произошла ошибка, повторите попытку', 'error')
     }
   }
 
   function createDebouncedGeoRequest() {
-    let timer = null
+    let timer: number | undefined = undefined
 
     return () => {
       clearTimeout(timer)
@@ -110,12 +152,22 @@ export const useOrderStore = defineStore('order', () => {
       timer = setTimeout(async () => {
         try {
           const result = await orderAPI.getAddress(order.delivery.address)
-          const addresses = result.results?.filter(
-            (country) => country.address.component[0].name === 'Абхазия',
-          )
-          dataAddress.value = addresses.map((item) => {
-            return item.address.formatted_address
+          let addresses = []
+
+          addresses = result?.results?.filter((country) => {
+            if (country.address?.component) {
+              return country?.address?.component[0]?.name === 'Абхазия'
+            }
+            return false
           })
+          if (addresses) {
+            dataAddress.value = addresses?.map((item) => {
+              return item?.address?.formatted_address
+            })
+            dataAddress.value = sortAddresses(order.delivery.address, dataAddress.value)
+          } else {
+            dataAddress.value = []
+          }
         } catch (error) {
           console.log('error', error)
         }
@@ -128,6 +180,10 @@ export const useOrderStore = defineStore('order', () => {
   return {
     order,
     dataAddress,
+    isOpenOrderModal,
+    priceList,
+    openTime,
+    updatePriceList,
     cutleryAdd,
     cutleryReduce,
     clearDishesInOrder,
@@ -137,5 +193,7 @@ export const useOrderStore = defineStore('order', () => {
     deleteDish,
     postOrder,
     debouncedRequestGeo,
+    taggleOrderModal,
+    updateOpenTime,
   }
 })

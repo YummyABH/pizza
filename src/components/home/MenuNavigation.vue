@@ -10,15 +10,20 @@ const props = defineProps({
 const styleMenuCategories = computed(() => (id: string) => {
   return props.activeCategory === id ? 'text-white bg-black' : 'bg-white text-black'
 })
+
+const hasVisibleDish = computed(() => (index: number) => {
+  return store.dishes[index].dishes.find((dish) => dish.dish_status === true)
+})
 </script>
 
 <template>
-  <ul class="flex gap-3 overflow-x-scroll max-w-full pb-1 mt-4 md:hidden">
+  <ul class="flex gap-3 overflow-x-scroll max-w-full ">
     <li
-      @click="$emit('scroll', category.categoryId)"
-      v-for="category in store.dishes"
-      :key="category.categoryId"
-      :class="styleMenuCategories(category.categoryId)"
+      v-show="hasVisibleDish(index) && category.status"
+      @click="$emit('scroll', category.category_id)"
+      v-for="(category, index) in store.dishes"
+      :key="category.category_id"
+      :class="styleMenuCategories(category.category_id)"
       class="px-2 py-1 rounded-2xl min-w-max"
     >
       <div>

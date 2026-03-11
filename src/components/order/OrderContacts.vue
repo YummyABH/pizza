@@ -3,19 +3,33 @@ import OrderMethodOptaining from './OrderMethodOptaining.vue'
 import { useOrderStore } from '@/stores/orderStore'
 import { useOrderInputStore } from '@/stores/orderInputStore'
 import BaseInput from '@/components/ui/BaseInput.vue'
+import { toastCreate } from '@/utility/createToast'
+import { useOrderHistoryStore } from '@/stores/orderHistoryStore'
 
 const store = useOrderStore()
 const orderInputStore = useOrderInputStore()
+const storeOrder = useOrderStore()
+const historyOrderStore = useOrderHistoryStore()
 
 const addressMask = orderInputStore.addressMask
 const nameMask = orderInputStore.nameMask
 
 async function dataRequestCalculation() {
   const isValid = orderInputStore.validateForm()
-  if (isValid) {
-    // Отправка запроса на бэкенд
-    await store.postOrder()
+  if ((isValid || !store.order.delivery.status) && store.order.dishes.length) {
+    try {
+      await store.postOrder()
+      storeOrder.clearDishesInOrder()
+      historyOrderStore.isViewAdd()
+    } catch (error) {
+      console.log(error);
+      
+    }
+    store.taggleOrderModal()
+  } else if (!store.order.dishes.length) {
+    toastCreate('Вы не выбрали ни одного блюда', 'info')
   } else {
+    toastCreate('Вы заполнили не все обязательные поля', 'info')
     console.log('Форма содержит ошибки')
   }
 }
@@ -33,9 +47,11 @@ async function dataRequestCalculation() {
             select="name"
             v-model="store.order.name"
             label="Имя"
+            :required="true"
             :mask="nameMask"
           />
           <BaseInput
+            :required="true"
             id="phone"
             title="Можно вводить только цифры"
             select="phone"
@@ -81,6 +97,12 @@ async function dataRequestCalculation() {
           label="Комментарий к заказу"
           :mask="addressMask"
         />
+      </div>
+      <div class="text-lg font-medium">
+        Время работы:
+        <span class="font-normal">
+          с {{ store.openTime.opens_at }} до {{ store.openTime.closes_at }}
+        </span>
       </div>
     </div>
     <input

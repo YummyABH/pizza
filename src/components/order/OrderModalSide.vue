@@ -1,46 +1,68 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import ButtonSwitch from '../ButtonSwitch.vue'
 import IconBasket from '../icons/IconBasket.vue'
 import IconCutlery from '../icons/IconCutlery.vue'
 import OrderContacts from './OrderContacts.vue'
 import { useOrderStore } from '@/stores/orderStore'
+import { useRouter } from 'vue-router'
+import { disableScroll } from '@/utility/taggleScroll'
 
+const router = useRouter()
 const storeOrder = useOrderStore()
+const orderStore = useOrderStore()
 
 const sumPrice = computed(() =>
   storeOrder.order.dishes.reduce((sum, dish) => {
     return sum + (+dish.characteristics[dish.default_characteristics].price * dish.quantity || 0)
   }, 0),
 )
+
+const priceDelivery = computed(() => {
+  const prices = orderStore.priceList[0]?.prices  
+  let res = 0
+  if (!prices) return 0
+  for (const price of prices) {
+    if (price.from <= sumPrice.value && sumPrice.value <= price.to) {
+      return res = price.price
+    }
+  }
+  return res
+})
+
 </script>
 
 <template>
-  <router-link to="/" class="fixed w-full h-full bg-black/50 z-10 top-0 left-0"></router-link>
   <div
+    v-show="storeOrder.isOpenOrderModal"
+    @click="storeOrder.taggleOrderModal"
+    class="fixed w-full h-full bg-black/50 z-10 top-0 left-0"
+  ></div>
+  <div
+    v-show="storeOrder.isOpenOrderModal"
     class="fixed scrollbar-hidden z-20 right-0 top-0 bg-white h-full p-6 overflow-scroll min-w-125 max-sm:min-w-auto max-sm:w-full"
   >
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-medium">Заказ</h2>
-      <router-link
-        to="/"
-        class="relative w-5 h-5 after:absolute after:w-full after:h-0.5 after:top-1/2 after:left-1/2 after:bg-black after:transform after:-translate-1/2 after:rotate-45 before:absolute before:w-full before:h-0.5 before:left-1/2 before:top-1/2 before:bg-black before:transform before:-translate-1/2 before:-rotate-45"
-      ></router-link>
+      <div
+        @click="storeOrder.taggleOrderModal"
+        class="cursor-pointer relative w-5 h-5 after:absolute after:w-full after:h-0.5 after:top-1/2 after:left-1/2 after:bg-black after:transform after:-translate-1/2 after:rotate-45 before:absolute before:w-full before:h-0.5 before:left-1/2 before:top-1/2 before:bg-black before:transform before:-translate-1/2 before:-rotate-45"
+      ></div>
     </div>
     <div class="flex justify-between mb-4">
       <div class="text-xl font-medium"><span>Блюд: </span>{{ storeOrder.order.dishes.length }}</div>
-      <IconBasket @click="storeOrder.clearDishesInOrder" />
+      <IconBasket class="cursor-pointer" @click="storeOrder.clearDishesInOrder" />
     </div>
     <div class="flex flex-col gap-y-6">
       <div
         v-for="dish in storeOrder.order.dishes"
-        :key="dish.categoryid"
+        :key="dish.category_id"
         class="flex group gap-x-3"
       >
         <div class="w-14 h-14">
           <img
             class="w-full h-full object-cover aspect-1/1"
-            :src="`https://restik-street-style.onrender.com/uploads/${dish.image}`"
+            :src="`https://pizzaabh.ru/uploads/${dish.image}`"
           />
         </div>
         <div class="flex text-sm flex-col w-full">
@@ -94,9 +116,17 @@ const sumPrice = computed(() =>
       </div>
       <ButtonSwitch />
     </div>
-    <div class="text-lg pb-4 font-medium flex justify-between mt-6">
-      <span>Итого:</span>
-      <span>{{ sumPrice }} ₽</span>
+    <div class="">
+      <div class="flex flex-col gap-y-1 -mb-4 mt-4">
+        <div v-for="(price, index) in orderStore.priceList[0]?.prices" :key="index" :class="priceDelivery === price.price ? 'text-green-500' : ''" class="flex justify-between text-sm">
+          <span>Доставка на сумму <span v-show="price.from !== 0">от {{ price.from }}</span> <span v-show="index + 1 !== orderStore.priceList[0]?.prices.length">до {{ price.to }}</span></span>
+          <span>{{ price.price }}</span>
+        </div>
+      </div>
+      <div class="text-lg pb-4 font-medium flex justify-between mt-6">
+        <span>Итого:</span>
+        <span>{{ sumPrice + priceDelivery }} ₽</span>
+      </div>
     </div>
     <OrderContacts />
   </div>

@@ -1,0 +1,106 @@
+import type { OpenTime, PriceList } from "./stores"
+
+//#region Base types
+export interface BaseOrder<VDelivery, TDish> {
+  name: string
+  phone: string
+  delivery: VDelivery
+  dishes: TDish[]
+  cutlery_status: boolean
+  cutlery_quantity: number
+  order_comment: string
+}
+
+// Проверил
+export interface BaseDish {
+  id: number
+  quantity: number
+  size: string
+}
+
+// Проверил
+export interface BaseDelivery {
+  status: boolean
+  address: string
+  comment: string
+}
+//#endregion
+
+//#region apiGetDish.ts
+export interface DishCharacteristics {
+  size: string
+  price: string
+  measure: string
+  quantity: string
+}
+
+// Проверил
+export interface MenuDishResponse {
+  id: number
+  name: string
+  description: string
+  dish_status: boolean
+  composition: string[]
+  quantity: number
+  image: string | File
+  category_id?: number
+  default_characteristics: number
+  characteristics: DishCharacteristics[]
+}
+
+export interface ApiDishBase {
+  id: number
+  name: string
+  description: string
+  dish_status: boolean
+  composition: string[]
+  quantity: number
+  image: string | File
+  category_id?: number
+  default_characteristics: number
+  characteristics: DishCharacteristics[]
+}
+
+export interface MenuCategory {
+  category_id: number
+  category_name: string
+  dishes: MenuDishResponse[]
+}
+
+//Проверил
+export interface CategoryDishes {
+  position: number
+  status: boolean
+  id: number
+  name: string
+}
+//#endregion
+
+//#region apiOrder.ts
+export interface OrderDishResponse extends BaseDish {
+  price: number
+  image: string
+  name: string
+}
+
+export type OrderDishRequest = BaseDish
+
+export interface OrderDeliveryResponse extends BaseDelivery {
+  delivery_price: number
+}
+
+export type OrderDeliveryRequest = BaseDelivery
+
+export interface CreateOrderResponse extends BaseOrder<OrderDeliveryResponse, OrderDishResponse> {
+  created_at: string
+  id: number
+  secret_key: string
+  status: boolean
+  total_price: number
+}
+
+export type CreateOrderRequest = BaseOrder<OrderDeliveryRequest, OrderDishRequest>
+
+export interface GetPrices extends OpenTime {price_list: PriceList[], id: number}  
+
+//#endregion

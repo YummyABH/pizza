@@ -1,0 +1,14 @@
+import { $fetch } from 'ofetch'
+import { authAPI } from '@/api/admin/auth.ts'
+
+// const { refresh, logout, check } = authAPI()
+
+export const refreshInstance = $fetch.create({
+  baseURL: 'https://pizzaabh.ru/api',
+
+  async onRequest({ request, options }) {},
+  async onResponseError({ response }) {
+    return Promise.reject('ошибка ', response)
+  },
+})
+>>>>>>> ba449dc2d6aaffc330a5bdae8246e10ef42c6486

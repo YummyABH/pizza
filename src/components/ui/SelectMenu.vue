@@ -5,9 +5,15 @@ import { Combobox, ComboboxInput, ComboboxOptions, ComboboxOption } from '@headl
 import { useOrderStore } from '@/stores/orderStore.ts'
 import { useOrderInputStore } from '@/stores/orderInputStore.ts'
 import { vMaska } from 'maska/vue'
+import { sortAddresses } from '@/utility/calculateMatchScore'
 
 const props = defineProps({
   label: String,
+  footnote: {
+    type: String,
+    required: false,
+    default: ''
+  },
   options: {
     type: Array,
     required: true,
@@ -30,6 +36,16 @@ const props = defineProps({
     default: true,
   },
 })
+
+const emits = defineEmits(['checkAdress', 'sortComboboxOptions'])
+
+const checkAdress = () => {
+  emits('checkAdress')
+}
+
+const sortComboboxOptions = () => {  
+  emits('sortComboboxOptions')
+}
 
 const modelValue = defineModel()
 const calculationStore = useOrderStore()
@@ -60,6 +76,10 @@ watch(
   },
 )
 
+watch(modelValue, () => {
+  sortComboboxOptions()
+})
+
 const formClass = computed(() => ({
   'top-3': !modelValue.value,
   '-top-[10px] bg-black-381 px-1': modelValue.value,
@@ -86,27 +106,26 @@ const handleKeyDown = () => {
 }
 
 function onBlur() {
-  // Если инпут пустой, сбрасываем выбор
   if (!modelValue.value) {
     modelValue.value = ''
+  } else {    
+    modelValue.value = visibleItems.value[0]
   }
   isOpen.value = false
 }
-const borderClass = computed(() => {
-  if (!orderInputStore?.formErrors) return '' 
-  return orderInputStore.formErrors[props.select] ? 'border-red-500' : ''
-})
+
+
 </script>
 
 <template>
-  <div class="input-container">
+  <div class="input-container mb-3">
     <Combobox v-model="modelValue" v-slot="{ open }" nullable>
       <ComboboxInput
         :disabled="!isDependencyFilled"
         v-maska="mask"
         autocomplete="off"
         @focus="isOpen = true"
-        @blur="onBlur"
+        @blur="(onBlur(), checkAdress())"
         :required
         @input="orderInputStore.clearError(select)"
         @change="modelValue = $event.target.value"
@@ -127,6 +146,7 @@ const borderClass = computed(() => {
             v-slot="{ active }"
             :value="item"
             :key="index"
+            @click="isOpen = false"
             class="option-mark"
           >
             <span :class="active ? 'active item-text' : 'item-text'">
@@ -145,6 +165,10 @@ const borderClass = computed(() => {
       for="brand"
       >{{ label }}</label
     >
+    <div class="flex gap-x-1 text-sm absolute -bottom-6">
+      <span class="text-red-600">*</span>
+      <span class="">{{ footnote }}</span>
+    </div>
   </div>
 </template>
 

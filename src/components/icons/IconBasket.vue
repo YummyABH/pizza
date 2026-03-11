@@ -7,7 +7,7 @@
     viewBox="0 0 24 24"
     stroke-width="1.5"
     stroke="red"
-    class="size-6 cursor-pointer"
+    class="size-6"
   >
     <path
       stroke-linecap="round"

@@ -1,32 +1,33 @@
-import { APIInstance } from '@/api/admin/config.ts'
+
 import { ofetch } from 'ofetch'
 
 const authAPI = () => {
-  const login = async (credentials: object) => {
-    return await APIInstance('/auth/login', {
+  const login = async (credentials) => {
+    return await ofetch('https://pizzaabh.ru/api/auth/login', {
       method: 'POST',
       body: credentials,
     })
   }
 
-  const logout = async (credentials) => {
-    return await APIInstance('/auth/login', {
+  const logout = async (credentials: string) => {
+    const refreshToken = localStorage.getItem('refreshToken')
+    return await ofetch('https://pizzaabh.ru/api/auth/logout', {
       method: 'POST',
       body: credentials,
+      headers: { 'refresh-token': refreshToken },
     })
   }
 
 
-  const check = async (accessToken) => {
-    return await ofetch('https://apsny-billboard-production.up.railway.app/api/auth/token-check', {
+  const refresh = async () => {
+    const refreshToken = localStorage.getItem('refreshToken')
+    return await ofetch('https://pizzaabh.ru/api/auth/refresh', {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: { 'refresh-token': refreshToken },
     })
   }
 
-  return { logout, login, check }
+  return { login, refresh, logout }
 }
 
 export { authAPI }
