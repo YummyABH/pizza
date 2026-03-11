@@ -138,7 +138,8 @@ export function usePushNotifications() {
   async function unsubscribeFromPush(role: 'admin' | 'user') {
     try {
       // Получаем текущую подписку из registration
-      const currentSubscription = await registration.value!.pushManager.getSubscription();
+      const currentSubscription = await registration.value?.pushManager.getSubscription();
+      console.log('пытается', await registration.value?.pushManager.getSubscription());
       
       if (currentSubscription) {
         // Проверяем, что это подписка для нужной роли

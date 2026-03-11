@@ -18,7 +18,7 @@ async function toggleNotifications() {
     loading.value = true;
     error.value = null;    
     try {
-        if (subscriptionAdmin.value) {
+        if (subscriptionAdmin.value) {            
             return await unsubscribeFromPush('admin')
             // return subscriptionAdmin.value = null
         }        

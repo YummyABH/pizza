@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdminStore } from '@/stores/adminStore'
 import { useLogout } from '../composible/useLogout'
@@ -16,7 +16,7 @@ import { usePushNotifications } from '@/components/composible/usePushNotificatio
 import IconUsers from '../icons/IconUsers.vue'
 
 const { handlerLogout } = useLogout()
-const { unsubscribeFromPush } = usePushNotifications()
+const { checkSubscription, registerServiceWorker, unsubscribeFromPush, subscriptionAdmin, isSupported } = usePushNotifications()
 const storeAdmin = useAdminStore()
 const route = useRoute()
 const openSublistId = ref(null)
@@ -89,9 +89,19 @@ watch(route, () => {
 })
 
 async function logout() {
-  await unsubscribeFromPush('admin')
-  // await handlerLogout()
+  if (subscriptionAdmin.value) {
+            await unsubscribeFromPush('admin')
+            // return subscriptionAdmin.value = null
+        }  
+  await handlerLogout()
 }
+
+onMounted(async () => {
+  if (isSupported.value) {      
+    await registerServiceWorker();
+    await checkSubscription(); // Указываем роль
+  }
+});
 </script>
 
 <template>
