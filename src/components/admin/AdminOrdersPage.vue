@@ -18,7 +18,7 @@ const isActiveStatusMenu = ref<boolean>(false)
 const activeDish = ref(false)
 const dishesList = ref([])
 const idActiveModal = ref(false)
-const activeOrder = reactive({
+const activeOrder = ref({
   cutlery_status: false,
   cutlery_quantity: 0,
   phone: '',
