@@ -64,7 +64,7 @@ export const orderAPI = {
   async notificationUnsubscribe(endpoint) {
     const url = 'api/push/unsubscribe'
     return await APIInstance(url, {
-      method: 'POST',
+      method: 'DELETE',
       body: {endpoint},
     })
   },

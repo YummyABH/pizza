@@ -164,7 +164,7 @@ onUnmounted(() => {
                   <label class="text-xl inline-block mb-3"> Цена (₽) : </label>
                   <input
                     class="block w-full border-gray-600 border-[1px] bg-gray-800 rounded-lg px-3 py-2 focus:outline-0 focus-within:border focus-within:border-gray-600"
-                    type="text"
+                    type="number"
                     v-model="characteristic.price"
                   />
                 </div>

@@ -32,28 +32,28 @@ export const categoriesAPI = {
   async updateCategory(data) {
     const url = '/api/categories/update'
     return (await APIInstanceAdmin(url, {
-      method: 'POST',
+      method: 'PATCH',
       body: data,
     })) as CategoryDishes[]
   },
   async delateDish(id: number) {
-    const url = `/api/dishes/delete?dishId=${id}`
+    const url = `/api/dishes/delete/${id}`
     return (await APIInstanceAdmin(url, {
       method: 'DELETE',
     })) as MenuDishResponse[]
   },
   async delateCategory(id: number) {
-    const url = `/api/categories/delete?id=${id}`
+    const url = `/api/categories/delete/${id}`
     return (await APIInstanceAdmin(url, {
       method: 'DELETE',
     })) as MenuDishResponse[]
   },
-  async updateDish(data) {
-    const url = '/api/dishes/update'
+  async updateDish(data, id: number) {
+    const url = `/api/dishes/update/${id}`
     return (await APIInstanceAdmin(
       url,
       {
-        method: 'POST',
+        method: 'PATCH',
         body: data,
       },
       'multipart/form-data',
@@ -79,14 +79,14 @@ export const categoriesAPI = {
   async updatePrices(data) {
     const url = '/api/cfg/update-price-list'
     return await APIInstanceAdmin(url, {
-      method: 'POST',
+      method: 'PATCH',
       body: { price_list: data },
     })
   },
   async updateTime(open, close) {
     const url = '/api/cfg/change-time'
     return await APIInstanceAdmin(url, {
-      method: 'POST',
+      method: 'PATCH',
       body: { opens_at: open, closes_at: close },
     })
   },

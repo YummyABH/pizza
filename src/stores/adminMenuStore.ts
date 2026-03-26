@@ -19,7 +19,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
     characteristics: [
       {
         size: '',
-        price: '',
+        price: 0,
         measure: '',
         quantity: '',
       },
@@ -48,7 +48,7 @@ export const useAdminMenuStore = defineStore('adminMenu', () => {
       characteristics: [
         {
           size: '',
-          price: '',
+          price: 0,
           measure: '',
           quantity: '',
         },

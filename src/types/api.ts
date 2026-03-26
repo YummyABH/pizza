@@ -29,7 +29,7 @@ export interface BaseDelivery {
 //#region apiGetDish.ts
 export interface DishCharacteristics {
   size: string
-  price: string
+  price: number
   measure: string
   quantity: string
 }
